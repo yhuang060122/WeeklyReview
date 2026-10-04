@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周复盘模块｜AI 财务验证追踪</title>
+<style>
+:root{--bg:#121820;--panel:#18202a;--line:#2a3441;--tx:#d8dee6;--mut:#8b97a6;--ok:#5fb8a4;--est:#d9a64e;--na:#7b8696;--hd:#eef2f6}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.65 "Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif}
+main{max-width:980px;margin:0 auto;padding:32px 20px 56px}
+h1{font:600 26px/1.3 "Noto Serif SC","Songti SC",serif;color:var(--hd);margin:0 0 6px}
+h2{font:600 18px/1.4 "Noto Serif SC","Songti SC",serif;color:var(--hd);margin:40px 0 4px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+p.sub{color:var(--mut);margin:0 0 4px;font-size:13px}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:14px 0 0;font-size:13px;color:var(--mut)}
+.t{display:inline-block;min-width:26px;text-align:center;padding:0 7px;border-radius:3px;font-weight:600;font-size:12px;margin-right:6px}
+.t.ok{background:rgba(95,184,164,.16);color:var(--ok)}
+.t.est{background:rgba(217,166,78,.16);color:var(--est)}
+.t.na{background:rgba(123,134,150,.18);color:var(--na)}
+.wrap{overflow-x:auto;margin-top:12px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+th{text-align:left;color:var(--mut);font-weight:500;font-size:12.5px;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:9px 10px;border-bottom:1px solid #212b37;vertical-align:top}
+td.n{white-space:nowrap;color:var(--hd);font-weight:500}
+.funnel{display:grid;gap:8px;margin-top:14px}
+.row{display:grid;grid-template-columns:150px 1fr 56px;align-items:center;gap:12px;font-size:14px}
+.bar{height:22px;border-radius:2px;background:linear-gradient(90deg,#3b6f7a,#5fb8a4)}
+.row b{color:var(--hd);font-weight:600;text-align:right}
+.note{font-size:13px;color:var(--mut);margin:10px 0 0}
+ul.ck{list-style:none;margin:12px 0 0;padding:0}
+ul.ck li{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid #212b37}
+ul.ck input{margin-top:5px;accent-color:#5fb8a4}
+ul.ck strong{color:var(--hd);font-weight:500}
+ul.ck span.m{display:block;color:var(--mut);font-size:13px}
+.warn{margin-top:14px;padding:12px 14px;background:var(--panel);border-left:3px solid var(--est);font-size:14px}
+@media(max-width:560px){.row{grid-template-columns:96px 1fr 44px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<h1>AI 财务验证追踪</h1>
+<p class="sub">数据基准：2026 年 Q2 财报季（美股非科技统计截至 8 月 25 日）。下一次更新：Q3 财报季（10 月中旬起）。</p>
+<div class="legend">
+<span><span class="t ok">✓</span>公司自行披露的数值</span>
+<span><span class="t est">估</span>第三方梳理或估算，非审计口径</span>
+<span><span class="t na">—</span>未披露 / 待核对</span>
+</div>
+
+<h2>一、科技侧：Agent 是否进入财务报表</h2>
+<p class="sub">观察重点：谁掌握企业数据、权限和工作流，谁先兑现。</p>
+<div class="wrap"><table>
+<thead><tr><th>公司</th><th>指标</th><th>Q2 读数</th><th>标签</th><th>下次要看</th></tr></thead>
+<tbody>
+<tr><td class="n">ServiceNow</td><td>AI 业务 ACV；Agent 部署量</td><td>ACV 突破 10 亿美元；九个月增长 9 倍（订阅收入 38.77 亿美元，同比 +24.5%）</td><td><span class="t ok">✓</span></td><td>AI ACV 占新增合同比例</td></tr>
+<tr><td class="n">Salesforce</td><td>Agentforce ARR；Agentic Work Units</td><td>ARR 超 15 亿美元（同比 +240%）；Q2 完成 32 亿个 AWU，环比 +97%</td><td><span class="t ok">✓</span></td><td>统计口径已扩大（含其他 AI 产品、Slackbot、Headless 360），增速需折价，下季按新口径比</td></tr>
+<tr><td class="n">Workday</td><td>AI 占新增 ACV；Agent 客户数</td><td>占新增 ACV 超 25%；5500+ 客户用至少一个自研 Agent</td><td><span class="t ok">✓</span></td><td>占比能否维持 25% 以上</td></tr>
+<tr><td class="n">Palantir</td><td>收入增速</td><td>总收入 +93%；美国商业 +149%</td><td><span class="t ok">✓</span></td><td>美国商业增速持续性</td></tr>
+<tr><td class="n">金山办公</td><td>收入；WPS 365</td><td>上半年收入 33.13 亿元（+24.69%）；WPS 365 连续六个季度 60%+ 增长</td><td><span class="t ok">✓</span></td><td>归母净利润 +200% 含投资收益，看扣非</td></tr>
+<tr><td class="n">税友股份</td><td>AI 回款占数智财税回款</td><td>33%（2025 全年 28%）；扣非净利润 +44.04%</td><td><span class="t ok">✓</span></td><td>占比继续上行</td></tr>
+<tr><td class="n">汉得信息</td><td>AI 智能化业务收入</td><td>约 2.2 亿元，同比 +100% 以上</td><td><span class="t ok">✓</span></td><td>项目制 → 订阅 / 用量的转变，毛利率</td></tr>
+<tr><td class="n">UiPath</td><td>RPA → Agent 执行层</td><td>原定 2026-09-03 盘后发布 Q2 财报，已过期，读数尚未录入</td><td><span class="t na">—</span></td><td>补录并核对</td></tr>
+</tbody></table></div>
+
+<h2>二、非科技侧：标普 500 采用漏斗</h2>
+<p class="sub">三层口径逐级收紧，关注每个季度漏斗宽度和质量的变化。</p>
+<div class="funnel">
+<div class="row"><span>提到 AI</span><div class="bar" style="width:100%"></div><b>305</b></div>
+<div class="row"><span>披露量化收益</span><div class="bar" style="width:41%"></div><b>~125</b></div>
+<div class="row"><span>可核验下限</span><div class="bar" style="width:22%"></div><b>67</b></div>
+<div class="row"><span>明确量化利润率贡献</span><div class="bar" style="width:8.2%"></div><b>25</b></div>
+</div>
+<p class="note"><span class="t est">估</span>以上均为 GPT 对财报与电话会表述的梳理，非审计归因。非 IT 公司中披露量化效果约 85–90 家（估算）。可核验的 67 家 = 32 家硬指标 + 18 家部署规模与效果 + 17 家以定性为主。利润率贡献平均约 +180bp，剔除混合约项后约 +150bp。</p>
+
+<h2>三、重点样本：已兑现还是远期目标</h2>
+<div class="wrap"><table>
+<thead><tr><th>公司</th><th>梯队</th><th>指标</th><th>性质</th><th>标签</th></tr></thead>
+<tbody>
+<tr><td class="n">WM</td><td>已进损益表</td><td>SmartTruck 年化 EBITDA 贡献 &gt;3 亿美元，季度利润率贡献约 +140bp</td><td>已兑现，但并非全是纯 AI</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">WCN</td><td>已进损益表</td><td>AI 定价已实现年化 EBITDA 约 2000 万美元</td><td>已兑现；约 1 亿美元（2028–2029）为远期目标</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">Equifax</td><td>已进损益表</td><td>2026–2028 年 AI 生产率目标 1.5 亿美元</td><td>远期目标，尚未兑现</td><td><span class="t na">—</span></td></tr>
+<tr><td class="n">WTW</td><td>运营效果</td><td>标准保险清单制作 4 小时 → 5 分钟；2028 年毛节省目标 4 亿 / 净节省 3.5 亿美元</td><td>运营指标已改善；节省为远期目标</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">CVS</td><td>运营效果</td><td>病例准备与审阅 90 分钟 → 2 分钟（时间下降 97.8%）</td><td>运营指标，最终判断仍需人工</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">FIS</td><td>运营效果</td><td>工程团队吞吐量 1.5–2 倍；人工工单 −70%</td><td>运营指标</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">Visa / GE</td><td>运营效果</td><td>Visa 代码提交量 +80%；GE 190 种叶片零件处理时间下降约 90%</td><td>运营指标</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">C.H. Robinson 等</td><td>收入—人数脱钩</td><td>C.H. Robinson 核心业务生产率提升 &gt;60%；另关注 American Express、JLL、ADP</td><td>混合因素，含精益管理与组织重构</td><td><span class="t ok">✓</span></td></tr>
+<tr><td class="n">S&amp;P Global / Nasdaq / Global Payments</td><td>外部商业化</td><td>S&amp;P AI 客户 ACV 增速快约 60%；Global Payments 为商户增加约 20 亿美元年度批准交易额</td><td>多为客户价值，不等于公司自身收入</td><td><span class="t ok">✓</span></td></tr>
+</tbody></table></div>
+
+<h2>四、每周 / 每季追踪清单</h2>
+<ul class="ck">
+<li><input type="checkbox" aria-label="AI ARR ACV"><div><strong>AI 相关 ARR / ACV 绝对值与口径变化</strong><span class="m">每季。口径变动（如 Salesforce）单独标注，增速按新旧口径分开比较。</span></div></li>
+<li><input type="checkbox" aria-label="新增ACV占比"><div><strong>AI 占新增合同比例</strong><span class="m">每季。基线：Workday &gt;25%；比发布了多少个 Agent 更有信息量。</span></div></li>
+<li><input type="checkbox" aria-label="生产环境客户"><div><strong>生产环境客户数 vs 试用客户数</strong><span class="m">每季。只记录进入生产的，试用客户参考价值低。</span></div></li>
+<li><input type="checkbox" aria-label="任务量"><div><strong>任务调用量与完整任务成功率</strong><span class="m">每季。基线：Salesforce 32 亿 AWU、环比 +97%；成功率、续约率、客户扩张率多数公司未披露，标 —。</span></div></li>
+<li><input type="checkbox" aria-label="毛利率现金流"><div><strong>扣除推理成本后的毛利率、实施周期、应收账款、经营现金流</strong><span class="m">每季。判断是可复制软件还是定制 IT 服务。</span></div></li>
+<li><input type="checkbox" aria-label="远期目标"><div><strong>远期目标兑现进度</strong><span class="m">每季。WCN 约 1 亿美元、Equifax 1.5 亿美元、WTW 3.5 亿美元净节省，对照已实现部分，不把目标当收益。</span></div></li>
+<li><input type="checkbox" aria-label="毛节省净节省"><div><strong>毛节省 → 净节省披露</strong><span class="m">每季。是否扣除模型、Token、数据治理、系统集成、合规与再投资。</span></div></li>
+<li><input type="checkbox" aria-label="漏斗"><div><strong>标普 500 漏斗数字（305 / ~125 / 67 / 25）</strong><span class="m">每季。关注 67 家内部 32 / 18 / 17 的结构，硬指标占比上升才算质量改善。</span></div></li>
+<li><input type="checkbox" aria-label="人数脱钩"><div><strong>收入增长与人数增长脱钩</strong><span class="m">每季。放慢招聘、自然流失少补岗，与一次性裁员区分。</span></div></li>
+<li><input type="checkbox" aria-label="A股"><div><strong>A 股：AI 回款占比、扣非利润、毛利率、项目制 vs 订阅占比</strong><span class="m">每半年 / 每季。剔除投资收益等一次性项目。</span></div></li>
+</ul>
+
+<h2>五、本模块数据完整性</h2>
+<div class="warn">
+所有数值取自上述两份材料，未经独立核对原始财报。标普 500 漏斗数据为 GPT 梳理，一律记为 <span class="t est">估</span>。UiPath 9 月 3 日财报已过期，读数待补。图中 Equifax、WTW、WCN 的大部分收益在 2027–2029 年，不应计入当期。
+</div>
+</main>
+</body>
+</html>

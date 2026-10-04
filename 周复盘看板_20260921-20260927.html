@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周复盘看板 | 2026-09-21 至 2026-09-27</title>
+<style>
+:root{
+  --bg:#0a0e14; --bg2:#0d1219; --panel:#10161f; --border:#1e2731;
+  --text:#c9d1d9; --dim:#6b7684; --accent:#39d0d8;
+  --green:#2ea043; --red:#e5484d; --orange:#d29922; --gray:#8b949e;
+  --up-bg:rgba(46,160,67,0.12); --down-bg:rgba(229,72,77,0.12); --neutral-bg:rgba(210,153,34,0.10);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:var(--bg); color:var(--text);
+  font-family:"SF Mono","Consolas","Menlo","Courier New",monospace;
+  font-size:14px; line-height:1.6;
+}
+.topbar{
+  position:sticky; top:0; z-index:10; background:var(--bg2);
+  border-bottom:1px solid var(--border); padding:14px 18px;
+}
+.topbar h1{margin:0 0 4px; font-size:17px; color:#fff; letter-spacing:0.5px;}
+.topbar .sub{color:var(--dim); font-size:12px;}
+.nav{display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;}
+.nav a{
+  color:var(--accent); text-decoration:none; border:1px solid var(--border);
+  padding:5px 12px; border-radius:4px; font-size:12px; transition:0.15s;
+}
+.nav a:hover{background:rgba(57,208,216,0.1); border-color:var(--accent);}
+.wrap{max-width:920px; margin:0 auto; padding:18px;}
+section{margin-bottom:36px; scroll-margin-top:90px;}
+.sec-header{
+  display:flex; align-items:baseline; gap:10px; margin-bottom:14px;
+  border-bottom:2px solid var(--border); padding-bottom:8px;
+}
+.sec-header .idx{color:var(--accent); font-size:20px;}
+.sec-header h2{margin:0; font-size:19px; color:#fff;}
+.sec-header .en{color:var(--dim); font-size:11px;}
+.block{background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:12px;}
+.block h3{margin:0 0 10px; font-size:13px; color:var(--accent); text-transform:uppercase; letter-spacing:0.5px;}
+.block p{margin:0 0 8px;}
+.block ul{margin:6px 0; padding-left:18px;}
+.block li{margin-bottom:5px;}
+.tag{
+  display:inline-block; font-size:10px; padding:1px 6px; border-radius:3px;
+  margin-left:4px; font-weight:bold; vertical-align:middle;
+}
+.tag-confirmed{background:rgba(46,160,67,0.18); color:#3fb950;}
+.tag-est{background:rgba(210,153,34,0.18); color:#d29922;}
+.tag-unconfirmed{background:rgba(139,148,158,0.18); color:#8b949e;}
+table{width:100%; border-collapse:collapse; font-size:12.5px; margin:6px 0;}
+th,td{padding:6px 8px; border-bottom:1px solid var(--border); text-align:left;}
+th{color:var(--dim); font-weight:normal; text-transform:uppercase; font-size:11px;}
+.up{color:#3fb950; font-weight:bold;}
+.down{color:#f0656b; font-weight:bold;}
+.neutral{color:var(--orange); font-weight:bold;}
+.pill-up{background:var(--up-bg); color:#3fb950; padding:1px 6px; border-radius:3px;}
+.pill-down{background:var(--down-bg); color:#f0656b; padding:1px 6px; border-radius:3px;}
+.pill-neutral{background:var(--neutral-bg); color:var(--orange); padding:1px 6px; border-radius:3px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+.metric-row{display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--border);}
+.metric-row:last-child{border-bottom:none;}
+.metric-label{color:var(--dim);}
+.metric-val{font-weight:bold;}
+.callout{border-left:3px solid var(--accent); padding:8px 12px; background:rgba(57,208,216,0.05); font-size:13px;}
+.risk-high{border-left:3px solid var(--red);}
+.risk-med{border-left:3px solid var(--orange);}
+.risk-low{border-left:3px solid var(--gray);}
+footer{border-top:1px solid var(--border); margin-top:30px; padding:20px 0; color:var(--dim); font-size:11.5px;}
+footer h4{color:var(--text); font-size:12px; margin:14px 0 6px;}
+footer .disclaimer{margin-top:16px; padding-top:12px; border-top:1px solid var(--border); font-style:italic;}
+code{color:var(--accent); background:rgba(57,208,216,0.08); padding:1px 4px; border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>📊 周复盘看板 · Weekly Market Review</h1>
+  <div class="sub">周期 2026-09-21 至 2026-09-27（数据截至 09-27 亚洲时段） · 量化机构视角</div>
+  <div class="nav">
+    <a href="#crypto">① Crypto</a>
+    <a href="#us">② 美股</a>
+    <a href="#cac40">③ CAC 40</a>
+    <a href="#footer">数据源 / 免责声明</a>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ CRYPTO ============ -->
+<section id="crypto">
+  <div class="sec-header"><span class="idx">①</span><h2>Crypto</h2><span class="en">BTC / ETH / SOL / BNB</span></div>
+
+  <div class="block">
+    <h3>宏观快照 Macro Snapshot</h3>
+    <p>本周最大变量是美联储 9/16 加息落地后的"鹰鸽反复"：9/16 美联储三年来首次加息 25bp 至 3.75%-4.00%（12-0 一致通过）<span class="tag tag-confirmed">✓</span>，点阵图中值 4.1%（至2027年）一度被市场解读为鸽派，推动周一（9/21）风险资产普涨——BTC 单日暴涨触及 $86,600-87,270 区间的8个月新高<span class="tag tag-confirmed">✓</span>。但周三起市场重新计价，CME FedWatch 显示10月再次加息概率升至约75%，12月约59%<span class="tag tag-confirmed">✓</span>，叠加美债收益率走高，BTC 从周一高点回落至周四 $84,490 附近<span class="tag tag-confirmed">✓</span>。</p>
+    <p>CLARITY Act（加密监管法案）未能在参议院推进<span class="tag tag-confirmed">✓</span>，但未对价格造成实质性拖累——市场焦点已转向利率路径而非立法进程。周五 9/25 为季度 Deribit 期权到期日，BTC 名义未平仓约 $14.73B、ETH 约 $1.92B，合计约 $16.6B<span class="tag tag-confirmed">✓</span>。</p>
+    <div class="grid2">
+      <div class="metric-row"><span class="metric-label">全网加密市值</span><span class="metric-val">$2.93T–$2.98T <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">BTC 市占率</span><span class="metric-val">~60% <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">Fear & Greed Index</span><span class="metric-val">73–74（贪婪）<span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">Fed Funds Rate</span><span class="metric-val">3.75%–4.00% <span class="tag tag-confirmed">✓</span></span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>周内日历叙事 Weekly Narrative</h3>
+    <ul>
+      <li><b>周一 9/21</b>：油价回落 + 美债收益率走软点燃风险偏好，BTC 一度冲高至 $86,600–87,270（八个月新高），ETH 同步上探 $2,754–2,776 <span class="tag tag-confirmed">✓</span>；当日 BTC 现货 ETF 单日净流入 $999M，为今年最佳单日 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周二–周三 9/22-23</b>：涨势降温，BTC 回落 0.49%、2.15% 至约 $84,340 <span class="tag tag-confirmed">✓</span>；CryptoQuant 数据显示 9/22-24 三日内 $2.52B BTC 流出交易所，链上呈现"惜售"信号 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周四 9/24</b>：基本走平；加密衍生品24小时清算约 $348M，其中多头占 $270.9M，显示上周急涨后杠杆多头被反噬 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周五 9/25</b>：BTC 收 $84,071（较 9/18 收盘 $80,857 累计+4%），ETH 收约 $2,693（较 $2,612 +3.1%）<span class="tag tag-confirmed">✓</span>；当日 Deribit 季度期权到期，叠加 Plasma(XPL) 解锁事件 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周末/周日 9/27</b>：BTC 稳定在 $84,500–85,000 区间，ETH 约 $2,690 <span class="tag tag-confirmed">✓</span>。</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>板块表现 Sector Performance</h3>
+    <table>
+      <tr><th>资产</th><th>9/18 收盘</th><th>周内高点</th><th>9/27 现价</th><th>周涨跌</th></tr>
+      <tr><td>BTC</td><td>$80,857</td><td>$86,600–87,270（周一）</td><td>~$84,500–85,000</td><td class="up">+4~5% <span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>ETH</td><td>$2,612</td><td>$2,754–2,776（周一）</td><td>~$2,690</td><td class="up">+3% <span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>SOL</td><td>—</td><td>$117.79（3个月新高，周一）</td><td>守住 $117 支撑，看向 $143 阻力</td><td class="up">周内较9月低点+24% <span class="tag tag-est">估</span></td></tr>
+      <tr><td>BNB</td><td>—</td><td>$797.82（周一，3个月新高）</td><td>~$772</td><td class="neutral">高位震荡 <span class="tag tag-confirmed">✓</span></td></tr>
+    </table>
+    <p style="color:var(--dim); font-size:12px;">注：SOL/BNB 缺乏可靠的9/18基准收盘价，周涨跌幅按区间高低估算，标注为"估"。</p>
+  </div>
+
+  <div class="block">
+    <h3>ETF 资金流 / 结构诊断 Flows & Structure</h3>
+    <table>
+      <tr><th>产品</th><th>周净流入（9/21-25）</th><th>备注</th></tr>
+      <tr><td>Bitcoin 现货 ETF</td><td class="up">+$2.39B <span class="tag tag-confirmed">✓</span></td><td>IBIT 独占 $1.16B，周一单日 $999M 为年内最佳</td></tr>
+      <tr><td>Ether 现货 ETF</td><td class="up">+$689.8M <span class="tag tag-confirmed">✓</span></td><td>扭转此前一周流出；BitMine 单周加仓 27,562 ETH</td></tr>
+      <tr><td>Solana 现货 ETF</td><td class="up">+$188.1M <span class="tag tag-confirmed">✓</span></td><td>周五单日 $86.7M 创纪录；SOL 稳定币供给达 $17.3B 历史新高</td></tr>
+    </table>
+    <p>结构性看点：Grayscale 将 BNB 在其 Smart Contract Fund 中的配置权重上调至 ETH 之上<span class="tag tag-confirmed">✓</span>，BNB 市值重回 $100B 上方<span class="tag tag-confirmed">✓</span>。Pump.fun 持续向 Kraken 转出 SOL（本周 $5.83M，累计约 $848M），构成潜在抛压监控项<span class="tag tag-confirmed">✓</span>。</p>
+  </div>
+
+  <div class="block">
+    <h3>核心催化剂 Key Catalysts</h3>
+    <ul>
+      <li>9/16 美联储加息落地 + 点阵图指引 → 周初风险偏好回升的主线逻辑 <span class="tag tag-confirmed">✓</span></li>
+      <li>CME FedWatch 10月加息概率周内从"一次到位"预期快速上修至75% → 周中转跌的核心驱动 <span class="tag tag-confirmed">✓</span></li>
+      <li>9/25 Deribit 季度期权到期（$16.6B名义）+ Plasma XPL 解锁 → 短期波动率抬升事件 <span class="tag tag-confirmed">✓</span></li>
+      <li>CLARITY Act 参议院受阻 → 监管叙事暂时靠边站，未系统性压制价格 <span class="tag tag-confirmed">✓</span></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>下周风险矩阵 Risk Matrix (Next Week)</h3>
+    <div class="callout risk-high" style="margin-bottom:8px;">
+      <b>高风险</b>：若10月加息概率进一步上修（当前75%），BTC/ETH 存在向 $80,000 / $2,600 一线回踩的压力；需紧盯 Fed 官员密集发言与 PMI 数据。
+    </div>
+    <div class="callout risk-med" style="margin-bottom:8px;">
+      <b>中风险</b>：SOL Alpenglow 升级验证者迁移检查点若出现延迟或技术分歧，可能引发短期波动；Pump.fun 持续抛压需跟踪。
+    </div>
+    <div class="callout risk-low">
+      <b>低风险 / 观察项</b>：BNB 在 Grayscale 配置权重上调后可能吸引被动资金跟随，构成结构性支撑，但幅度未确认 <span class="tag tag-unconfirmed">—</span>。
+    </div>
+  </div>
+</section>
+
+<!-- ============ US EQUITIES ============ -->
+<section id="us">
+  <div class="sec-header"><span class="idx">②</span><h2>美股</h2><span class="en">Broad ETF / Semis / Big Tech Cloud / AI Software</span></div>
+
+  <div class="block">
+    <h3>宏观快照 Macro Snapshot</h3>
+    <p>9/16 美联储三年来首次加息 25bp 至 3.75%-4.00%（12-0）<span class="tag tag-confirmed">✓</span>，市场初期解读为"一次到位"的鸽派信号，为本周初的风险资产反弹奠定基础。周一（9/21）中美元首会晤前瞻中多名 AI 巨头据称将出席，进一步点燃 AI 交易情绪 <span class="tag tag-confirmed">✓</span>。全周指数呈现"周一暴力反弹、周中消化、周五温和收官"的形态。</p>
+    <div class="grid2">
+      <div class="metric-row"><span class="metric-label">S&amp;P 500 周涨跌</span><span class="metric-val pill-up">+1.2% <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">Nasdaq Composite 周涨跌</span><span class="metric-val pill-up">+2.0% <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">Dow Jones 周涨跌</span><span class="metric-val pill-up">+0.3% <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">领涨板块</span><span class="metric-val">信息技术 +3.1%（全周最佳）<span class="tag tag-confirmed">✓</span></span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>周内日历叙事 Weekly Narrative</h3>
+    <ul>
+      <li><b>周一 9/21</b>：Nasdaq +2.26% 收 27,122.09（6月以来首次刷新收盘纪录），S&amp;P500 +1.49% 收 7,764.70，Dow +0.71% 收 52,048.83 <span class="tag tag-confirmed">✓</span>。油价回落+美债收益率走软推动风险偏好；通讯服务 +3.84%、科技 +2.83% 领涨 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周一半导体专场</b>：PHLX 半导体指数（SOX）单日 +3%以上 <span class="tag tag-confirmed">✓</span>；AMD 大涨约10%、盘中站上 $610 并首次突破 $1万亿市值 <span class="tag tag-confirmed">✓</span>；Intel +12%（与 AUO Optronics 显示面板合作消息）<span class="tag tag-confirmed">✓</span>；Qualcomm +9%、ARM +10% <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周内</b>：Meta 全周累计上涨约11-13%，市场情绪主要由新发布的AI Agent「Muse」驱动 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周五 9/25</b>：S&amp;P500 +0.51% 收 7,743.41，Nasdaq +0.48% 收 27,068.72，Dow 上涨470余点收官全周 <span class="tag tag-confirmed">✓</span>；市场对伊朗-美国重启对话（霍尔木兹海峡通行）持乐观情绪 <span class="tag tag-confirmed">✓</span>。</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>板块表现（按固定 Watchlist）Sector Performance</h3>
+    <table>
+      <tr><th>板块</th><th>本周表现要点</th><th>诚实度</th></tr>
+      <tr><td>宽基 ETF（SPY/QQQ 对应指数）</td><td>Nasdaq +2.0%、S&amp;P500 +1.2%，科技/AI叙事主导反弹</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>半导体硬件</td><td>SOX 单日+3%（周一）；AMD 破万亿市值、Intel/Qualcomm/ARM 齐涨9-12%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>大型科技云</td><td>Meta 领涨（Muse AI agent），全周+11-13%；其余云端三巨头（MSFT/GOOGL/AMZN）本周具体涨跌幅未采集到可靠数据源</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+      <tr><td>AI 软件/数据</td><td>Palantir/Snowflake等维持高估值叙事（PLTR前瞻P/S约55-67倍），行业情绪偏多，但本周具体股价涨跌幅未获可靠数据源确认</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block">
+    <h3>涨跌榜 Individual Movers</h3>
+    <table>
+      <tr><th>标的</th><th>动态</th><th>诚实度</th></tr>
+      <tr><td>AMD</td><td class="up">周一+9~10%，盘中破 $610，市值首破 $1T</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Intel</td><td class="up">周一+12.17%（AUO Optronics 合作传闻）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Meta</td><td class="up">周一+11.34%，全周+11-13%（Muse AI agent）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Qualcomm</td><td class="up">周一+9%以上</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>ARM Holdings</td><td class="up">周一+10%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Warner Bros. Discovery</td><td class="up">周一+10.79%（Paramount Skydance 并购障碍清除）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Paramount Skydance</td><td class="down">周一-3.04%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block">
+    <h3>核心催化剂 Key Catalysts</h3>
+    <ul>
+      <li>9/16 美联储加息 25bp 至 3.75-4.00%，点阵图指引 2027 年前中值 4.1%，市场初读偏鸽 <span class="tag tag-confirmed">✓</span></li>
+      <li>特朗普-习近平元首会晤前瞻，据传多位AI巨头将出席，点燃周初AI交易情绪 <span class="tag tag-confirmed">✓</span></li>
+      <li>Meta「Muse」AI Agent 发布，带动通讯服务/科技板块全周最强表现 <span class="tag tag-confirmed">✓</span></li>
+      <li>原油价格连续多日回落 + 美债收益率走软，缓解通胀担忧，支撑估值扩张 <span class="tag tag-confirmed">✓</span></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>下周风险矩阵 Risk Matrix (Next Week)</h3>
+    <div class="callout risk-high" style="margin-bottom:8px;">
+      <b>高风险</b>：CME FedWatch 10月加息概率已升至约75%，若下周经济数据（PMI等）进一步强化加息预期，科技股高估值板块（尤其AI软件）存在获利了结压力。
+    </div>
+    <div class="callout risk-med" style="margin-bottom:8px;">
+      <b>中风险</b>：半导体板块在AMD破万亿市值后估值已计入大量乐观预期，需关注财报季前瞻指引是否兑现。
+    </div>
+    <div class="callout risk-low">
+      <b>观察项</b>：云端三巨头（MSFT/GOOGL/AMZN）及AI软件个股本周数据缺口较大，建议下周优先补齐 MacroTrends / 10-K 层面的资本开支指引数据。
+    </div>
+  </div>
+</section>
+
+<!-- ============ CAC 40 ============ -->
+<section id="cac40">
+  <div class="sec-header"><span class="idx">③</span><h2>CAC 40</h2><span class="en">防务航空 / 能源 / 奢侈品 / 银行保险 / 科技IT / 工业材料 / 医疗</span></div>
+
+  <div class="block">
+    <h3>宏观快照 Macro Snapshot</h3>
+    <p>CAC 40 本周终结了此前连续六周下跌（累计-7.46%）的罕见颓势，全周仅微涨 <b>+0.16%</b><span class="tag tag-confirmed">✓</span>，收于 8,077.80 点（9/25）。行情主线是"中东局势缓和预期 + 油价回落"与"AI股反弹"的组合，但银行股在周五的强势表现（Société Générale 领涨）才是周内亮点，而非美股式的全面科技驱动。欧元兑美元报 1.1396，周五+0.21% <span class="tag tag-confirmed">✓</span>。</p>
+    <div class="grid2">
+      <div class="metric-row"><span class="metric-label">CAC 40 周涨跌</span><span class="metric-val pill-up">+0.16% <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">9/25 收盘</span><span class="metric-val">8,077.80 <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">周内最高/最低</span><span class="metric-val">8,199.66 / 8,049.56 <span class="tag tag-confirmed">✓</span></span></div>
+      <div class="metric-row"><span class="metric-label">前六周累计跌幅</span><span class="metric-val down">-7.46% <span class="tag tag-confirmed">✓</span></span></div>
+    </div>
+  </div>
+
+  <div class="block">
+    <h3>周内日历叙事 Weekly Narrative</h3>
+    <ul>
+      <li><b>周一 9/21</b>：+0.92% 收 8,138.94，成交约30亿欧元。油价连续第四日下跌提振风险偏好；「AI概念股」领涨——Schneider Electric +3.2%、STMicroelectronics +2.9%、Legrand +2.25%（CAC40外 Soitec +9.8%、X-Fab +7.4%）<span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周二 9/22</b>：+0.20% 收 8,154.91，连续第二日收涨 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周三 9/23</b>：-0.39% 收 8,123.41。布伦特原油再度突破 $100/桶关口，中东不确定性重新计价拖累市场 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周四 9/24</b>：-0.52% 收 8,081.43 <span class="tag tag-confirmed">✓</span>。</li>
+      <li><b>周五 9/25</b>：-0.04% 收 8,077.80（全周仅此一日近乎持平），银行股逆势走强：Société Générale +3.49%（全周最佳表现，Deutsche Bank 维持买入评级、目标价上调至89欧元），Crédit Agricole +1.37%，BNP Paribas +0.88%；能源股承压——TotalEnergies -1.31%（全周最差），而高油耗类股如 Air France-KLM 反弹+2.05% <span class="tag tag-confirmed">✓</span>。</li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>板块表现（按固定 Watchlist）Sector Performance</h3>
+    <table>
+      <tr><th>板块</th><th>本周表现要点</th><th>诚实度</th></tr>
+      <tr><td>防务航空</td><td>Thales、Safran 本周具体涨跌幅未获可靠数据源确认，需下周补齐</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+      <tr><td>能源</td><td>TotalEnergies -1.31%（周五、全周最差表现），受油价冲高回落及中东局势缓和预期拖累</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>奢侈品</td><td>LVMH、Kering 本周具体涨跌幅未获可靠数据源确认（此前财报季对板块情绪偏负面）</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+      <tr><td>银行保险</td><td>周五强势反弹领跑全指数：Société Générale +3.49%、Crédit Agricole +1.37%、BNP Paribas +0.88%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>科技IT</td><td>周一AI概念股集体走强：Schneider Electric +3.2%、STMicroelectronics +2.9%、Legrand +2.25%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>工业材料</td><td>本周具体数据未获采集，建议下周补充 Saint-Gobain / ArcelorMittal 等标的</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+      <tr><td>医疗</td><td>Sanofi 本周具体涨跌幅未获可靠数据源确认</td><td><span class="tag tag-unconfirmed">—</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block">
+    <h3>涨跌总表 Individual Movers</h3>
+    <table>
+      <tr><th>标的</th><th>动态</th><th>诚实度</th></tr>
+      <tr><td>Société Générale</td><td class="up">全周最佳表现 +3.49%，Deutsche Bank 目标价上调至€89</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Crédit Agricole</td><td class="up">周五 +1.37%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>BNP Paribas</td><td class="up">周五 +0.88%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Air France-KLM</td><td class="up">周五 +2.05%（油价回落受益）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Schneider Electric</td><td class="up">周一 +3.2%（AI概念）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>STMicroelectronics</td><td class="up">周一 +2.9%（AI概念）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>Legrand</td><td class="up">周一 +2.25%（AI概念）</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+      <tr><td>TotalEnergies</td><td class="down">全周最差表现，周五 -1.31%</td><td><span class="tag tag-confirmed">✓</span></td></tr>
+    </table>
+  </div>
+
+  <div class="block">
+    <h3>核心催化剂 / 结构诊断 Catalysts &amp; Structural Diagnosis</h3>
+    <ul>
+      <li>六周连跌（-7.46%）后企稳，+0.16%的微弱周涨幅更多反映"止跌"而非"反转"，结构上仍偏脆弱 <span class="tag tag-confirmed">✓</span></li>
+      <li>银行股周五的集体走强（SocGen领跑）是本周最具信号意义的板块轮动，与美股AI驱动的反弹逻辑不同源 <span class="tag tag-confirmed">✓</span></li>
+      <li>油价路径（中东局势）仍是能源/航空板块的主要摆动因子：周三布伦特突破$100拖累大盘，周五缓和预期又提振航空股 <span class="tag tag-confirmed">✓</span></li>
+      <li>周一AI概念股（Schneider/STM/Legrand）跟随美股AI情绪联动上涨，显示CAC40对美股科技beta的敏感度 <span class="tag tag-confirmed">✓</span></li>
+      <li><b>数据源说明</b>：LBPAM晨报作为CAC40首选信息源本周未能通过公开检索访问，本节奢侈品/防务/医疗板块的细分数据存在缺口，已如实标注为"—"未确认，而非编造数字填充 <span class="tag tag-confirmed">✓</span></li>
+    </ul>
+  </div>
+
+  <div class="block">
+    <h3>下周风险矩阵 Risk Matrix (Next Week)</h3>
+    <div class="callout risk-high" style="margin-bottom:8px;">
+      <b>高风险</b>：中东局势（霍尔木兹海峡通行、伊朗-美国对话）反复直接牵动油价与能源/航空板块，事件驱动性强、双向波动风险高。
+    </div>
+    <div class="callout risk-med" style="margin-bottom:8px;">
+      <b>中风险</b>：六周连跌后的+0.16%反弹能否延续存疑，需观察银行股本周涨势是否有基本面（如欧央行政策预期）支撑，还是单纯技术性反弹。
+    </div>
+    <div class="callout risk-low">
+      <b>观察项</b>：奢侈品、防务、医疗三大板块本周数据缺口较大，下周应优先通过LBPAM晨报（如可访问）或法语财经媒体补齐 LVMH/Kering/Thales/Safran/Sanofi 的具体周度表现。
+    </div>
+  </div>
+</section>
+
+</div>
+
+<footer id="footer">
+  <div class="wrap">
+    <h4>数据源 Data Sources</h4>
+    <p><b>Crypto：</b>CoinGecko、CoinDesk、Coinbase、CryptoQuant（经BeInCrypto转引）、Farside Investors（ETF流数据）、SoSoValue、CME FedWatch、CryptoTimes、Benzinga、TechBullion、businesstoday.com</p>
+    <p><b>美股：</b>CNBC、Yahoo Finance、TheStreet、Washington Post、JPMorgan Weekly Market Recap、First Financial Trust；MacroTrends 本周未直接调用，历史收盘数据以上述财经媒体交叉验证为准</p>
+    <p><b>CAC 40：</b>Boursorama（法语，主要数据源）、BFM Bourse、abcbourse.com、tradingsat.com、zonebourse.com；<span class="tag tag-unconfirmed">—</span> LBPAM晨报本周经公开检索未能访问，已明确标注，相关缺口未用估算数字填补</p>
+
+    <div class="disclaimer">
+      本看板由AI基于公开网络检索信息自动生成，仅供个人信息整理与研究参考，不构成任何投资建议、要约或招揽。数据存在滞后、口径差异或抓取误差的可能，标注为 <span class="tag tag-est">估</span> 或 <span class="tag tag-unconfirmed">—</span> 的数据点尤其需要交叉核实后再使用。加密货币、股票及衍生品交易均存在重大风险，可能导致本金损失。过往表现不代表未来收益。请勿将本文档作为唯一决策依据。
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

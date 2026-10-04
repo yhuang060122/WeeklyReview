@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>周复盘看板 | 2026-09-14 至 2026-09-20</title>
+<style>
+  :root{
+    --bg:#0a0e14; --panel:#111823; --panel2:#0d1420; --border:#1e2a3a;
+    --text:#e6edf3; --sub:#8b98a9; --green:#26c281; --red:#ef4b4b; --orange:#f2a13c; --grey:#6b7686;
+    --accent:#4da3ff;
+  }
+  *{box-sizing:border-box}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;margin:0;padding:24px;line-height:1.55}
+  .wrap{max-width:980px;margin:0 auto}
+  .hdr{border-bottom:1px solid var(--border);padding-bottom:16px;margin-bottom:16px}
+  .hdr h1{font-size:22px;margin:0 0 6px}
+  .hdr .meta{color:var(--sub);font-size:13px}
+  .toc{color:var(--sub);font-size:12.5px;margin-top:10px}
+  .toc a{color:var(--accent);text-decoration:none;margin-right:14px}
+  .toc a:hover{text-decoration:underline}
+
+  .asset-block{padding-top:6px;margin-bottom:36px}
+  .asset-title{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+  .asset-title .dot{width:9px;height:9px;border-radius:50%}
+  .asset-title h2.main{font-size:19px;margin:0;color:var(--text)}
+  .asset-title .sub{color:var(--sub);font-size:12.5px}
+  .dot.crypto{background:#f2a13c}.dot.us{background:#4da3ff}.dot.cac{background:#26c281}
+
+  .tag{display:inline-block;padding:1px 7px;border-radius:4px;font-size:11px;margin-left:6px;font-weight:600}
+  .tag.ok{background:rgba(38,194,129,.15);color:var(--green)}
+  .tag.est{background:rgba(242,161,60,.15);color:var(--orange)}
+  .tag.un{background:rgba(107,118,134,.2);color:var(--grey)}
+  section{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin-bottom:16px}
+  section h3{font-size:15px;margin:0 0 12px;color:var(--accent);display:flex;align-items:center;gap:8px}
+  section h3::before{content:"";width:3px;height:14px;background:var(--accent);display:inline-block;border-radius:2px}
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px}
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:6px}
+  .card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px}
+  .card .sym{font-size:12px;color:var(--sub)}
+  .card .px{font-size:19px;font-weight:700;margin:4px 0}
+  .up{color:var(--green)} .down{color:var(--red)} .flat{color:var(--grey)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{text-align:left;color:var(--sub);font-weight:600;padding:6px 8px;border-bottom:1px solid var(--border);font-size:12px}
+  td{padding:7px 8px;border-bottom:1px solid rgba(255,255,255,.04)}
+  tr:last-child td{border-bottom:none}
+  .pos{color:var(--green)} .neg{color:var(--red)}
+  .cal{display:flex;flex-direction:column;gap:8px}
+  .cal-item{display:flex;gap:12px;padding:8px 10px;background:var(--panel2);border-radius:6px;border-left:3px solid var(--accent)}
+  .cal-item.risk{border-left-color:var(--orange)}
+  .cal-date{min-width:78px;color:var(--sub);font-size:12px;font-weight:600}
+  ul.bullets{margin:0;padding-left:18px}
+  ul.bullets li{margin-bottom:6px}
+  .risk-table td:nth-child(2){font-weight:600}
+  .lvl-high{color:var(--red)} .lvl-mid{color:var(--orange)} .lvl-low{color:var(--grey)}
+  .grp{font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:.03em;margin:14px 0 6px}
+  .grp:first-child{margin-top:0}
+  footer{color:var(--sub);font-size:11.5px;border-top:1px solid var(--border);padding-top:12px;margin-top:8px}
+  footer p{margin:4px 0}
+  .divider{height:1px;background:var(--border);margin:32px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdr">
+    <h1>周复盘看板 · Weekly Market Review</h1>
+    <div class="meta">复盘周期：2026-09-14 至 2026-09-20　|　生成基准：2026-09-20（周日）</div>
+    <div class="toc"><a href="#crypto">① Crypto</a><a href="#us">② 美股</a><a href="#cac">③ CAC 40</a></div>
+  </div>
+
+  <!-- ============ CRYPTO ============ -->
+  <div class="asset-block" id="crypto">
+    <div class="asset-title"><span class="dot crypto"></span><h2 class="main">① 加密资产 Crypto</h2><span class="sub">BTC / ETH / SOL / BNB</span></div>
+
+    <section>
+      <h3>宏观快照</h3>
+      <div class="grid4">
+        <div class="card"><div class="sym">BTC/USD</div><div class="px">~$81,000</div><div class="up">9/15低点~$75,000反弹 <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">ETH/USD</div><div class="px">~$2,640</div><div class="up">突破$2.6K，冲击$2.8K <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">SOL/USD</div><div class="px">$109.56</div><div class="up">周涨约11%，8月来最强单周 <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">BNB/USD</div><div class="px">~$724</div><div class="up">24h+2% <span class="tag ok">✓</span></div></div>
+      </div>
+      <table>
+        <tr><td style="color:var(--sub);width:170px">本周最大宏观事件</td><td>美联储9/16(周三)加息25bp至3.75%-4.00%，为2023年以来首次加息（非降息），投票一致通过</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">BTC周内走势</td><td>9/15一度跌至~$75,000低点，Fed宣布后SOPR等链上指标显示获利了结压力，随后两日内反弹至$81,000-$83,000区间，ETF资金重新回流</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">监管挫折</td><td>CLARITY法案（加密行业监管框架）9/12前后未通过参议院程序性投票（cloture），SOL/XRP等山寨币短期承压更明显（BTC被认为已"独立"于该监管叙事之外）</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">24h清算规模</td><td>Fed决议前后约$373M清算，规模低于9月初$368M峰值，杠杆结构较上期有所修复</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">同期美股联动</td><td>9/18美股收盘，BTC单日+5.85%至$80,977，显示加密资产对"加息落地=利空出尽"的解读与风险资产同步</td><td class="tag ok">✓</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>周内日历叙事</h3>
+      <div class="cal">
+        <div class="cal-item"><div class="cal-date">9/14（一）</div><div>BTC开盘$76,806，较周日低0.6%；ETH开盘$2,475.82，市场提前交易加息预期 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/15（二）</div><div>BTC跌至~$75,000一线低点，Fed决议前最后交易日 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item risk"><div class="cal-date">9/16（三）</div><div>美联储FOMC宣布加息25bp至3.75%-4.00%，鲍威尔继任者Kevin Warsh主持，为三年来首次加息 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/17（四）</div><div>加息落地后加密与美股同步反弹，BTC回升至$76,000+区间 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/18-20</div><div>BTC延续反弹至$81,000-$83,000区间测试；ETH突破$2,600冲击$2,800；SOL冲高至$109.56创近月最强单周表现；Solana Alpenglow升级定于9/28开始激活 <span class="tag ok">✓</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>板块表现</h3>
+      <table>
+        <thead><tr><th>板块/资产</th><th>周内表现</th><th>驱动因素</th><th>诚实度</th></tr></thead>
+        <tbody>
+          <tr><td>BTC（价值存储/主导资产）</td><td class="pos">$75K→$81K+反弹</td><td>加息落地后"利空出尽"交易，ETF资金回流，波动率较前期收窄</td><td class="tag ok">✓</td></tr>
+          <tr><td>ETH（智能合约层）</td><td class="pos">突破$2.6K</td><td>衍生品活跃度上升，鲸鱼参与度增强，跑赢同期BTC涨幅</td><td class="tag ok">✓</td></tr>
+          <tr><td>SOL（高性能L1）</td><td class="pos">周涨约11%，最强表现</td><td>先因CLARITY法案受挫跌至$96-97，后在Fed决议后强力反弹，逼近$110阻力位</td><td class="tag ok">✓</td></tr>
+          <tr><td>BNB（交易所生态代币）</td><td class="flat">相对温和</td><td>24h+2%，未见突出催化剂，跟随大盘节奏</td><td class="tag est">估</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>涨跌榜 / 总表</h3>
+      <table>
+        <thead><tr><th>代币</th><th>现价（9/20附近）</th><th>周内关键点位</th><th>诚实度</th></tr></thead>
+        <tbody>
+          <tr><td>BTC</td><td>~$81,000-$83,000</td><td>低点$75,000（9/15）→ 高点测试$83,000（9/20）</td><td class="tag ok">✓</td></tr>
+          <tr><td>ETH</td><td>~$2,640-$2,668</td><td>突破$2,600，目标看向$2,800</td><td class="tag ok">✓</td></tr>
+          <tr><td>SOL</td><td>$109.56</td><td>低点$96-97（CLARITY受挫）→ 高点$109.56，周涨约11%</td><td class="tag ok">✓</td></tr>
+          <tr><td>BNB</td><td>~$724-$727</td><td>24h+2%，波动相对有限</td><td class="tag ok">✓（价格）<span class="tag un">—（精确周涨幅）</span></td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>核心催化剂 / 结构诊断</h3>
+      <ul class="bullets">
+        <li><b>"加息落地=利空出尽"的经典交易模式</b>：市场此前已price-in加息预期（Fed hike odds一度高达85-87%），真正宣布后反而触发获利了结空头回补，BTC/ETH/SOL均在决议后48小时内强力反弹 <span class="tag ok">✓</span></li>
+        <li><b>监管叙事与宏观叙事分离</b>：CLARITY法案受挫主要冲击SOL/XRP等"待监管明确"的山寨币，而BTC因监管地位已相对清晰，走势更多由宏观（利率）驱动，二者短期出现脱钩 <span class="tag ok">✓</span></li>
+        <li><b>SOL机构化信号增多</b>：Galaxy等机构在SOL生态推出借贷金库(lending vaults)，SEC主席Atkins在监管立法受挫后仍公开表态支持"监管确定性"，为SOL中期叙事提供支撑 <span class="tag ok">✓</span></li>
+        <li><b>Fed路径仍有不确定性</b>：市场对12月是否进一步加息的定价约41%，说明本轮紧缩周期尚未形成一致预期，加密资产短期仍将随美债收益率（10年期已近5%）波动 <span class="tag ok">✓</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>下周风险矩阵</h3>
+      <table class="risk-table">
+        <thead><tr><th>风险事件</th><th>等级</th><th>潜在影响</th></tr></thead>
+        <tbody>
+          <tr><td>10年期美债收益率逼近/突破5%</td><td class="lvl-high">高</td><td>若收益率进一步走高，可能重新压制风险资产，包括加密</td></tr>
+          <tr><td>SOL能否站稳$105-110阻力位</td><td class="lvl-mid">中</td><td>决定短期是否延续反弹向$120-130目标，或回落测试$94-100支撑</td></tr>
+          <tr><td>CLARITY法案后续进展</td><td class="lvl-mid">中</td><td>若监管僵局延续，山寨币风险溢价可能持续存在</td></tr>
+          <tr><td>Solana Alpenglow升级（9/28）临近</td><td class="lvl-low">低-中</td><td>升级前可能出现"买预期"行情，需警惕落地后的获利了结</td></tr>
+          <tr><td>油价/中东局势反复</td><td class="lvl-mid">中</td><td>能源价格波动持续影响通胀预期，间接影响Fed政策路径与风险偏好</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ US EQUITIES ============ -->
+  <div class="asset-block" id="us">
+    <div class="asset-title"><span class="dot us"></span><h2 class="main">② 美股 US Equities</h2><span class="sub">宽基ETF / 半导体硬件 / 大型科技云 / AI软件数据</span></div>
+
+    <section>
+      <h3>宏观快照</h3>
+      <div class="grid3">
+        <div class="card"><div class="sym">S&P 500</div><div class="px">7,650.50</div><div class="down">周跌约-0.08%~-0.1%（近乎持平） <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">Nasdaq Composite</div><div class="px">26,522.54</div><div class="up">周涨约+0.72%（唯一上涨主要指数） <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">Dow Jones</div><div class="px">51,682.64</div><div class="down">周跌约-1.69%（表现最弱） <span class="tag ok">✓</span></div></div>
+      </div>
+      <table>
+        <tr><td style="color:var(--sub);width:170px">本周核心事件</td><td>美联储9/16加息25bp至3.75%-4.00%，为三年来首次；鲍威尔继任者Kevin Warsh首次主持FOMC</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">10年期美债收益率</td><td>一度触及/接近5.00%（9/19收于4.998%附近），周内一度突破5%关口，为该周期新高</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">VIX</td><td>14.81-14.88，周内下行约6.5%，显示"加息落地"后隐含波动率反而回落</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">Russell 2000（小盘股）</td><td>周跌约-1.50%，本周表现最差的主要指数，对利率上升最敏感</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">板块表现</td><td>标普500的11个板块中仅2个（医疗保健、科技）本周收涨，其余9个板块下跌</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">油价/黄金</td><td>WTI原油维持在$95以上高位（中东局势持续扰动）；黄金触及$4,380-4,418/盎司高位，避险需求上升</td><td class="tag ok">✓</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>周内日历叙事</h3>
+      <div class="cal">
+        <div class="cal-item risk"><div class="cal-date">9/16（三）</div><div>FOMC宣布加息25bp至3.75%-4.00%，会后SPX一度在Warsh讲话中跳水，尾盘收窄跌幅 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/17（四）</div><div>加息后首个完整交易日，纳指+0.39%，标普+0.11%，道指-0.13%，科技股领涨 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/18（五）</div><div>四重魔力日(quadruple witching)叠加加息消化期，指数收盘涨跌互现，纳指+0.39%收于全周高点，道指-0.18% <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">全周背景</div><div>AI估值泡沫争议重新升温，叠加10年期收益率逼近5%，是压制道指/小盘股、但未能阻止纳指/大盘科技股走强的核心结构性矛盾 <span class="tag ok">✓</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>板块表现</h3>
+      <div class="grp">宽基ETF</div>
+      <table><tbody>
+        <tr><td>标普500 / 纳指 / 道指</td><td class="flat">分化明显</td><td>纳指(+0.72%)领跑，道指(-1.69%)领跌，反映"大盘科技抗跌、周期与小盘承压"的结构</td><td class="tag ok">✓</td></tr>
+      </tbody></table>
+      <div class="grp">半导体硬件</div>
+      <table><tbody>
+        <tr><td>PHLX半导体指数(SOX)</td><td class="pos">周涨约+5.61%</td><td>周内一度触及历史新高区域(9/18约6,311)，NVDA/AVGO/TSM为权重核心，AI基建需求叙事延续，虽伴随"AI泡沫"争议但资金仍净流入</td><td class="tag ok">✓</td></tr>
+      </tbody></table>
+      <div class="grp">大型科技云</div>
+      <table><tbody>
+        <tr><td>MSFT/GOOGL/AMZN/META</td><td class="tag un">—</td><td>本周具体涨跌幅未获交叉验证的可信数据源，暂不填充；宏观层面纳指跑赢道指的核心贡献者被认为是大盘科技股</td><td class="tag un">—</td></tr>
+      </tbody></table>
+      <div class="grp">AI软件/数据</div>
+      <table><tbody>
+        <tr><td>PLTR/SNOW/CRWV等</td><td class="tag un">—</td><td>检索到的数据源时效性不足或口径冲突，未能交叉验证本周涨跌幅，暂不填充</td><td class="tag un">—</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h3>涨跌榜 / 个股总表</h3>
+      <table>
+        <thead><tr><th>标的</th><th>本周关键事件</th><th>方向</th><th>诚实度</th></tr></thead>
+        <tbody>
+          <tr><td>PHLX半导体指数</td><td>周内触及历史高位区域，创近两个月最强单周表现之一</td><td class="pos">周涨+5.61%</td><td class="tag ok">✓</td></tr>
+          <tr><td>Nasdaq Composite</td><td>唯一收涨的主要指数，科技股在FOMC后领跑反弹</td><td class="pos">周涨+0.72%</td><td class="tag ok">✓</td></tr>
+          <tr><td>Dow Jones / Russell 2000</td><td>利率敏感型板块（工业、小盘）本周受创最重</td><td class="neg">分别-1.69% / -1.50%</td><td class="tag ok">✓</td></tr>
+          <tr><td>BTC（对照）</td><td>作为风险资产情绪指标，9/18单日+5.85%，反映"加息落地"后的risk-on情绪外溢</td><td class="pos">单日+5.85%</td><td class="tag ok">✓</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h3>核心催化剂 / 结构诊断</h3>
+      <ul class="bullets">
+        <li><b>三年来首次加息，市场反应"利空出尽"</b>：尽管加息通常被视为紧缩信号，但由于市场已充分price-in（此前概率一度定价85-87%），决议落地后指数普遍企稳反弹，VIX不升反降，显示这是一次"预期兑现"而非"意外冲击" <span class="tag ok">✓</span></li>
+        <li><b>指数内部结构分化加剧</b>：纳指跑赢道指2.4个百分点、小盘股(Russell 2000)本周表现最差，说明本轮加息对利率敏感型/非科技板块的冲击明显大于AI核心资产，这是理解"指数表面平静、内部剧烈分化"的关键 <span class="tag ok">✓</span></li>
+        <li><b>AI估值争议尚未平息但资金未撤离</b>：半导体板块本周仍录得+5.61%强势周涨幅并触及历史高位区域，说明尽管"AI泡沫"讨论持续存在，实际资金流向仍偏向增配而非撤退，泡沫争议目前更多停留在舆论层面 <span class="tag est">估</span></li>
+        <li><b>10年期收益率逼近5%是最大潜在风险变量</b>：收益率若持续在5%上方运行，历史经验显示将逐步压制成长股估值倍数，本周纳指的相对强势可能面临考验 <span class="tag ok">✓</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>下周风险矩阵</h3>
+      <table class="risk-table">
+        <thead><tr><th>风险事件</th><th>等级</th><th>潜在影响</th></tr></thead>
+        <tbody>
+          <tr><td>10年期美债收益率能否守住5%关口</td><td class="lvl-high">高</td><td>若持续突破并企稳于5%上方，将系统性压制成长股/科技股估值</td></tr>
+          <tr><td>AI估值泡沫争议持续发酵</td><td class="lvl-mid">中</td><td>舆论层面的担忧若与实际资金流向共振，可能触发半导体板块获利了结</td></tr>
+          <tr><td>油价维持$95+高位</td><td class="lvl-mid">中</td><td>能源成本压力可能通过通胀预期渠道，制约Fed后续政策空间</td></tr>
+          <tr><td>小盘股/周期股持续跑输</td><td class="lvl-mid">中</td><td>若利率敏感板块持续走弱，可能预示更广泛的经济放缓担忧升温</td></tr>
+          <tr><td>Fed后续路径不确定性（12月加息定价仅41%）</td><td class="lvl-mid">中</td><td>市场对紧缩周期长度尚未形成一致预期，数据依赖型行情下波动率可能反复</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ============ CAC 40 ============ -->
+  <div class="asset-block" id="cac">
+    <div class="asset-title"><span class="dot cac"></span><h2 class="main">③ CAC 40</h2><span class="sub">防务航空 / 能源 / 奢侈品 / 银行保险 / 科技IT / 工业材料 / 医疗</span></div>
+
+    <section>
+      <h3>宏观快照</h3>
+      <div class="grid3">
+        <div class="card"><div class="sym">CAC 40</div><div class="px">8,065.02</div><div class="down">周跌-1.40%，连续第6周收跌 <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">法国10年期国债(OAT)</div><div class="px">4.58%</div><div class="down">2008年以来最高水平 <span class="tag ok">✓</span></div></div>
+        <div class="card"><div class="sym">OAT-Bund利差</div><div class="px">~100bp</div><div class="down">2012年以来最大利差 <span class="tag ok">✓</span></div></div>
+      </div>
+      <table>
+        <tr><td style="color:var(--sub);width:170px">本周走势</td><td>周一(-0.76%)→周二(-0.34%)→周三(+0.62%)→周四(+0.57%)→周五(-1.49%)，收于8,065.02点，全周-1.40%</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">核心驱动</td><td>本周全球三大央行密集决议（美联储加息、英央行、日央行均有政策动作），叠加法国国债利率飙升，是本周欧股承压的双重宏观背景</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">法国财政/政治风险</td><td>总理Lecornu周四(9/17)公布2027年预算大纲，提出约€540亿财政努力（削减开支为主），市场对其能否在国民议会通过存疑，直接推高OAT收益率与OAT-Bund利差</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">周五(9/18)个股表现</td><td>CAC40成分股中仅STMicroelectronics收涨(+2.39%至€43.46)，其余39只成分股全线下跌</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">指数权重结构变化</td><td>截至9/14，TotalEnergies与Schneider Electric并列指数最大权重股，LVMH已降至第6位（权重5.77%），奢侈品三巨头(LVMH/Hermès/Kering)合计权重已低于TotalEnergies单一权重，工业股主导前十大权重（10席中6席）</td><td class="tag ok">✓</td></tr>
+        <tr><td style="color:var(--sub)">LBPAM晨报</td><td>本机构首选的CAC40晨间数据源本次仍无法通过公开检索访问，本期未采用</td><td class="tag un">—</td></tr>
+      </table>
+    </section>
+
+    <section>
+      <h3>周内日历叙事</h3>
+      <div class="cal">
+        <div class="cal-item risk"><div class="cal-date">9/14（一）</div><div>CAC40 -0.76%，AI相关个股（如Schneider Electric）普遍走弱，叠加能源价格上升拖累大盘 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/15（二）</div><div>CAC40 -0.34%，L'Oréal(-0.78%)因跌幅小于LVMH(-2.64%)反超成为最大市值股 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item"><div class="cal-date">9/16-17（三-四）</div><div>连续两日反弹(+0.62%/+0.57%)，跟随美联储决议后的全球risk-on情绪 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item risk"><div class="cal-date">9/17（四）</div><div>总理Lecornu公布2027年预算框架，约€540亿财政努力，为周五OAT利率飙升埋下伏笔 <span class="tag ok">✓</span></div></div>
+        <div class="cal-item risk"><div class="cal-date">9/18（五）</div><div>CAC40 -1.49%，法国借贷利率飙升（OAT升至4.58%，OAT-Bund利差达100bp）+ 油价反弹，双重打压下几乎全线收跌 <span class="tag ok">✓</span></div></div>
+      </div>
+    </section>
+
+    <section>
+      <h3>板块表现</h3>
+      <div class="grp">防务航空</div>
+      <table><tbody>
+        <tr><td>Airbus / Safran / Thales</td><td class="tag un">—</td><td>本周具体涨跌幅未获交叉验证；结构上三者合计占指数权重超15%（Airbus第3、Safran第7），是判断指数走势不可忽视的板块</td><td class="tag un">—</td></tr>
+      </tbody></table>
+      <div class="grp">能源</div>
+      <table><tbody>
+        <tr><td>TotalEnergies</td><td class="tag un">—</td><td>已成为CAC40第一/第二大权重股（与Schneider Electric并列），本周具体涨跌未获确认，但作为指数最大权重，其表现对指数方向影响显著</td><td class="tag un">—</td></tr>
+      </tbody></table>
+      <div class="grp">奢侈品</div>
+      <table><tbody>
+        <tr><td>LVMH</td><td class="neg">9/15单日-2.64%</td><td>周内被L'Oréal反超市值榜首，权重已降至指数第6位，奢侈品板块整体影响力较此前明显下降</td><td class="tag ok">✓</td></tr>
+        <tr><td>Hermès / Kering</td><td class="tag un">—</td><td>本周具体涨跌未获确认；结构上权重已进一步边缘化（分别第13/27位）</td><td class="tag un">—</td></tr>
+      </tbody></table>
+      <div class="grp">银行保险</div>
+      <table><tbody>
+        <tr><td>BNP Paribas / Société Générale / AXA</td><td class="tag un">—</td><td>本周具体涨跌未获确认；法国主权风险溢价上升通常对本土银行股构成额外压力，需关注下周表现验证</td><td class="tag un">—</td></tr>
+      </tbody></table>
+      <div class="grp">科技IT</div>
+      <table><tbody>
+        <tr><td>STMicroelectronics</td><td class="pos">9/18单日+2.39%</td><td>周五全指数唯一收涨个股，逆势走强，可能受益于全球半导体板块本周强势（美股SOX同期+5.61%）</td><td class="tag ok">✓</td></tr>
+        <tr><td>Schneider Electric / Capgemini</td><td class="tag un">—</td><td>Schneider作为指数"AI概念股"权重居首，周一(9/14)AI相关股普跌背景下承压，具体幅度未获确认</td><td class="tag est">估</td></tr>
+      </tbody></table>
+      <div class="grp">工业材料 / 医疗</div>
+      <table><tbody>
+        <tr><td>Air Liquide / Sanofi / ArcelorMittal / EssilorLuxottica</td><td class="tag un">—</td><td>本周具体涨跌未获交叉验证</td><td class="tag un">—</td></tr>
+      </tbody></table>
+    </section>
+
+    <section>
+      <h3>涨跌榜 / 个股总表</h3>
+      <table>
+        <thead><tr><th>个股</th><th>周内关键点</th><th>方向</th><th>诚实度</th></tr></thead>
+        <tbody>
+          <tr><td>STMicroelectronics</td><td>9/18唯一收涨成分股，+2.39%至€43.46</td><td class="pos">逆势走强</td><td class="tag ok">✓</td></tr>
+          <tr><td>LVMH</td><td>9/15单日-2.64%，被L'Oréal反超市值榜首</td><td class="neg">承压</td><td class="tag ok">✓</td></tr>
+          <tr><td>L'Oréal</td><td>9/15单日-0.78%，跌幅小于LVMH因而反超</td><td class="neg">相对抗跌</td><td class="tag ok">✓</td></tr>
+        </tbody>
+      </table>
+      <p style="color:var(--sub);font-size:12px;margin-top:8px">说明：法国财经媒体本周报道更集中于指数层面复盘与国债利率飙升的宏观叙事，完整个股涨跌榜（palmarès）未能检索到本周（9/14-9/18）可信版本，从严处理，仅保留有明确日期与数值锚定的条目。</p>
+    </section>
+
+    <section>
+      <h3>核心催化剂 / 结构诊断</h3>
+      <ul class="bullets">
+        <li><b>法国主权风险溢价成为本周绝对主线</b>：OAT-Bund利差从月初约82-85bp扩大至周五约100bp（为2012年以来最大），10年期OAT收益率升至2008年来最高的4.58%，法国政治/财政风险已明显外溢至股市，压过了同期全球risk-on情绪 <span class="tag ok">✓</span></li>
+        <li><b>2027预算框架是下一阶段核心变量</b>：总理Lecornu提出的约€540亿财政努力方案需要在分裂的国民议会通过，历史上（Bayrou、此前Lecornu本人）类似方案屡次触发政府危机与主权利差扩大，法国国内政治的执行力而非目标本身才是市场真正定价的风险 <span class="tag ok">✓</span></li>
+        <li><b>指数结构已从"奢侈品驱动"转向"工业/能源驱动"</b>：LVMH跌至第6大权重、TotalEnergies与Schneider Electric成为并列最大权重，意味着CAC40对中国消费需求的敏感度在下降，但对能源价格与工业/AI资本开支周期的敏感度在上升——这是理解未来CAC40驱动逻辑的关键结构性变化 <span class="tag ok">✓</span></li>
+        <li><b>与美股AI硬件强势形成对照</b>：STMicroelectronics周五逆势收涨，与同期美股PHLX半导体指数+5.61%的强势形成呼应，说明尽管法国本土风险突出，全球半导体/AI硬件叙事仍能为个别标的提供支撑 <span class="tag ok">✓</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>下周风险矩阵</h3>
+      <table class="risk-table">
+        <thead><tr><th>风险事件</th><th>等级</th><th>潜在影响</th></tr></thead>
+        <tbody>
+          <tr><td>2027预算国民议会审议/不信任动议</td><td class="lvl-high">高</td><td>左翼(LFI)已表态将提交象征性不信任动议，若局势升级可能推动OAT-Bund利差进一步扩大</td></tr>
+          <tr><td>OAT-Bund利差能否企稳100bp下方</td><td class="lvl-high">高</td><td>若利差持续走阔，将直接压制银行/保险等对利率敏感的板块估值</td></tr>
+          <tr><td>标普/穆迪等评级机构后续表态</td><td class="lvl-mid">中</td><td>法国已被惠誉、标普下调评级，穆迪展望负面，若评级进一步恶化将放大融资成本压力</td></tr>
+          <tr><td>全球油价维持高位</td><td class="lvl-mid">中</td><td>持续影响TotalEnergies等能源权重股及整体通胀预期</td></tr>
+          <tr><td>奢侈品板块中国需求能见度</td><td class="lvl-low">低-中</td><td>权重下降后对指数整体影响趋弱，但仍是LVMH/Hermès/Kering个股层面的核心变量</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+
+  <footer>
+    <p><b>数据源（Crypto）：</b>Yahoo Finance个人理财版、24/7 Wall St.、Invezz、Blockonomi、CoinCentral、CryptoTimes（FOMC Live）、OpenPR/TokenWire、Coin-Turk News。</p>
+    <p><b>数据源（美股）：</b>TheStreet、Seeking Alpha、StreetSignal (Substack)、Rio Times、Vistapglobal、The Epoch Times、TradingView/TradingView数据面板（PHLX半导体指数）。</p>
+    <p><b>数据源（CAC40）：</b>Boursorama、ABC Bourse、Zonebourse、Infobae（EFE通讯社）、BFM Bourse/TradingSat、MNI Markets、AllNews.ch、Newsquawk。LBPAM晨报本期不可访问，未采用。</p>
+    <p><b>免责声明：</b>本看板仅为个人量化视角的市场结构梳理，不构成投资建议。部分板块/个股数据因数据源冲突或时效性不足已如实标注为"—"未确认，请以实时行情为准，自行验证后再做决策。</p>
+  </footer>
+</div>
+</body>
+</html>

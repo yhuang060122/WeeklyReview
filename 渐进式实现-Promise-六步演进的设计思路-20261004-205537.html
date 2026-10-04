@@ -1,0 +1,806 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="blueprint" data-mode="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Answer me with HTML 0.4.6">
+<title>渐进式实现 Promise：六步演进的设计思路</title>
+<style>
+html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0px;
+  --shadow: none;
+  --bw: 1.5px;
+  --head-font: var(--font-sans);
+  --bg: #f6f6f3;
+  --paper: #ffffff;
+  --ink: #16181d;
+  --ink-2: #4b5260;
+  --ink-3: #8b929e;
+  --line: #1d2026;
+  --line-2: #d6dae1;
+  --fill: #f3f5f8;
+  --accent: #1d5fbf;
+  --accent-bg: #e4ecf8;
+  --ok: #1d5fbf;
+  --ok-bg: #e4ecf8;
+  --err: #c62828;
+  --err-bg: #fbeaea;
+  --warn: #a8620a;
+  --warn-bg: #fdf3e2;
+  --head-bg: #16181d;
+  --head-fg: #ffffff;
+}
+html[data-theme="blueprint"][data-mode="dark"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="blueprint"][data-mode="auto"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+}
+
+html[data-theme="shadcn"], html[data-theme="shadcn"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 8px;
+  --shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --bw: 1px;
+  --head-font: var(--font-sans);
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --ink: #09090b;
+  --ink-2: #71717a;
+  --ink-3: #a1a1aa;
+  --line: #e4e4e7;
+  --line-2: #f0f0f2;
+  --fill: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --err: #dc2626;
+  --err-bg: #fef2f2;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --head-bg: #18181b;
+  --head-fg: #fafafa;
+}
+html[data-theme="shadcn"][data-mode="dark"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="shadcn"][data-mode="auto"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+}
+
+html[lang="ja"][data-theme][data-mode] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html[lang="ja"][data-theme="3b1b"][data-mode] {
+  --v-title-font: "CMU Serif", "Latin Modern Roman", "Iowan Old Style", "Palatino", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif JP", "Songti SC", serif;
+}
+
+/* Answer me with HTML base — 只引用主题变量，禁止写死颜色（主题 token 见 themes/index.js） */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, kbd { font-family: var(--font-mono); }
+
+/* ── 工具栏 ─────────────────────────────── */
+.am-toolbar {
+  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;
+}
+.am-btn {
+  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;
+}
+.am-btn:hover { border-color: var(--ink-3); }
+.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 页头 ───────────────────────────────── */
+.am-head { margin: 0 0 20px; padding-right: 260px; }
+.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+.am-sub { margin: 4px 0 0; color: var(--ink-2); }
+.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }
+.am-intro { margin-top: 12px; max-width: 80ch; }
+
+/* ── sheet 图纸板 ────────────────────────── */
+.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }
+.am-frame { position: relative; }
+.am-grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 20px; align-items: start;
+}
+.am-ruler { display: none; }
+html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
+html[data-theme="blueprint"] .am-frame::before {
+  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
+}
+html[data-theme="blueprint"] .am-ruler {
+  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);
+}
+.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }
+.am-ruler--top { top: 0; }
+.am-ruler--bottom { bottom: 0; }
+.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }
+.am-ruler--left { left: 0; }
+.am-ruler--right { right: 0; }
+.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }
+.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }
+
+/* ── 面板 ───────────────────────────────── */
+.am-panel {
+  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); min-width: 0; overflow: hidden;
+}
+.am-panel-head {
+  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;
+}
+.am-panel-id {
+  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;
+  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;
+}
+html[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }
+html[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }
+.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }
+.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }
+.am-panel-body { padding: 14px 16px 16px; }
+.am-panel-body > * + * { margin-top: 12px; }
+
+/* ── Markdown 正文 ───────────────────────── */
+.am-md > :first-child { margin-top: 0; }
+.am-md > :last-child { margin-bottom: 0; }
+.am-md p { margin: 0 0 8px; }
+.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }
+.am-md li + li { margin-top: 3px; }
+.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }
+.am-md a { color: var(--accent); }
+.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }
+.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }
+.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }
+.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.am-md th {
+  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;
+  padding: 6px 10px; border-bottom: 1px solid var(--line-2);
+}
+.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.am-md tbody tr:nth-child(even) td { background: var(--fill); }
+.am-table-wrap { overflow-x: auto; }
+.am-code {
+  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);
+  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── 状态徽章 ok / no / warn ──────────────── */
+.am-status { white-space: nowrap; font-weight: 500; }
+.am-status--ok { color: var(--ok); }
+.am-status--no { color: var(--err); }
+.am-status--warn { color: var(--warn); }
+.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }
+
+/* ── callout ─────────────────────────────── */
+.am-callout {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: var(--radius);
+}
+.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }
+.am-callout-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── kv 标题栏格 ─────────────────────────── */
+.am-kv {
+  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;
+  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);
+}
+.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }
+.am-kv-cell--wide { grid-column: 1 / -1; }
+.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }
+.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }
+html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ── timeline ────────────────────────────── */
+.am-timeline { list-style: none; margin: 0; padding: 0; }
+.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }
+.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }
+.am-timeline--h li::before {
+  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);
+}
+.am-timeline--h li:first-child::before { left: 50%; }
+.am-timeline--h li:last-child::before { right: 50%; }
+.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }
+.am-tl-dot {
+  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
+  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
+}
+.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
+.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }
+.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }
+.am-timeline--v li:last-child::before { display: none; }
+.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }
+.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }
+.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }
+.am-timeline--v .am-tl-text { margin-top: 2px; }
+
+/* ── annot 句子标注 ──────────────────────── */
+.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }
+.am-annot-scroll { overflow-x: auto; }
+.am-annot-line {
+  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);
+  padding-bottom: calc(var(--rows, 0) * 17px + 14px);
+}
+.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }
+.am-annot-line--wrap .am-seg { white-space: nowrap; }
+.am-seg { position: relative; }
+.am-seg::after {
+  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;
+  border: 1px solid var(--accent); border-top: 0;
+}
+.am-seg-n {
+  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);
+  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;
+}
+.am-seg--err { color: var(--err); }
+.am-seg--err::after { border-color: var(--err); }
+.am-seg--err .am-seg-n { color: var(--err); }
+.am-annot-caption { font-size: 12px; color: var(--ink-2); }
+
+/* ── limits 限值条 ───────────────────────── */
+.am-lim + .am-lim { margin-top: 14px; }
+.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }
+.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }
+.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }
+.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }
+.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }
+.am-lim.is-over .am-lim-val { color: var(--err); }
+.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }
+.am-lim-ticks span { position: absolute; transform: translateX(-50%); }
+.am-lim-ticks span:first-child { transform: none; }
+.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }
+
+/* ── tree 结构树 ─────────────────────────── */
+.am-tree { font-size: 13px; }
+.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }
+.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-root--solo { padding-bottom: 12px; }
+.am-tree-root--solo::after { display: none; }
+.am-tree-box {
+  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
+  border-radius: var(--radius); font-weight: 600;
+}
+.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
+.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
+.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
+.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
+.am-tree-col:first-child::before { left: 50%; }
+.am-tree-col:last-child::before { right: 50%; }
+.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }
+.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }
+.am-tree-list ul { margin-left: 16px; }
+.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }
+.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }
+.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }
+.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }
+.am-tree code { font: 12px var(--font-mono); }
+.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }
+.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }
+
+/* ── 图（flow / sequence）───────────────── */
+.am-diagram { margin: 0; overflow-x: auto; text-align: center; }
+.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }
+.am-diagram text { fill: var(--ink); font-size: 13px; }
+.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }
+.am-node--hi text { fill: var(--accent); font-weight: 600; }
+.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }
+.am-edge--dashed { stroke-dasharray: 5 4; }
+.am-arrow { fill: var(--ink-2); }
+.am-edge-label rect { fill: var(--paper); }
+.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }
+.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }
+.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
+.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
+
+/* ── doc 线性讲解 ────────────────────────── */
+.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
+.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+.am-toc { position: sticky; top: 24px; font-size: 13px; }
+.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }
+.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }
+
+/* ── 响应式与打印 ─────────────────────────── */
+@media (max-width: 1100px) {
+  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .am-grid > .am-panel { grid-column: auto !important; }
+  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 760px) {
+  .am-sheet, .am-doc { padding: 56px 12px 24px; }
+  .am-head { padding-right: 0; }
+  .am-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }
+  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }
+  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }
+  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .am-toc { position: static; }
+  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }
+  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }
+}
+.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }
+
+@media print {
+  .am-toolbar { display: none; }
+  body { background: var(--paper); }
+  .am-panel { break-inside: avoid; box-shadow: none; }
+}
+.am-panel--bare { border: 0; background: transparent; box-shadow: none; }
+.am-panel--bare > .am-panel-body { padding: 0; }
+.am-panel--bare .am-kv { background: var(--paper); }
+
+</style>
+</head>
+<body>
+<div class="am-toolbar">
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;主题：图纸&quot;,&quot;shadcn&quot;:&quot;主题：卡片&quot;}">主题：图纸</button>
+<button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;明暗：跟随系统&quot;,&quot;light&quot;:&quot;明暗：亮&quot;,&quot;dark&quot;:&quot;明暗：暗&quot;}">明暗：跟随系统</button>
+<button class="am-btn" type="button" data-am="copy" data-done="已复制 ✓">复制源稿</button>
+</div>
+<main class="am-sheet">
+<header class="am-head"><h1>渐进式实现 Promise：六步演进的设计思路</h1><p class="am-sub">从观察者模式到 thenable 状态传递，每一步只解决一个问题</p><div class="am-head-meta"><span><b>source</b>mp.weixin.qq.com/s/BWOJem_jPIP3bG_DnVVkiQ</span></div><div class="am-intro am-md"><div class="am-md"><p>导语：手写 Promise 的价值不在最终代码，而在演进思路。核心是 thenable 接口，把成功、失败、Promise 三种决议值统一成&quot;有 then 的对象&quot;，通知逻辑因此保持简单。</p>
+</div></div></header>
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 2">
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>演进全景：六步，一步一个问题</h2></header>
+<div class="am-panel-body"><ol class="am-timeline am-timeline--v"><li class="am-tl-item"><span class="am-tl-when">p0</span><span class="am-tl-dot"></span><span class="am-tl-title">观察者模式</span><span class="am-tl-text">回调数组存观察者，resolve 时逐个通知</span></li><li class="am-tl-item"><span class="am-tl-when">p1</span><span class="am-tl-dot"></span><span class="am-tl-title">链式调用</span><span class="am-tl-text">回调返回值决议新 Promise</span></li><li class="am-tl-item am-tl-item--hi"><span class="am-tl-when">p2</span><span class="am-tl-dot"></span><span class="am-tl-title">状态传递</span><span class="am-tl-text">鸭子类型判断，thenable 统一决议值</span></li><li class="am-tl-item"><span class="am-tl-when">p3</span><span class="am-tl-dot"></span><span class="am-tl-title">失败状态</span><span class="am-tl-text">wrapToRejected 包装，二维回调数组</span></li><li class="am-tl-item"><span class="am-tl-when">p4</span><span class="am-tl-dot"></span><span class="am-tl-title">异常处理</span><span class="am-tl-text">捕获两处异常，新增 catch 方法</span></li><li class="am-tl-item"><span class="am-tl-when">p5</span><span class="am-tl-dot"></span><span class="am-tl-title">私有封装</span><span class="am-tl-text">WeakMap 隐藏内部状态，无内存泄漏</span></li><li class="am-tl-item"><span class="am-tl-when">p6</span><span class="am-tl-dot"></span><span class="am-tl-title">调用顺序</span><span class="am-tl-text">setTimeout 入队延迟，保证执行顺序</span></li></ol></div>
+</section>
+<section class="am-panel" id="panel-B">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>p0 观察者模式：最小可用版</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 654 401" width="654" height="401" role="img" aria-label="流程图：创建实例、pending = 回调数组、exector 执行、resolve 触发、pending 还在?、存 value，逐个通知观察者、已决议，忽略、then 调用" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge am-edge--dashed" d="M85.5,49 L85.5,60.5 Q85.5,72 85.5,88.8 L85.5,105.5" marker-end="url(#am1-arrow)"/></g><g data-step="1"><path class="am-edge am-edge--dashed" d="M250.2,49 L250.2,60.5 Q250.2,72 250.2,88.8 L250.2,105.5" marker-end="url(#am1-arrow)"/></g><g data-step="2"><path class="am-edge am-edge--dashed" d="M250.2,140.5 L250.2,161.8 Q250.2,183 250.2,199 L250.2,215" marker-end="url(#am1-arrow)"/></g><g data-step="3"><path class="am-edge am-edge--dashed" d="M222.8,261.9 L193.1,282.5 Q163.4,303 163.4,319 L163.4,335" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="152.7" y="294" width="21.5" height="18" rx="3"/><text x="163.4" y="303" text-anchor="middle" dominant-baseline="central">是</text></g></g><g data-step="4"><path class="am-edge am-edge--dashed" d="M277.6,261.9 L307.3,282.5 Q337,303 337,323.3 L337,343.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="326.3" y="294" width="21.5" height="18" rx="3"/><text x="337" y="303" text-anchor="middle" dominant-baseline="central">否</text></g></g><g data-step="5"><path class="am-edge am-edge--dashed" d="M500,49 L500,60.5 Q500,72 500,83.5 L500,95" marker-end="url(#am1-arrow)"/></g><g data-step="6"><path class="am-edge am-edge--dashed" d="M521.7,140.1 L548.8,161.6 Q576,183 576,204.3 L576,225.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="553.8" y="174" width="44.5" height="18" rx="3"/><text x="576" y="183" text-anchor="middle" dominant-baseline="central">未决议</text></g></g><g data-step="7"><path class="am-edge am-edge--dashed" d="M478.3,140.1 L451.2,161.6 Q424,183 424,204.3 L424,225.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="401.7" y="174" width="44.5" height="18" rx="3"/><text x="424" y="183" text-anchor="middle" dominant-baseline="central">已决议</text></g></g></g><g><g class="am-node am-node--round" data-key="创建实例" data-step="0"><rect class="am-node-shape" x="39.5" y="14" width="92" height="35" rx="17.5"/><text x="85.5" y="31.5" text-anchor="middle" dominant-baseline="central">创建实例</text></g><g class="am-node am-node--rect" data-key="pending = 回调数组" data-step="0"><rect class="am-node-shape" x="14" y="105.5" width="142.9" height="35" rx="3"/><text x="85.5" y="123" text-anchor="middle" dominant-baseline="central">pending = 回调数组</text></g><g class="am-node am-node--rect" data-key="exector 执行" data-step="1"><rect class="am-node-shape" x="198.9" y="14" width="102.6" height="35" rx="3"/><text x="250.2" y="31.5" text-anchor="middle" dominant-baseline="central">exector 执行</text></g><g class="am-node am-node--round" data-key="resolve 触发" data-step="1"><rect class="am-node-shape" x="192.9" y="105.5" width="114.6" height="35" rx="17.5"/><text x="250.2" y="123" text-anchor="middle" dominant-baseline="central">resolve 触发</text></g><g class="am-node am-node--diamond" data-key="pending 还在?" data-step="2"><polygon class="am-node-shape" points="250.2,215 335,243 250.2,271 165.5,243"/><text x="250.2" y="243" text-anchor="middle" dominant-baseline="central">pending 还在?</text></g><g class="am-node am-node--rect" data-key="存 value，逐个通知观察者" data-step="3"><rect class="am-node-shape" x="78.8" y="335" width="169.2" height="52" rx="3"/><text x="163.4" y="352.5" text-anchor="middle" dominant-baseline="central">存 value，逐个通知观察</text><text x="163.4" y="369.5" text-anchor="middle" dominant-baseline="central">者</text></g><g class="am-node am-node--rect" data-key="已决议，忽略" data-step="4"><rect class="am-node-shape" x="284" y="343.5" width="106" height="35" rx="3"/><text x="337" y="361" text-anchor="middle" dominant-baseline="central">已决议，忽略</text></g><g class="am-node am-node--rect" data-key="then 调用" data-step="5"><rect class="am-node-shape" x="458.1" y="14" width="83.9" height="35" rx="3"/><text x="500" y="31.5" text-anchor="middle" dominant-baseline="central">then 调用</text></g><g class="am-node am-node--diamond" data-key="已决议?" data-step="5"><polygon class="am-node-shape" points="500,95 555.7,123 500,151 444.3,123"/><text x="500" y="123" text-anchor="middle" dominant-baseline="central">已决议?</text></g><g class="am-node am-node--rect" data-key="push 进数组等待" data-step="6"><rect class="am-node-shape" x="513" y="225.5" width="126" height="35" rx="3"/><text x="576" y="243" text-anchor="middle" dominant-baseline="central">push 进数组等待</text></g><g class="am-node am-node--rect" data-key="立即执行回调" data-step="7"><rect class="am-node-shape" x="371" y="225.5" width="106" height="35" rx="3"/><text x="424" y="243" text-anchor="middle" dominant-baseline="central">立即执行回调</text></g></g></svg></figure>
+<pre class="am-code"><code data-lang="js">function Promise(exector) {
+  this.pending = [];        // 观察者数组
+  this.value = undefined;
+  const resolve = value =&gt; {
+    if (this.pending) {
+      this.value = value;
+      for (const onFulfilled of this.pending) {
+        onFulfilled(this.value);   // 通知观察者
+      }
+      this.pending = undefined;
+    }
+  };
+  exector(resolve);
+}</code></pre></div>
+</section>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>p1 链式调用：返回值决议新 Promise</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 284 750" width="284" height="750" role="img" aria-label="流程图：prev 调用 then、new Promise、包装 onSpreadFulfilled、prev 已决议?、push 进 prev.pending、立即执行、prev 决议后触发、执行 onFulfilled" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge am-edge--dashed" d="M122.7,49 L122.7,60.5 Q122.7,72 122.7,83.5 L122.7,95" marker-end="url(#am2-arrow)"/></g><g data-step="1"><path class="am-edge am-edge--dashed" d="M122.7,130 L122.7,141.5 Q122.7,153 122.7,164.5 L122.7,176" marker-end="url(#am2-arrow)"/></g><g data-step="2"><path class="am-edge am-edge--dashed" d="M122.7,211 L122.7,222.5 Q122.7,234 122.7,245.5 L122.7,257" marker-end="url(#am2-arrow)"/></g><g data-step="3"><path class="am-edge am-edge--dashed" d="M145.5,304.9 L168.5,324.9 Q191.5,345 191.5,361 L191.5,377" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="169.2" y="336" width="44.5" height="18" rx="3"/><text x="191.5" y="345" text-anchor="middle" dominant-baseline="central">未决议</text></g></g><g data-step="4"><path class="am-edge am-edge--dashed" d="M100,304.9 L77,324.9 Q54,345 54,369.8 Q54,394.5 54,414.8 Q54,435 54,446.5 L54,458" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="31.8" y="385.5" width="44.5" height="18" rx="3"/><text x="54" y="394.5" text-anchor="middle" dominant-baseline="central">已决议</text></g></g><g data-step="5"><path class="am-edge am-edge--dashed" d="M191.5,412 L191.5,423.5 Q191.5,435 191.5,446.5 L191.5,458" marker-end="url(#am2-arrow)"/></g><g data-step="6"><path class="am-edge am-edge--dashed" d="M54,493 L54,504.5 Q54,516 73.5,527.5 L93,539" marker-end="url(#am2-arrow)"/></g><g data-step="7"><path class="am-edge am-edge--dashed" d="M191.5,493 L191.5,504.5 Q191.5,516 171.9,527.5 L152.4,539" marker-end="url(#am2-arrow)"/></g><g data-step="8"><path class="am-edge am-edge--dashed" d="M122.7,574 L122.7,585.5 Q122.7,597 122.7,608.5 L122.7,620" marker-end="url(#am2-arrow)"/></g><g data-step="9"><path class="am-edge am-edge--dashed" d="M122.7,655 L122.7,666.5 Q122.7,678 122.7,689.5 L122.7,701" marker-end="url(#am2-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="prev 调用 then" data-step="0"><rect class="am-node-shape" x="65.8" y="14" width="113.8" height="35" rx="3"/><text x="122.7" y="31.5" text-anchor="middle" dominant-baseline="central">prev 调用 then</text></g><g class="am-node am-node--rect" data-key="new Promise" data-step="0"><rect class="am-node-shape" x="68.8" y="95" width="107.8" height="35" rx="3"/><text x="122.7" y="112.5" text-anchor="middle" dominant-baseline="central">new Promise</text></g><g class="am-node am-node--rect" data-key="包装 onSpreadFulfilled" data-step="1"><rect class="am-node-shape" x="39.7" y="176" width="166.1" height="35" rx="3"/><text x="122.7" y="193.5" text-anchor="middle" dominant-baseline="central">包装 onSpreadFulfilled</text></g><g class="am-node am-node--diamond" data-key="prev 已决议?" data-step="2"><polygon class="am-node-shape" points="122.7,257 200.9,285 122.7,313 44.6,285"/><text x="122.7" y="285" text-anchor="middle" dominant-baseline="central">prev 已决议?</text></g><g class="am-node am-node--rect" data-key="push 进 prev.pending" data-step="3"><rect class="am-node-shape" x="113.5" y="377" width="155.9" height="35" rx="3"/><text x="191.5" y="394.5" text-anchor="middle" dominant-baseline="central">push 进 prev.pending</text></g><g class="am-node am-node--rect" data-key="立即执行" data-step="4"><rect class="am-node-shape" x="14" y="458" width="80" height="35" rx="3"/><text x="54" y="475.5" text-anchor="middle" dominant-baseline="central">立即执行</text></g><g class="am-node am-node--rect" data-key="prev 决议后触发" data-step="5"><rect class="am-node-shape" x="130" y="458" width="122.9" height="35" rx="3"/><text x="191.5" y="475.5" text-anchor="middle" dominant-baseline="central">prev 决议后触发</text></g><g class="am-node am-node--rect" data-key="执行 onFulfilled" data-step="6"><rect class="am-node-shape" x="60.8" y="539" width="123.9" height="35" rx="3"/><text x="122.7" y="556.5" text-anchor="middle" dominant-baseline="central">执行 onFulfilled</text></g><g class="am-node am-node--rect" data-key="resolve 返回值" data-step="8"><rect class="am-node-shape" x="64.9" y="620" width="115.6" height="35" rx="3"/><text x="122.7" y="637.5" text-anchor="middle" dominant-baseline="central">resolve 返回值</text></g><g class="am-node am-node--rect" data-key="新 Promise 决议" data-step="9"><rect class="am-node-shape" x="60.2" y="701" width="125" height="35" rx="3"/><text x="122.7" y="718.5" text-anchor="middle" dominant-baseline="central">新 Promise 决议</text></g></g></svg></figure>
+<pre class="am-code"><code data-lang="js">const onSpreadFulfilled = function (value) {
+  resolve(onFulfilled(value));  // 用返回值决议新 Promise
+};</code></pre></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>p2-p3 状态传递：thenable 统一决议值</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="js">function isPromise(value) {
+  return value &amp;&amp; typeof value.then === &#39;function&#39;;  // 鸭子类型
+}
+function wrapToThenable(value) {
+  if (isPromise(value)) return value;   // Promise 原样返回
+  return { then: onFulfilled =&gt; wrapToThenable(onFulfilled(value)) };
+}
+function wrapToRejected(value) {
+  return { then: (_, onRejected) =&gt; wrapToThenable(onRejected(value)) };
+}</code></pre>
+<div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>决议值</th>
+<th>包装结果</th>
+<th>then 的行为</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>普通值</td>
+<td>wrapToThenable 包装</td>
+<td>立即调用 onFulfilled</td>
+</tr>
+<tr>
+<td>已决议 Promise</td>
+<td>原样返回</td>
+<td>立即执行回调</td>
+</tr>
+<tr>
+<td>未决议 Promise</td>
+<td>原样返回</td>
+<td>注册回调，等它决议</td>
+</tr>
+<tr>
+<td>reject 的失败值</td>
+<td>wrapToRejected 包装</td>
+<td>只调用 onRejected</td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--ok" role="note"><div class="am-callout-title">关键设计</div><div class="am-callout-body am-md"><p>三种决议值都变成&quot;有 then 的对象&quot;，通知逻辑不需要分支。value 是未决议的 Promise 时，通知责任转移到它身上，这就是&quot;通知转移&quot;。</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-E">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>p4 异常处理：两处捕获 + catch</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 513 345" width="513" height="345" role="img" aria-label="流程图：异常来源、哪里抛出?、try/catch，转失败、onFulfilled 被包裹、onRejected 被包裹、异常继续传播" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge am-edge--dashed" d="M257.5,49 L257.5,60.5 Q257.5,72 257.5,83.5 L257.5,95" marker-end="url(#am3-arrow)"/></g><g data-step="1"><path class="am-edge am-edge--dashed" d="M293.6,135.6 L361.8,159.3 Q430,183 430,199 L430,215" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="397.8" y="174" width="64.5" height="18" rx="3"/><text x="430" y="183" text-anchor="middle" dominant-baseline="central">exector 内</text></g></g><g data-step="2"><path class="am-edge am-edge--dashed" d="M257.5,151 L257.5,167 Q257.5,183 257.5,199 L257.5,215" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="215.8" y="174" width="83.4" height="18" rx="3"/><text x="257.5" y="183" text-anchor="middle" dominant-baseline="central">onFulfilled 内</text></g></g><g data-step="3"><path class="am-edge am-edge--dashed" d="M221.2,135.5 L152.4,159.2 Q83.5,183 83.5,199 L83.5,215" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="40.9" y="174" width="85.2" height="18" rx="3"/><text x="83.5" y="183" text-anchor="middle" dominant-baseline="central">onRejected 内</text></g></g><g data-step="4"><path class="am-edge am-edge--dashed" d="M257.5,250 L257.5,261.5 Q257.5,273 232.8,284.5 L208.1,296" marker-end="url(#am3-arrow)"/></g><g data-step="5"><path class="am-edge am-edge--dashed" d="M83.5,250 L83.5,261.5 Q83.5,273 108.2,284.5 L132.9,296" marker-end="url(#am3-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="异常来源" data-step="0"><rect class="am-node-shape" x="217.5" y="14" width="80" height="35" rx="3"/><text x="257.5" y="31.5" text-anchor="middle" dominant-baseline="central">异常来源</text></g><g class="am-node am-node--diamond" data-key="哪里抛出?" data-step="0"><polygon class="am-node-shape" points="257.5,95 322.9,123 257.5,151 192,123"/><text x="257.5" y="123" text-anchor="middle" dominant-baseline="central">哪里抛出?</text></g><g class="am-node am-node--rect" data-key="try/catch，转失败" data-step="1"><rect class="am-node-shape" x="362" y="215" width="136.2" height="35" rx="3"/><text x="430" y="232.5" text-anchor="middle" dominant-baseline="central">try/catch，转失败</text></g><g class="am-node am-node--rect" data-key="onFulfilled 被包裹" data-step="2"><rect class="am-node-shape" x="189" y="215" width="136.9" height="35" rx="3"/><text x="257.5" y="232.5" text-anchor="middle" dominant-baseline="central">onFulfilled 被包裹</text></g><g class="am-node am-node--rect" data-key="onRejected 被包裹" data-step="3"><rect class="am-node-shape" x="14" y="215" width="139" height="35" rx="3"/><text x="83.5" y="232.5" text-anchor="middle" dominant-baseline="central">onRejected 被包裹</text></g><g class="am-node am-node--rect" data-key="异常继续传播" data-step="4"><rect class="am-node-shape" x="117.5" y="296" width="106" height="35" rx="3"/><text x="170.5" y="313.5" text-anchor="middle" dominant-baseline="central">异常继续传播</text></g></g></svg></figure>
+<pre class="am-code"><code data-lang="js">function returnWhenError(onError) {
+  return fun =&gt; (...args) =&gt; {
+    let result;
+    try {
+      result = fun(...args);
+    } catch (e) {
+      result = onError(e);      // 异常转为失败值
+    }
+    return result;
+  };
+}
+Promise.prototype.catch = function (onRejected) {
+  return Promise.prototype.then.call(this, undefined, onRejected);
+};</code></pre></div>
+</section>
+<section class="am-panel" id="panel-F">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>p5-p6 优化：WeakMap 封装与顺序调度</h2></header>
+<div class="am-panel-body"><dl class="am-kv" style="--kv-cols: 2"><div class="am-kv-cell"><dt>WeakMap 封装</dt><dd>实例作 key，内部数据作 value</dd></div><div class="am-kv-cell"><dt>外部读写</dt><dd>不可见，更安全</dd></div><div class="am-kv-cell"><dt>垃圾回收</dt><dd>实例回收，数据同步消失</dd></div><div class="am-kv-cell"><dt>同步决议问题</dt><dd>回调抢在主流程前执行</dd></div><div class="am-kv-cell"><dt>enqueue 方案</dt><dd>setTimeout(cb, 1) 延迟通知</dd></div><div class="am-kv-cell"><dt>最终效果</dt><dd>主流程优先，回调按序执行</dd></div></dl>
+<pre class="am-code"><code data-lang="js">const refMap = new WeakMap();
+function Promise(exector) {
+  refMap.set(this, { pending: [], value: undefined });
+  // ...
+}
+function enqueue(callback) {
+  setTimeout(callback, 1);   // 延迟执行，保证顺序
+}</code></pre></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-G" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">G</span><h2>调用顺序修正：入队前后的对比</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="js">const p = new Promise(resolve =&gt; resolve(1));  // 同步决议
+p.then(res =&gt; { console.log(&#39;res1:&#39;, res); return res + 1; })
+ .then(res =&gt; console.log(&#39;res2:&#39;, res));
+p.then(res =&gt; console.log(&#39;res3:&#39;, res));
+console.log(&#39;Hi!&#39;);</code></pre>
+<div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>次序</th>
+<th>修正前（同步执行）</th>
+<th>修正后（入队延迟）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td><span class="am-status am-status--no"><span class="am-status-icon" aria-hidden="true">✗</span>res1: 1</span></td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>Hi!</span></td>
+</tr>
+<tr>
+<td>2</td>
+<td><span class="am-status am-status--no"><span class="am-status-icon" aria-hidden="true">✗</span>res2: 2</span></td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>res1: 1</span></td>
+</tr>
+<tr>
+<td>3</td>
+<td><span class="am-status am-status--no"><span class="am-status-icon" aria-hidden="true">✗</span>res3: 1</span></td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>res3: 1</span></td>
+</tr>
+<tr>
+<td>4</td>
+<td><span class="am-status am-status--no"><span class="am-status-icon" aria-hidden="true">✗</span>Hi!</span></td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>res2: 2</span></td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">核心收获</div><div class="am-callout-body am-md"><p>手写结果不是目的，演进思路才是要吸收的东西。观察者模式是骨架，thenable 接口是灵魂，异常与调度让实现更健壮。</p>
+</div></div></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.6 · 2026-10-04 20:55</footer>
+<textarea id="am-source" hidden readonly aria-hidden="true">---
+title: 渐进式实现 Promise：六步演进的设计思路
+subtitle: 从观察者模式到 thenable 状态传递，每一步只解决一个问题
+lang: zh
+template: sheet
+cols: 2
+theme: blueprint
+source: mp.weixin.qq.com/s/BWOJem_jPIP3bG_DnVVkiQ
+---
+
+导语：手写 Promise 的价值不在最终代码，而在演进思路。核心是 thenable 接口，把成功、失败、Promise 三种决议值统一成&quot;有 then 的对象&quot;，通知逻辑因此保持简单。
+
+## A 演进全景：六步，一步一个问题 {span=2}
+
+```timeline
+p0 | 观察者模式 | 回调数组存观察者，resolve 时逐个通知
+p1 | 链式调用 | 回调返回值决议新 Promise
+*p2 | 状态传递 | 鸭子类型判断，thenable 统一决议值
+p3 | 失败状态 | wrapToRejected 包装，二维回调数组
+p4 | 异常处理 | 捕获两处异常，新增 catch 方法
+p5 | 私有封装 | WeakMap 隐藏内部状态，无内存泄漏
+p6 | 调用顺序 | setTimeout 入队延迟，保证执行顺序
+```
+
+## B p0 观察者模式：最小可用版
+
+```flow [TB]
+(创建实例) --&gt; [pending = 回调数组]
+[exector 执行] --&gt; (resolve 触发)
+(resolve 触发) --&gt; {pending 还在?}
+{pending 还在?} --&gt; [存 value，逐个通知观察者]: 是
+{pending 还在?} --&gt; [已决议，忽略]: 否
+[then 调用] --&gt; {已决议?}
+{已决议?} --&gt; [push 进数组等待]: 未决议
+{已决议?} --&gt; [立即执行回调]: 已决议
+```
+
+```js
+function Promise(exector) {
+  this.pending = [];        // 观察者数组
+  this.value = undefined;
+  const resolve = value =&gt; {
+    if (this.pending) {
+      this.value = value;
+      for (const onFulfilled of this.pending) {
+        onFulfilled(this.value);   // 通知观察者
+      }
+      this.pending = undefined;
+    }
+  };
+  exector(resolve);
+}
+```
+
+## C p1 链式调用：返回值决议新 Promise
+
+```flow [TB]
+[prev 调用 then] --&gt; [new Promise]
+[new Promise] --&gt; [包装 onSpreadFulfilled]
+[包装 onSpreadFulfilled] --&gt; {prev 已决议?}
+{prev 已决议?} --&gt; [push 进 prev.pending]: 未决议
+{prev 已决议?} --&gt; [立即执行]: 已决议
+[push 进 prev.pending] --&gt; [prev 决议后触发]
+[立即执行] --&gt; [执行 onFulfilled]
+[prev 决议后触发] --&gt; [执行 onFulfilled]
+[执行 onFulfilled] --&gt; [resolve 返回值]
+[resolve 返回值] --&gt; [新 Promise 决议]
+```
+
+```js
+const onSpreadFulfilled = function (value) {
+  resolve(onFulfilled(value));  // 用返回值决议新 Promise
+};
+```
+
+## D p2-p3 状态传递：thenable 统一决议值 {span=2}
+
+```js
+function isPromise(value) {
+  return value &amp;&amp; typeof value.then === &#39;function&#39;;  // 鸭子类型
+}
+function wrapToThenable(value) {
+  if (isPromise(value)) return value;   // Promise 原样返回
+  return { then: onFulfilled =&gt; wrapToThenable(onFulfilled(value)) };
+}
+function wrapToRejected(value) {
+  return { then: (_, onRejected) =&gt; wrapToThenable(onRejected(value)) };
+}
+```
+
+| 决议值 | 包装结果 | then 的行为 |
+|---|---|---|
+| 普通值 | wrapToThenable 包装 | 立即调用 onFulfilled |
+| 已决议 Promise | 原样返回 | 立即执行回调 |
+| 未决议 Promise | 原样返回 | 注册回调，等它决议 |
+| reject 的失败值 | wrapToRejected 包装 | 只调用 onRejected |
+
+```callout ok 关键设计
+三种决议值都变成&quot;有 then 的对象&quot;，通知逻辑不需要分支。value 是未决议的 Promise 时，通知责任转移到它身上，这就是&quot;通知转移&quot;。
+```
+
+## E p4 异常处理：两处捕获 + catch
+
+```flow [TB]
+[异常来源] --&gt; {哪里抛出?}
+{哪里抛出?} --&gt; [try/catch，转失败]: exector 内
+{哪里抛出?} --&gt; [onFulfilled 被包裹]: onFulfilled 内
+{哪里抛出?} --&gt; [onRejected 被包裹]: onRejected 内
+[onFulfilled 被包裹] --&gt; [异常继续传播]
+[onRejected 被包裹] --&gt; [异常继续传播]
+```
+
+```js
+function returnWhenError(onError) {
+  return fun =&gt; (...args) =&gt; {
+    let result;
+    try {
+      result = fun(...args);
+    } catch (e) {
+      result = onError(e);      // 异常转为失败值
+    }
+    return result;
+  };
+}
+Promise.prototype.catch = function (onRejected) {
+  return Promise.prototype.then.call(this, undefined, onRejected);
+};
+```
+
+## F p5-p6 优化：WeakMap 封装与顺序调度
+
+```kv
+WeakMap 封装: 实例作 key，内部数据作 value
+外部读写: 不可见，更安全
+垃圾回收: 实例回收，数据同步消失
+同步决议问题: 回调抢在主流程前执行
+enqueue 方案: setTimeout(cb, 1) 延迟通知
+最终效果: 主流程优先，回调按序执行
+```
+
+```js
+const refMap = new WeakMap();
+function Promise(exector) {
+  refMap.set(this, { pending: [], value: undefined });
+  // ...
+}
+function enqueue(callback) {
+  setTimeout(callback, 1);   // 延迟执行，保证顺序
+}
+```
+
+## G 调用顺序修正：入队前后的对比 {span=2}
+
+```js
+const p = new Promise(resolve =&gt; resolve(1));  // 同步决议
+p.then(res =&gt; { console.log(&#39;res1:&#39;, res); return res + 1; })
+ .then(res =&gt; console.log(&#39;res2:&#39;, res));
+p.then(res =&gt; console.log(&#39;res3:&#39;, res));
+console.log(&#39;Hi!&#39;);
+```
+
+| 次序 | 修正前（同步执行） | 修正后（入队延迟） |
+|---|---|---|
+| 1 | no res1: 1 | ok Hi! |
+| 2 | no res2: 2 | ok res1: 1 |
+| 3 | no res3: 1 | ok res3: 1 |
+| 4 | no Hi! | ok res2: 2 |
+
+```callout info 核心收获
+手写结果不是目的，演进思路才是要吸收的东西。观察者模式是骨架，thenable 接口是灵魂，异常与调度让实现更健壮。
+```
+</textarea>
+<script>
+(() => {
+  const root = document.documentElement;
+  const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+  const label = (btn, value) => {
+    const map = JSON.parse(btn.dataset.labels || '{}');
+    btn.textContent = map[value] || value;
+  };
+  const bind = (name, attr, values) => {
+    const btn = document.querySelector(`[data-am="${name}"]`);
+    if (!btn) return;
+    label(btn, root.getAttribute(attr));
+    btn.addEventListener('click', () => {
+      const next = cycle(values, root.getAttribute(attr));
+      root.setAttribute(attr, next);
+      label(btn, next);
+    });
+  };
+  bind('theme', 'data-theme', ['blueprint', 'shadcn']);
+  bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+  const copyBtn = document.querySelector('[data-am="copy"]');
+  copyBtn?.addEventListener('click', async () => {
+    const nodes = document.querySelectorAll('#am-source');
+    const text = nodes[nodes.length - 1]?.value ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = copyBtn.dataset.done;
+    setTimeout(() => { copyBtn.textContent = original; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>
