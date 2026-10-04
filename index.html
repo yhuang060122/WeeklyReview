@@ -43,7 +43,7 @@
     margin-bottom: 16px;
   }
   header h1 { font-size: 34px; font-weight: 700; letter-spacing: 0.02em; }
-  header p.sub { margin-top: 10px; color: var(--text-dim); max-width: 640px; font-size: 15px; }
+  header p.sub { margin-top: 10px; color: var(--text-dim); max-width: 680px; font-size: 15px; }
 
   section { margin-bottom: 40px; }
   .sec-head {
@@ -81,6 +81,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 8px;
     margin-bottom: 10px;
   }
   .tag {
@@ -90,13 +91,23 @@
     border: 1px solid var(--accent-soft);
     padding: 2px 8px;
     border-radius: 999px;
+    white-space: nowrap;
   }
   .tag.amber { color: var(--amber); background: rgba(245, 158, 11, 0.10); border-color: rgba(245, 158, 11, 0.30); }
-  .date { font-size: 12px; color: var(--text-dim); }
-  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
-  .card p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px; }
+  .date { font-size: 12px; color: var(--text-dim); white-space: nowrap; }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 10px; }
   .card .go { font-size: 13px; color: var(--accent); font-weight: 500; }
   .card:hover .go::after { content: " →"; }
+
+  .err {
+    background: var(--card);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .err a { color: var(--accent); }
 
   footer {
     border-top: 1px solid var(--border);
@@ -123,90 +134,86 @@
   <header>
     <span class="kicker">GITHUB PAGES · AUTOMATED</span>
     <h1>WeeklyReview 档案库</h1>
-    <p class="sub">周复盘看板与学习笔记的静态档案。推送至 main 分支后由 GitHub Actions 自动构建并部署，此处为全站目录导航。</p>
+    <p class="sub">周复盘看板与学习笔记的静态档案。目录由 <code>manifest.json</code> 动态生成——推送新文件到 main 分支后，GitHub Actions 自动提取标题并重建本页。</p>
   </header>
 
-  <section id="weekly">
-    <div class="sec-head">
-      <h2>📊 周复盘系列</h2>
-      <span class="count">4 份</span>
-    </div>
-    <div class="grid">
-      <a class="card" href="weekly_review_2026-09-28_to_2026-10-04.html">
-        <div class="meta">
-          <span class="tag">最新</span>
-          <span class="date">2026-09-28 → 10-04</span>
-        </div>
-        <h3>周复盘看板 2026-09-28 → 2026-10-04</h3>
-        <p>Crypto（BTC · ETH · SOL · BNB）、美股宽基与 AI 软件数据、CAC 40 板块全景复盘，附数据源与免责声明。</p>
-        <span class="go">打开看板</span>
-      </a>
-
-      <a class="card" href="周复盘看板_20260921-20260927.html">
-        <div class="meta">
-          <span class="tag">周复盘</span>
-          <span class="date">2026-09-21 → 09-27</span>
-        </div>
-        <h3>周复盘看板 2026-09-21 → 2026-09-27</h3>
-        <p>Crypto / 美股 / CAC 40 三大市场周度复盘。</p>
-        <span class="go">打开看板</span>
-      </a>
-
-      <a class="card" href="weekly_review_0914_0920.html">
-        <div class="meta">
-          <span class="tag">周复盘</span>
-          <span class="date">2026-09-14 → 09-20</span>
-        </div>
-        <h3>周复盘看板 2026-09-14 → 2026-09-20</h3>
-        <p>加密资产、美股、CAC 40 三大市场周度复盘。</p>
-        <span class="go">打开看板</span>
-      </a>
-
-      <a class="card" href="周复盘_AI财务验证追踪模块.html">
-        <div class="meta">
-          <span class="tag amber">常驻模块</span>
-          <span class="date">建立于 2026-09-03</span>
-        </div>
-        <h3>AI 财务验证追踪</h3>
-        <p>追踪 Agent 是否进入财务报表、标普 500 采纳漏斗、重点样本兑现情况，附每周 / 每季追踪清单与数据完整性说明。</p>
-        <span class="go">打开模块</span>
-      </a>
-    </div>
-  </section>
-
-  <section id="notes">
-    <div class="sec-head">
-      <h2>🧠 学习笔记</h2>
-      <span class="count">2 份</span>
-    </div>
-    <div class="grid">
-      <a class="card" href="渐进式实现-Promise-六步演进的设计思路-20261004-205537.html">
-        <div class="meta">
-          <span class="tag amber">前端</span>
-          <span class="date">2026-10-04</span>
-        </div>
-        <h3>渐进式实现 Promise：六步演进的设计思路</h3>
-        <p>从观察者模式的最小可用版出发，经链式调用、thenable 状态传递、两处异常捕获，逐步演进到完整 Promise 实现。</p>
-        <span class="go">阅读笔记</span>
-      </a>
-
-      <a class="card" href="数学六大支柱认知层级图.html">
-        <div class="meta">
-          <span class="tag amber">数学</span>
-          <span class="date">可视化</span>
-        </div>
-        <h3>陶哲轩数学六大支柱认知体系</h3>
-        <p>交互式认知层级图，梳理数学学习应建立的六大支柱及相互关系。</p>
-        <span class="go">查看图谱</span>
-      </a>
-    </div>
-  </section>
+  <main id="content"></main>
 
   <footer>
-    <span>由 GitHub Actions 自动部署 · 页面入口需随新文档手动更新</span>
+    <span>由 GitHub Actions 自动部署 · 目录自动生成，无需手工维护</span>
     <a href="https://github.com/yhuang060122/WeeklyReview">github.com/yhuang060122/WeeklyReview</a>
   </footer>
 
 </div>
+
+<script>
+// 动态目录：读取构建时生成的 manifest.json，按分类渲染卡片
+const SECTIONS = {
+  weekly: { title: "📊 周复盘系列" },
+  note:   { title: "🧠 学习笔记" },
+};
+
+function tagClass(tag) {
+  return (tag === "周复盘" || tag === "常驻模块") ? "tag" : "tag amber";
+}
+
+function ctaFor(tag) {
+  return (tag === "周复盘" || tag === "常驻模块") ? "打开看板" : "阅读笔记";
+}
+
+function render(manifest) {
+  const content = document.getElementById("content");
+  content.innerHTML = "";
+  const order = ["weekly", "note"];
+
+  for (const cat of order) {
+    const items = manifest.filter((i) => i.category === cat);
+    if (!items.length) continue;
+
+    const sec = document.createElement("section");
+    sec.innerHTML =
+      '<div class="sec-head">' +
+        "<h2>" + SECTIONS[cat].title + "</h2>" +
+        '<span class="count">' + items.length + " 份</span>" +
+      "</div>" +
+      '<div class="grid"></div>';
+    const grid = sec.querySelector(".grid");
+
+    for (const it of items) {
+      const card = document.createElement("a");
+      card.className = "card";
+      card.href = encodeURI(it.name);
+
+      const dateHtml = it.label
+        ? '<span class="date">' + it.label + "</span>"
+        : "";
+
+      card.innerHTML =
+        '<div class="meta">' +
+          '<span class="' + tagClass(it.tag) + '">' + it.tag + "</span>" +
+          dateHtml +
+        "</div>" +
+        "<h3></h3>" +
+        '<span class="go">' + ctaFor(it.tag) + "</span>";
+      card.querySelector("h3").textContent = it.title; // 标题一律走 textContent，避免注入
+      grid.appendChild(card);
+    }
+    content.appendChild(sec);
+  }
+}
+
+fetch("manifest.json")
+  .then((r) => {
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    return r.json();
+  })
+  .then(render)
+  .catch((err) => {
+    document.getElementById("content").innerHTML =
+      '<div class="err">目录加载失败（' + err.message +
+      "）。请通过 GitHub Pages 或本地 HTTP 服务器访问本页（直接双击本地文件时浏览器会拦截 fetch）。" +
+      '也可前往 <a href="https://github.com/yhuang060122/WeeklyReview">仓库文件列表</a> 浏览。</div>';
+  });
+</script>
 </body>
 </html>

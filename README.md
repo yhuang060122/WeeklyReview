@@ -19,11 +19,23 @@
 
 | 文件 | 说明 |
 | --- | --- |
-| `index.html` | 全站目录导航页。新增文档后，把对应卡片加入此处（按分类与时间排序） |
+| `index.html` | 目录导航页。通过 JavaScript 读取构建时生成的 `manifest.json` 动态渲染，无需手工维护 |
 | `*.html` | 各周复盘看板与学习笔记，直接以相对链接互相跳转 |
-| `.github/workflows/deploy.yml` | 部署工作流 |
+| `scripts/generate_manifest.py` | 在 CI 中扫描 HTML、提取 `<title>`、分类排序并生成 `manifest.json` |
+| `.github/workflows/deploy.yml` | 部署工作流（打包站点 + 生成 manifest） |
 | `.nojekyll` | 跳过 Jekyll 处理，按静态文件原样发布 |
+
+## 命名约定
+
+| 类型 | 格式 | 示例 |
+| --- | --- | --- |
+| 周复盘看板 | `周复盘看板_YYYYMMDD-YYYYMMDD.html` | `周复盘看板_20260928-20261004.html` |
+| 周复盘常驻模块 | `周复盘模块_<主题>.html` | `周复盘模块_AI财务验证追踪.html` |
+| 学习笔记 | `<主题>.html`（不带导出时间戳） | `渐进式实现Promise-六步演进的设计思路.html` |
+
+分类、标签与排序由 `scripts/generate_manifest.py` 依据命名约定自动判定（含"数学 / 前端"等关键词）。
 
 ## 维护约定
 
-- 新文档入库：复制 HTML 到仓库根目录 → 在 `index.html` 对应分类下追加卡片 → 推送 `main` 即可生效。
+- **新增文档**：按命名约定放入仓库根目录 → push `main` → 工作流自动提取标题、重建 manifest，目录页即时更新，无需改 `index.html`。
+- **分类规则调整**：编辑 `scripts/generate_manifest.py` 中的 `classify()` 即可。

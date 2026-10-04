@@ -35,6 +35,10 @@ jobs:
           mkdir -p public
           cp ./*.html ./.nojekyll public/
 
+      # 从 HTML 提取 <title> 生成目录元数据，index.html 靠它动态渲染
+      - name: Generate manifest.json
+        run: python3 scripts/generate_manifest.py public
+
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
