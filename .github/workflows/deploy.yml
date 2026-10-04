@@ -1,0 +1,45 @@
+name: Deploy to GitHub Pages
+
+# 推送 / 合并到 main 分支时自动部署；也可在 Actions 页面手动触发
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同一时间只运行一次部署，避免并发冲突
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      # 只把站点文件（HTML + .nojekyll）放进 public/，避免把 .git 一起上传
+      - name: Stage static site
+        run: |
+          mkdir -p public
+          cp ./*.html ./.nojekyll public/
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

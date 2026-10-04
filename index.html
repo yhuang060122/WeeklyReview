@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeeklyReview 档案库</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --bg-soft: #151b23;
+    --card: #1a212b;
+    --card-hover: #202a37;
+    --border: #26303e;
+    --text: #e8edf4;
+    --text-dim: #9aa7b8;
+    --accent: #2dd4bf;
+    --accent-soft: #134e4a;
+    --amber: #f59e0b;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(45, 212, 191, 0.08), transparent 60%),
+      radial-gradient(900px 400px at 10% -10%, rgba(245, 158, 11, 0.06), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 48px 24px 40px; }
+
+  header { margin-bottom: 40px; }
+  header .kicker {
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    background: rgba(45, 212, 191, 0.08);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  header h1 { font-size: 34px; font-weight: 700; letter-spacing: 0.02em; }
+  header p.sub { margin-top: 10px; color: var(--text-dim); max-width: 640px; font-size: 15px; }
+
+  section { margin-bottom: 40px; }
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+  }
+  .sec-head h2 { font-size: 19px; font-weight: 600; }
+  .sec-head .count { font-size: 13px; color: var(--text-dim); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 18px 16px;
+    transition: transform .15s ease, border-color .15s ease, background .15s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    background: var(--card-hover);
+    border-color: rgba(45, 212, 191, 0.45);
+  }
+  .card .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  .tag {
+    font-size: 12px;
+    color: var(--accent);
+    background: rgba(45, 212, 191, 0.10);
+    border: 1px solid var(--accent-soft);
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .tag.amber { color: var(--amber); background: rgba(245, 158, 11, 0.10); border-color: rgba(245, 158, 11, 0.30); }
+  .date { font-size: 12px; color: var(--text-dim); }
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .card p { font-size: 13.5px; color: var(--text-dim); margin-bottom: 12px; }
+  .card .go { font-size: 13px; color: var(--accent); font-weight: 500; }
+  .card:hover .go::after { content: " →"; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+    color: var(--text-dim);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 32px 16px 28px; }
+    header h1 { font-size: 27px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">GITHUB PAGES · AUTOMATED</span>
+    <h1>WeeklyReview 档案库</h1>
+    <p class="sub">周复盘看板与学习笔记的静态档案。推送至 main 分支后由 GitHub Actions 自动构建并部署，此处为全站目录导航。</p>
+  </header>
+
+  <section id="weekly">
+    <div class="sec-head">
+      <h2>📊 周复盘系列</h2>
+      <span class="count">4 份</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="weekly_review_2026-09-28_to_2026-10-04.html">
+        <div class="meta">
+          <span class="tag">最新</span>
+          <span class="date">2026-09-28 → 10-04</span>
+        </div>
+        <h3>周复盘看板 2026-09-28 → 2026-10-04</h3>
+        <p>Crypto（BTC · ETH · SOL · BNB）、美股宽基与 AI 软件数据、CAC 40 板块全景复盘，附数据源与免责声明。</p>
+        <span class="go">打开看板</span>
+      </a>
+
+      <a class="card" href="周复盘看板_20260921-20260927.html">
+        <div class="meta">
+          <span class="tag">周复盘</span>
+          <span class="date">2026-09-21 → 09-27</span>
+        </div>
+        <h3>周复盘看板 2026-09-21 → 2026-09-27</h3>
+        <p>Crypto / 美股 / CAC 40 三大市场周度复盘。</p>
+        <span class="go">打开看板</span>
+      </a>
+
+      <a class="card" href="weekly_review_0914_0920.html">
+        <div class="meta">
+          <span class="tag">周复盘</span>
+          <span class="date">2026-09-14 → 09-20</span>
+        </div>
+        <h3>周复盘看板 2026-09-14 → 2026-09-20</h3>
+        <p>加密资产、美股、CAC 40 三大市场周度复盘。</p>
+        <span class="go">打开看板</span>
+      </a>
+
+      <a class="card" href="周复盘_AI财务验证追踪模块.html">
+        <div class="meta">
+          <span class="tag amber">常驻模块</span>
+          <span class="date">建立于 2026-09-03</span>
+        </div>
+        <h3>AI 财务验证追踪</h3>
+        <p>追踪 Agent 是否进入财务报表、标普 500 采纳漏斗、重点样本兑现情况，附每周 / 每季追踪清单与数据完整性说明。</p>
+        <span class="go">打开模块</span>
+      </a>
+    </div>
+  </section>
+
+  <section id="notes">
+    <div class="sec-head">
+      <h2>🧠 学习笔记</h2>
+      <span class="count">2 份</span>
+    </div>
+    <div class="grid">
+      <a class="card" href="渐进式实现-Promise-六步演进的设计思路-20261004-205537.html">
+        <div class="meta">
+          <span class="tag amber">前端</span>
+          <span class="date">2026-10-04</span>
+        </div>
+        <h3>渐进式实现 Promise：六步演进的设计思路</h3>
+        <p>从观察者模式的最小可用版出发，经链式调用、thenable 状态传递、两处异常捕获，逐步演进到完整 Promise 实现。</p>
+        <span class="go">阅读笔记</span>
+      </a>
+
+      <a class="card" href="interactive_visual_im_50f56423c9b083fc.html">
+        <div class="meta">
+          <span class="tag amber">数学</span>
+          <span class="date">可视化</span>
+        </div>
+        <h3>陶哲轩数学六大支柱认知体系</h3>
+        <p>交互式认知层级图，梳理数学学习应建立的六大支柱及相互关系。</p>
+        <span class="go">查看图谱</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>
+    <span>由 GitHub Actions 自动部署 · 页面入口需随新文档手动更新</span>
+    <a href="https://github.com/yhuang060122/WeeklyReview">github.com/yhuang060122/WeeklyReview</a>
+  </footer>
+
+</div>
+</body>
+</html>
