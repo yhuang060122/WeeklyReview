@@ -20,6 +20,7 @@
 | 文件 | 说明 |
 | --- | --- |
 | `index.html` | 目录导航页。通过 JavaScript 读取构建时生成的 `manifest.json` 动态渲染，无需手工维护 |
+| `handoff.html` | 站点使用与维护指南，置顶展示于目录「📖 使用指南」 |
 | `*.html` | 各周复盘看板与学习笔记，直接以相对链接互相跳转 |
 | `scripts/generate_manifest.py` | 在 CI 中扫描 HTML、提取 `<title>`、分类排序并生成 `manifest.json` |
 | `.github/workflows/deploy.yml` | 部署工作流（打包站点 + 生成 manifest） |
@@ -32,6 +33,7 @@
 | 周复盘看板 | `周复盘看板_YYYYMMDD-YYYYMMDD.html` | `周复盘看板_20260928-20261004.html` |
 | 周复盘常驻模块 | `周复盘模块_<主题>.html` | `周复盘模块_AI财务验证追踪.html` |
 | 学习笔记 | `<主题>.html`（不带导出时间戳） | `渐进式实现Promise-六步演进的设计思路.html` |
+| 站点指南 | `handoff.html` | `handoff.html` |
 
 分类、标签与排序由 `scripts/generate_manifest.py` 依据命名约定自动判定（含 C# / 前端 / AI / 可观测性 / 开发 / 数学等关键词）。
 

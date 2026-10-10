@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeeklyReview 站点使用与维护指南</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --card: #1a212b;
+    --card-hover: #202a37;
+    --border: #26303e;
+    --text: #e8edf4;
+    --text-dim: #9aa7b8;
+    --accent: #2dd4bf;
+    --accent-soft: #134e4a;
+    --amber: #f59e0b;
+    --amber-soft: rgba(245, 158, 11, 0.12);
+    --code-bg: #121820;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(45, 212, 191, 0.08), transparent 60%),
+      radial-gradient(900px 400px at 10% -10%, rgba(245, 158, 11, 0.06), transparent 55%),
+      var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 48px 24px 56px; }
+
+  header { margin-bottom: 36px; }
+  header .kicker {
+    display: inline-block;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    border: 1px solid var(--accent-soft);
+    background: rgba(45, 212, 191, 0.08);
+    padding: 4px 12px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  header h1 { font-size: 30px; font-weight: 700; letter-spacing: 0.02em; }
+  header p.sub { margin-top: 10px; color: var(--text-dim); font-size: 15px; max-width: 720px; }
+  header .links { margin-top: 14px; font-size: 14px; }
+  header .links a { color: var(--accent); text-decoration: none; margin-right: 18px; }
+  header .links a:hover { text-decoration: underline; }
+
+  h2 {
+    font-size: 20px;
+    font-weight: 700;
+    margin: 40px 0 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 26px;
+    height: 26px;
+    padding: 0 6px;
+    border-radius: 7px;
+    background: rgba(45, 212, 191, 0.12);
+    border: 1px solid var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+  }
+  p { color: var(--text); margin-bottom: 12px; }
+  .dim { color: var(--text-dim); }
+  ul, ol { padding-left: 22px; margin-bottom: 12px; }
+  li { margin-bottom: 6px; }
+
+  code {
+    font-family: "Cascadia Code", Consolas, "SF Mono", monospace;
+    font-size: 0.9em;
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 1px 6px;
+    color: var(--accent);
+  }
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    overflow-x: auto;
+    font-size: 13.5px;
+    margin-bottom: 16px;
+    line-height: 1.65;
+  }
+  pre code { background: none; border: none; padding: 0; color: var(--text); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin: 12px 0 20px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+  }
+  th { background: var(--card); color: var(--accent); font-weight: 600; white-space: nowrap; }
+  td { color: var(--text); }
+  tr:nth-child(even) td { background: rgba(26, 33, 43, 0.5); }
+
+  .callout {
+    border-left: 3px solid var(--amber);
+    background: var(--amber-soft);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    font-size: 14px;
+    margin-bottom: 16px;
+    color: #f5d9a8;
+  }
+  .callout .t { display: block; font-weight: 600; color: var(--amber); margin-bottom: 4px; }
+
+  .steps { counter-reset: step; list-style: none; padding-left: 0; }
+  .steps li {
+    counter-increment: step;
+    position: relative;
+    padding-left: 42px;
+    margin-bottom: 12px;
+  }
+  .steps li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 1px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(45, 212, 191, 0.12);
+    border: 1px solid var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+    padding-top: 18px;
+    color: var(--text-dim);
+    font-size: 13px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .wrap { padding: 32px 16px 40px; }
+    header h1 { font-size: 25px; }
+    th, td { padding: 7px 8px; font-size: 13px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <span class="kicker">HANDOFF · 使用与维护</span>
+    <h1>WeeklyReview 站点使用与维护指南</h1>
+    <p class="sub">本文档说明站点的结构、日常更新流程、命名约定与常见问题排查。全部内容与当前仓库配置保持一致。</p>
+    <div class="links">
+      <a href="index.html">← 返回目录页</a>
+      <a href="https://github.com/yhuang060122/WeeklyReview">仓库主页 ↗</a>
+    </div>
+  </header>
+
+  <h2><span class="num">01</span> 这是什么</h2>
+  <p>WeeklyReview 是一个静态站点：仓库根目录的每个 <code>*.html</code> 都是一份独立文档（周复盘看板或学习笔记）。推送 <code>main</code> 分支后，GitHub Actions 自动打包部署到 GitHub Pages，目录页 <code>index.html</code> 通过 JavaScript 读取构建时生成的 <code>manifest.json</code> 动态渲染导航，因此<b>新增文档无需手工改目录页</b>。</p>
+  <ul>
+    <li>站点地址：<code>https://yhuang060122.github.io/WeeklyReview/</code></li>
+    <li>仓库地址：<code>git@github.com:yhuang060122/WeeklyReview.git</code></li>
+    <li>部署方式：push 触发，或在 Actions 页手动触发（workflow_dispatch）</li>
+  </ul>
+
+  <h2><span class="num">02</span> 文件结构</h2>
+  <table>
+    <tr><th>文件 / 目录</th><th>作用</th><th>需要维护？</th></tr>
+    <tr><td><code>index.html</code></td><td>目录导航页（JS 动态渲染）</td><td>否（自动）</td></tr>
+    <tr><td><code>*.html</code>（根目录）</td><td>各周复盘与学习笔记正文</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>manifest.json</code></td><td>目录元数据，CI 构建时生成</td><td>否（自动，勿手改）</td></tr>
+    <tr><td><code>scripts/generate_manifest.py</code></td><td>扫描 HTML、提取标题、分类排序</td><td>仅改分类规则时</td></tr>
+    <tr><td><code>.github/workflows/deploy.yml</code></td><td>部署工作流</td><td>否</td></tr>
+    <tr><td><code>.nojekyll</code></td><td>跳过 Jekyll，按静态文件发布</td><td>否</td></tr>
+  </table>
+
+  <h2><span class="num">03</span> 命名约定（强制）</h2>
+  <p>文件名决定分类与排序，新增文件必须按此命名：</p>
+  <table>
+    <tr><th>类型</th><th>格式</th><th>示例</th><th>目录分类</th></tr>
+    <tr><td>周复盘看板</td><td><code>周复盘看板_YYYYMMDD-YYYYMMDD.html</code></td><td><code>周复盘看板_20261005-20261011.html</code></td><td>📊 周复盘系列（按日期倒序）</td></tr>
+    <tr><td>常驻模块</td><td><code>周复盘模块_&lt;主题&gt;.html</code></td><td><code>周复盘模块_AI财务验证追踪.html</code></td><td>📊 周复盘系列（排最后）</td></tr>
+    <tr><td>学习笔记</td><td><code>&lt;主题&gt;.html</code>（不带导出时间戳）</td><td><code>LLM架构演进.html</code></td><td>🧠 学习笔记</td></tr>
+    <tr><td>站点指南</td><td><code>handoff.html</code></td><td>本文档</td><td>📖 使用指南（置顶）</td></tr>
+  </table>
+  <div class="callout">
+    <span class="t">注意</span>
+    文件名避免使用 <code>#</code>（会被 URL 当作锚点）、空格与 <code>·</code> 等符号；导出工具自动加的时间戳后缀（如 <code>-20261010-144735</code>）应去掉。
+  </div>
+
+  <h2><span class="num">04</span> 日常操作</h2>
+
+  <p><b>① 新增一篇文档（最常用）</b></p>
+  <ol class="steps">
+    <li>把 HTML 复制到仓库根目录，按上方约定命名。</li>
+    <li>提交并推送：<br>
+      <pre><code>git add -A
+git commit -m "add: &lt;文档名&gt;"
+git push origin main</code></pre></li>
+    <li>约 1 分钟后，目录页自动出现新卡片（打开 <code>manifest.json</code> 可确认）。</li>
+  </ol>
+
+  <p><b>② 重命名 / 删除</b></p>
+  <pre><code>git mv "旧文件名.html" "新文件名.html"   # 重命名（保留历史）
+git rm "文件名.html"                     # 删除
+git push origin main</code></pre>
+  <p class="dim">改名后旧链接会 404，如已在别处引用需同步更新。</p>
+
+  <p><b>③ 调整分类 / 标签</b></p>
+  <p>编辑 <code>scripts/generate_manifest.py</code> 的 <code>classify()</code> 函数，推送后自动生效。当前标签规则：</p>
+  <table>
+    <tr><th>文件名含关键词</th><th>标签</th></tr>
+    <tr><td><code>数学</code></td><td>数学</td></tr>
+    <tr><td><code>c# / csharp</code></td><td>C#</td></tr>
+    <tr><td><code>前端 / js / javascript / webpack / 模块化 / promise</code></td><td>前端</td></tr>
+    <tr><td><code>llm / 大模型 / gemini</code></td><td>AI</td></tr>
+    <tr><td><code>correlation / trace</code></td><td>可观测性</td></tr>
+    <tr><td><code>软件 / 开发</code></td><td>开发</td></tr>
+    <tr><td>以上都不含</td><td>笔记</td></tr>
+  </table>
+
+  <h2><span class="num">05</span> 部署机制</h2>
+  <p>推送 <code>main</code> 后工作流 <code>deploy.yml</code> 依次执行：</p>
+  <ol>
+    <li>Checkout 代码 → Configure Pages</li>
+    <li>把根目录 <code>*.html</code> 与 <code>.nojekyll</code> 复制进 <code>public/</code></li>
+    <li>运行 <code>python3 scripts/generate_manifest.py public</code> 生成 <code>manifest.json</code></li>
+    <li>上传产物并部署到 GitHub Pages</li>
+  </ol>
+  <p>部署状态查看：仓库 <b>Actions</b> 页，绿色 = 成功；站点地址即上方的 GitHub Pages URL。</p>
+
+  <h2><span class="num">06</span> 常见问题排查</h2>
+  <table>
+    <tr><th>现象</th><th>原因 / 处理</th></tr>
+    <tr><td>目录页显示「目录加载失败」</td><td>用 <code>file://</code> 直接双击打开时浏览器会拦截 fetch。请通过 GitHub Pages 地址访问，或本地起服务：<code>python -m http.server</code></td></tr>
+    <tr><td>推送后目录没更新</td><td>先看 Actions 是否成功；若成功则是 CDN 缓存，强制刷新（Ctrl/Cmd + F5）</td></tr>
+    <tr><td>部署在 Configure Pages 步骤失败</td><td>仓库 Settings → Pages → Source 选择 <b>GitHub Actions</b>（只需一次）</td></tr>
+    <tr><td>卡片分类不对</td><td>文件名未按命名约定；或需在 <code>classify()</code> 中加关键词规则</td></tr>
+    <tr><td>标题显示为文件名</td><td>HTML 里没有 <code>&lt;title&gt;</code> 标签，脚本会退回用文件名</td></tr>
+  </table>
+
+  <footer>
+    <span>本页是 handoff.html · 修改后同样自动部署</span>
+    <a href="index.html">返回目录</a>
+  </footer>
+
+</div>
+</body>
+</html>

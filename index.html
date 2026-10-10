@@ -149,6 +149,7 @@
 <script>
 // 动态目录：读取构建时生成的 manifest.json，按分类渲染卡片
 const SECTIONS = {
+  guide:  { title: "📖 使用指南" },
   weekly: { title: "📊 周复盘系列" },
   note:   { title: "🧠 学习笔记" },
 };
@@ -158,13 +159,14 @@ function tagClass(tag) {
 }
 
 function ctaFor(tag) {
-  return (tag === "周复盘" || tag === "常驻模块") ? "打开看板" : "阅读笔记";
+  if (tag === "周复盘" || tag === "常驻模块") return "打开看板";
+  return tag === "使用指南" ? "查看指南" : "阅读笔记";
 }
 
 function render(manifest) {
   const content = document.getElementById("content");
   content.innerHTML = "";
-  const order = ["weekly", "note"];
+  const order = ["guide", "weekly", "note"];
 
   for (const cat of order) {
     const items = manifest.filter((i) => i.category === cat);

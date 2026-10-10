@@ -12,6 +12,7 @@ import os
 import re
 import sys
 
+CAT_GUIDE = "guide"
 CAT_WEEKLY = "weekly"
 CAT_NOTE = "note"
 
@@ -32,11 +33,14 @@ def fmt_ymd(d: str) -> str:
 def classify(name: str):
     """按命名约定返回 (category, tag, label)。
 
+    handoff.html                       -> guide / 使用指南 / 无日期（置顶）
     周复盘看板_YYYYMMDD-YYYYMMDD.html -> weekly / 周复盘 / 日期区间
     周复盘模块_<主题>.html            -> weekly / 常驻模块 / 无日期
     其余 *.html                       -> note  / 按关键词打标签
     """
     base = os.path.splitext(name)[0]
+    if name == "handoff.html":
+        return CAT_GUIDE, "使用指南", ""
     if "周复盘" in name:
         dates = re.findall(r"(\d{8})", name)
         if len(dates) >= 2:
@@ -78,7 +82,8 @@ def main() -> None:
             "label": label,
         })
 
-    # 周复盘：按日期倒序（常驻模块排在最后）；学习笔记：按文件名排序
+    # 使用指南置顶；周复盘按日期倒序（常驻模块排最后）；学习笔记按文件名排序
+    guide = [e for e in entries if e["category"] == CAT_GUIDE]
     weekly = sorted((e for e in entries if e["category"] == CAT_WEEKLY),
                     key=date_key, reverse=True)
     notes = sorted((e for e in entries if e["category"] == CAT_NOTE),
@@ -86,7 +91,7 @@ def main() -> None:
 
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "manifest.json"), "w", encoding="utf-8") as f:
-        json.dump(weekly + notes, f, ensure_ascii=False, indent=2)
+        json.dump(guide + weekly + notes, f, ensure_ascii=False, indent=2)
     print(f"manifest.json: {len(entries)} files -> {out_dir}")
 
 
