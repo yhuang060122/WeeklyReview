@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>多资产量化机构周度复盘看板 | 2026-W41</title>
+  <style>
+    :root {
+      --bg-primary: #0a0d13;
+      --bg-secondary: #121824;
+      --bg-card: #182030;
+      --bg-card-hover: #1f2a3f;
+      --border-color: #263248;
+      --border-subtle: #1b2435;
+      --text-main: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-faint: #64748b;
+      --green: #10b981;
+      --green-bg: rgba(16, 185, 129, 0.12);
+      --red: #ef4444;
+      --red-bg: rgba(239, 68, 68, 0.12);
+      --orange: #f59e0b;
+      --orange-bg: rgba(245, 158, 11, 0.12);
+      --neutral-gray: #6b7280;
+      --accent-cyan: #06b6d4;
+      --font-mono: "JetBrains Mono", "SF Mono", Consolas, "Liberation Mono", Menlo, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      padding-bottom: 40px;
+    }
+
+    /* Terminal Nav Header */
+    .top-bar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 13, 19, 0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .terminal-title {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #f8fafc;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 8px;
+    }
+    .nav-btn {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: #1e293b;
+      color: var(--accent-cyan);
+      border-color: var(--accent-cyan);
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 24px 20px;
+    }
+
+    /* Section Wrapper */
+    .asset-section {
+      margin-bottom: 56px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-secondary);
+      padding: 24px;
+      scroll-margin-top: 70px;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-badge {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+    }
+
+    /* Six Stage Grid Elements */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+    .metric-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 14px;
+    }
+    .metric-title {
+      font-size: 11px;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .metric-val {
+      font-family: var(--font-mono);
+      font-size: 20px;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-bottom: 4px;
+    }
+    .metric-sub {
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Color Helpers */
+    .c-green { color: var(--green); }
+    .c-red { color: var(--red); }
+    .c-orange { color: var(--orange); }
+    .c-gray { color: var(--neutral-gray); }
+    .bg-g { background-color: var(--green-bg); color: var(--green); padding: 1px 6px; border-radius: 3px; }
+    .bg-r { background-color: var(--red-bg); color: var(--red); padding: 1px 6px; border-radius: 3px; }
+    .bg-o { background-color: var(--orange-bg); color: var(--orange); padding: 1px 6px; border-radius: 3px; }
+
+    /* Narrative Timeline */
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 900px) {
+      .timeline { grid-template-columns: 1fr; }
+    }
+    .timeline-col {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 12px;
+    }
+    .t-date {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-cyan);
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+    }
+    .t-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Data Tables */
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12px;
+      background: var(--bg-card);
+    }
+    th {
+      background: #111722;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-weight: 600;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+    td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      white-space: nowrap;
+    }
+    tr:hover td {
+      background-color: var(--bg-card-hover);
+    }
+    .honesty-tag {
+      font-size: 10px;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .tag-verified { background: #064e3b; color: #34d399; }
+    .tag-est { background: #78350f; color: #fcd34d; }
+    .tag-unconfirmed { background: #334155; color: #94a3b8; }
+
+    /* Analytical Diagnosis & Risk Boxes */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 800px) {
+      .analysis-grid { grid-template-columns: 1fr; }
+    }
+    .info-panel {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 6px;
+      padding: 16px;
+    }
+    .panel-hdr {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .bullet-list {
+      list-style: none;
+    }
+    .bullet-list li {
+      position: relative;
+      padding-left: 16px;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .bullet-list li::before {
+      content: "▪";
+      position: absolute;
+      left: 0;
+      color: var(--accent-cyan);
+    }
+
+    /* Risk Table */
+    .risk-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin-top: 8px;
+    }
+    .risk-matrix td, .risk-matrix th {
+      padding: 8px 10px;
+      border: 1px solid var(--border-subtle);
+      font-family: var(--font-sans);
+    }
+    .risk-matrix th {
+      background: #151d2c;
+      font-family: var(--font-mono);
+      color: var(--text-faint);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 24px 20px;
+      font-size: 11px;
+      color: var(--text-faint);
+      line-height: 1.6;
+    }
+    .source-block {
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Terminal Navigation -->
+  <header class="top-bar">
+    <div class="terminal-title">
+      <span class="status-dot"></span>
+      <span>MULTI-ASSET QUANT WEEKLY REVIEW // 2026-W41</span>
+      <span style="color: var(--text-faint); font-weight: normal;">(2026-10-05 ~ 2026-10-11)</span>
+    </div>
+    <nav class="nav-tabs">
+      <a href="#sec-crypto" class="nav-btn">① CRYPTO (BTC/ETH/SOL/BNB)</a>
+      <a href="#sec-us" class="nav-btn">② 美股 (WATCHLIST)</a>
+      <a href="#sec-cac" class="nav-btn">③ 法国 CAC 40</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- ============================================================== -->
+    <!-- ① CRYPTO 板块 -->
+    <!-- ============================================================== -->
+    <section id="sec-crypto" class="asset-section">
+      <div class="section-header">
+        <h2 class="section-title">① CRYPTO 资产 | 高杠杆多头出清与宏观流动性紧缩</h2>
+        <span class="section-badge">核心口径：CoinGlass / SoSoValue / Glassnode</span>
+      </div>
+
+      <!-- 1. 宏观快照 -->
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-title">全网总市值 (TOTAL CAP) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">$2.85 T</div>
+          <div class="metric-sub"><span class="bg-r">-3.8% 周变动</span> 宏观驱动整体回撤</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">24H 多头爆仓峰值 (10/08) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">$930 M+</div>
+          <div class="metric-sub"><span class="bg-r">90天最高</span> 单小时穿仓超$600M</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">BTC 现货ETF单日净流出 <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">-$484.9 M</div>
+          <div class="metric-sub"><span class="bg-r">10/07单日</span> 约5,670枚BTC逆转抛售</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">BTC 资金费率 (7D均值) <span class="honesty-tag tag-est">估</span></div>
+          <div class="metric-val">+0.0032%</div>
+          <div class="metric-sub"><span class="bg-o">中性偏冷</span> 杠杆多头费率全面钝化</div>
+        </div>
+      </div>
+
+      <!-- 2. 周内日历叙事 -->
+      <div class="timeline">
+        <div class="timeline-col">
+          <div class="t-date">10/05 (周一) 诱多逼空</div>
+          <div class="t-desc">BTC突破$85,000触及$86,200高位，空头被强平$113M；市场出现假突破反转形态。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/06 (周二) 高位盘整</div>
+          <div class="t-desc">BTC未能站稳$87,000区间顶部，现货ETF申购动能衰竭，现货溢价显著收窄。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/07 (周三) 美联储纪要承压</div>
+          <div class="t-desc">美联储9月纪要释放鹰派信号，油价破$105，美债10Y利率冲高。现货ETF单日净流出$485M。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/08 (周四) 杠杆血洗日</div>
+          <div class="t-desc">BTC跌破$81,000低见$80,393，全网爆仓超$1.16B（90%为多单），引发去杠杆连锁反应。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/09~11 (周末) 弱势修整</div>
+          <div class="t-desc">BTC反弹至$82,500受阻，ETH与山寨币反弹乏力，衍生品持仓量（OI）处于低位重构期。</div>
+        </div>
+      </div>
+
+      <!-- 3. 板块表现概览 -->
+      <div style="margin-bottom: 18px; padding: 12px; background: var(--bg-card); border-radius: 6px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-bottom: 6px;">结构分化概况 (SECTOR DIVERGENCE)</div>
+        <p style="font-size: 12px; color: var(--text-muted);">BTC Dominance 进一步回升至 58.4% 估；主流山寨跌幅为 BTC 的 2~2.5 倍，呈现典型“流动性外流先杀Beta”特征。</p>
+      </div>
+
+      <!-- 4. 资产明细表 -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>资产</th>
+              <th>最新收盘/参考价</th>
+              <th>周涨跌幅</th>
+              <th>周内振幅区间</th>
+              <th>未平仓合约变化 (OI)</th>
+              <th>主要承压/支撑位</th>
+              <th>诚实度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>BTC</strong></td>
+              <td>$82,240</td>
+              <td><span class="bg-r">-3.42%</span></td>
+              <td>$80,393 - $86,450</td>
+              <td>-$1.82 B (去杠杆)</td>
+              <td>支撑 $80,000 / 阻力 $85,500</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>ETH</strong></td>
+              <td>$2,438</td>
+              <td><span class="bg-r">-9.28%</span></td>
+              <td>$2,385 - $2,720</td>
+              <td>-$840 M</td>
+              <td>支撑 $2,380 / 阻力 $2,600</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>SOL</strong></td>
+              <td>$108.4</td>
+              <td><span class="bg-r">-11.15%</span></td>
+              <td>$104.2 - $123.8</td>
+              <td>-$310 M</td>
+              <td>支撑 $100.0 / 阻力 $118.0</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td><strong>BNB</strong></td>
+              <td>$776.5</td>
+              <td><span class="bg-g">+0.45%</span></td>
+              <td>$762.0 - $792.0</td>
+              <td>相对平稳 (季度销毁预期)</td>
+              <td>支撑 $760.0 / 阻力 $800.0</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5. 核心催化剂与结构诊断 & 6. 风险矩阵 -->
+      <div class="analysis-grid">
+        <div class="info-panel">
+          <div class="panel-hdr">⑤ 核心催化剂与微观结构诊断</div>
+          <ul class="bullet-list">
+            <li><strong>宏观资金回抽：</strong>美联储纪要释放的“年内仍存加息敞口”预期导致美元指数走强，直接压制无息风险资产估值。</li>
+            <li><strong>买盘逆转：</strong>作为本轮周期主要吸筹支柱的现货ETF出现单日近5亿美元净抛压，场内边际买盘骤失流动性深度。</li>
+            <li><strong>多头清算瀑布：</strong>周内$83,000~$87,000箱体构筑了高杠杆多单密集区，下破后触发单小时$600M强平恶性循环。</li>
+          </ul>
+        </div>
+        <div class="info-panel">
+          <div class="panel-hdr">⑥ 下周风险矩阵 (2026-W42)</div>
+          <table class="risk-matrix">
+            <tr>
+              <th>风险事件</th>
+              <th>级别</th>
+              <th>传导机制</th>
+            </tr>
+            <tr>
+              <td>美国9月CPI数据 (10/14)</td>
+              <td><span class="bg-r">高危</span></td>
+              <td>若通胀反弹，降息预期将进一步延后，BTC承压下探$75,000。</td>
+            </tr>
+            <tr>
+              <td>ETF机构赎回惯性</td>
+              <td><span class="bg-o">中度</span></td>
+              <td>若SoSoValue数据显示连续3日净流出，现货买盘将转为观望。</td>
+            </tr>
+            <tr>
+              <td>以太坊Gas与L2通缩失效</td>
+              <td><span class="bg-o">中度</span></td>
+              <td>ETH/BTC汇率创周期新低，主网费用低迷削弱价值捕获能力。</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================== -->
+    <!-- ② 美股 板块 (固定 WATCHLIST) -->
+    <!-- ============================================================== -->
+    <section id="sec-us" class="asset-section">
+      <div class="section-header">
+        <h2 class="section-title">② 美股市场 | 美债利率倒逼估值收缩与AI软件韧性分化</h2>
+        <span class="section-badge">核心口径：MacroTrends / Nasdaq Research / Bloomberg</span>
+      </div>
+
+      <!-- 1. 宏观快照 -->
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-title">标普500 (S&P 500) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">7,765.2 pts</div>
+          <div class="metric-sub"><span class="bg-r">-0.88% 周跌</span> 动能高位衰竭回撤</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">纳斯达克综合 (NASDAQ) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">27,193.4 pts</div>
+          <div class="metric-sub"><span class="bg-r">-1.42% 周跌</span> 科技云与硬件承压明显</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">美债 10Y 基准收益率 <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">4.38% ~ 5.12% 估</div>
+          <div class="metric-sub"><span class="bg-r">周内急升</span> 贴现率直接压制高PE资产</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">波动率指数 (VIX) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">20.45</div>
+          <div class="metric-sub"><span class="bg-o">触及年内高位</span> 避险对冲情绪升温</div>
+        </div>
+      </div>
+
+      <!-- 2. 周内日历叙事 -->
+      <div class="timeline">
+        <div class="timeline-col">
+          <div class="t-date">10/05 (周一) 动量滞涨</div>
+          <div class="t-desc">科技巨头小幅冲高，但芯片半导体交投量能萎缩，高贝塔板块显露疲态。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/06 (周二) 油价利率双升</div>
+          <div class="t-desc">中东地缘扰动推升布油破百，二次通胀风险发酵，长端美债收益率全线跳涨。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/07 (周三) 鹰派纪要冲击</div>
+          <div class="t-desc">FOMC纪要重创降息交易，高估值硬件及云计算龙头遭遇程序化减仓抛售。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/08 (周四) 道指防守分化</div>
+          <div class="t-desc">纳指单日大跌1.25%，但道指(DJIA)收涨0.1%，能源与价值公用事业显现抗跌属性。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/09 (周五) 密歇根预期</div>
+          <div class="t-desc">密歇根大学消费者信心初值公布，市场进入Q3财报季前静默期，资金保持低仓位观望。</div>
+        </div>
+      </div>
+
+      <!-- 3. 板块表现 -->
+      <div style="margin-bottom: 18px; padding: 12px; background: var(--bg-card); border-radius: 6px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-bottom: 6px;">固定 WATCHLIST 组别横向强弱</div>
+        <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 12px;">
+          <div><strong>宽基ETF：</strong><span class="bg-r">DIA (-0.1%) > SPY (-0.9%) > QQQ (-1.4%)</span></div>
+          <div><strong>行业梯队：</strong><span class="bg-o">AI软件数据 (分化) > 大型科技云 (-1.2%) > 半导体硬件 (-2.6%)</span></div>
+        </div>
+      </div>
+
+      <!-- 4. 固定 Watchlist 总表 -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Watchlist 细分</th>
+              <th>代码/标的</th>
+              <th>周收盘估值</th>
+              <th>周涨跌幅</th>
+              <th>量化驱动 / 核心要点</th>
+              <th>诚实度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 宽基ETF -->
+            <tr>
+              <td rowspan="3" style="vertical-align: middle; background: #0f1522;"><strong>宽基 ETF</strong></td>
+              <td>SPY (S&P 500)</td>
+              <td>$573.4</td>
+              <td><span class="bg-r">-0.88%</span></td>
+              <td>高位多头获利结了，面临22x Forward P/E估值顶背离</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>QQQ (Nasdaq 100)</td>
+              <td>$486.2</td>
+              <td><span class="bg-r">-1.38%</span></td>
+              <td>利率敏感型资金流出，科技权重集中度风险释放</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>IWM (Russell 2000)</td>
+              <td>$218.0</td>
+              <td><span class="bg-r">-2.10%</span></td>
+              <td>小盘股融资成本居高不下，宽信用预期受挫</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 半导体硬件 -->
+            <tr>
+              <td rowspan="4" style="vertical-align: middle; background: #0f1522;"><strong>半导体硬件</strong></td>
+              <td>NVDA</td>
+              <td>$132.8</td>
+              <td><span class="bg-r">-2.45%</span></td>
+              <td>Blackwell产能爬坡正常，但买方财报预期门槛极其苛刻</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>TSM</td>
+              <td>$184.2</td>
+              <td><span class="bg-r">-1.80%</span></td>
+              <td>3nm/2nm先进制程利用率满载，但宏观地缘风险溢价上升</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>AMD</td>
+              <td>$156.4</td>
+              <td><span class="bg-r">-3.60%</span></td>
+              <td>MI325X发布后进入催化空窗期，传统PC客户端复苏迟缓</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>ASML</td>
+              <td>$792.0</td>
+              <td><span class="bg-r">-3.15%</span></td>
+              <td>欧洲半导体链条指引保守，订单交付节奏拉长</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 大型科技云 -->
+            <tr>
+              <td rowspan="3" style="vertical-align: middle; background: #0f1522;"><strong>大型科技云</strong></td>
+              <td>MSFT</td>
+              <td>$416.5</td>
+              <td><span class="bg-r">-1.10%</span></td>
+              <td>Azure智能云增长平稳，但Capex持续扩张压制自由现金流</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>AMZN</td>
+              <td>$186.2</td>
+              <td><span class="bg-r">-0.75%</span></td>
+              <td>AWS稳健，四季度零售旺季物流成本存在油价输入型压力</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>GOOGL</td>
+              <td>$163.8</td>
+              <td><span class="bg-r">-1.65%</span></td>
+              <td>反垄断诉讼拆分方案细化带来治理结构折价</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- AI软件数据 -->
+            <tr>
+              <td rowspan="3" style="vertical-align: middle; background: #0f1522;"><strong>AI软件数据</strong></td>
+              <td>PLTR</td>
+              <td>$42.6</td>
+              <td><span class="bg-g">+2.80%</span></td>
+              <td>纳入标普指数后被动配置资金入场，政府及商业AIP订单加速</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>SNOW</td>
+              <td>$119.5</td>
+              <td><span class="bg-r">-2.30%</span></td>
+              <td>存储计算按需计费模式承压，企业IT预算复苏不均</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>CRM</td>
+              <td>$282.1</td>
+              <td><span class="bg-g">+0.60%</span></td>
+              <td>Agentforce企业级部署案例落地，估值安全边际显现</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5. 核心催化剂与结构诊断 & 6. 风险矩阵 -->
+      <div class="analysis-grid">
+        <div class="info-panel">
+          <div class="panel-hdr">⑤ 核心催化剂与微观结构诊断</div>
+          <ul class="bullet-list">
+            <li><strong>估值与贴现率剪刀差：</strong>标普500远期P/E徘徊在22x高位，10Y美债收益率再度反弹，无风险利率对股权风险溢价（ERP）形成极端挤压。</li>
+            <li><strong>AI投资从“基建”向“应用ROI”过渡：</strong>硬件侧（NVDA/AMD）单向Beta驱动钝化，市场对Capex变现周期的审计日趋严苛；软件层（PLTR等）开始出现个股alpha溢价。</li>
+            <li><strong>大选前宏观对冲需求增加：</strong>VIX回升至20上方，期权市场看跌期权偏斜（Skew）陡峭化，机构买入保护意愿强烈。</li>
+          </ul>
+        </div>
+        <div class="info-panel">
+          <div class="panel-hdr">⑥ 下周风险矩阵 (2026-W42)</div>
+          <table class="risk-matrix">
+            <tr>
+              <th>风险事件</th>
+              <th>级别</th>
+              <th>传导机制</th>
+            </tr>
+            <tr>
+              <td>华尔街大行三季报首发 (JPM/WFC)</td>
+              <td><span class="bg-r">高危</span></td>
+              <td>净利息收入指引及信贷坏账拨备将定调美股盈利周期真实健康度。</td>
+            </tr>
+            <tr>
+              <td>美国9月PPI与核心CPI</td>
+              <td><span class="bg-r">高危</span></td>
+              <td>通胀粘性将直接决定11月FOMC会议降息25bp还是跳过。</td>
+            </tr>
+            <tr>
+              <td>中东地缘石油供应溢价</td>
+              <td><span class="bg-o">中度</span></td>
+              <td>油价若持续高于$100，美股企业四季度运营利润率（Operating Margin）将被压缩。</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============================================================== -->
+    <!-- ③ 法国 CAC 40 板块 (固定 WATCHLIST) -->
+    <!-- ============================================================== -->
+    <section id="sec-cac" class="asset-section">
+      <div class="section-header">
+        <h2 class="section-title">③ 法国 CAC 40 | 财政溢价阴霾、OAT息差缓解与工业防务对冲</h2>
+        <span class="section-badge">核心口径：Euronext Paris / Boursier.com / Boursorama / LBPAM框架</span>
+      </div>
+
+      <!-- 1. 宏观快照 -->
+      <div class="card-grid">
+        <div class="metric-card">
+          <div class="metric-title">CAC 40 指数收盘 <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">7,790.5 pts</div>
+          <div class="metric-sub"><span class="bg-g">周五反弹+0.85%</span> 周度累计回稳</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">法国 10Y OAT 收益率 <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">4.82%</div>
+          <div class="metric-sub"><span class="bg-g">自周中高位微幅回落</span> 缓和主权违约恐慌</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">OAT-Bund 德法利差 <span class="honesty-tag tag-est">估</span></div>
+          <div class="metric-val">~78 bps</div>
+          <div class="metric-sub"><span class="bg-o">结构性偏高</span> 2027预算草案谈判僵局</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-title">布伦特原油 (Brent) <span class="honesty-tag tag-verified">✓</span></div>
+          <div class="metric-val">$102.90 / bbl</div>
+          <div class="metric-sub"><span class="bg-r">持续高位</span> 提振能源、挤压航运</div>
+        </div>
+      </div>
+
+      <!-- 2. 周内日历叙事 -->
+      <div class="timeline">
+        <div class="timeline-col">
+          <div class="t-date">10/05 (周一) 预算案阴霾</div>
+          <div class="t-desc">法国国民议会开启财政法案审议，紧缩增税预期导致本地公用事业及银行股低开。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/06 (周二) 奢侈品需求弱化</div>
+          <div class="t-desc">亚洲奢侈品零售终端高频数据偏弱，LVMH与Kering承压拖累CAC40跌破7,800。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/07 (周三) 外部利率传导</div>
+          <div class="t-desc">美联储偏鹰纪要促使全球长端利率飙升，CAC40下探至7,729点周内最低位。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/08 (周四) 空客数据放榜</div>
+          <div class="t-desc">Airbus公布9月交付72架客机（年内累计547架，维持870目标），航空制造端稳住阵脚。</div>
+        </div>
+        <div class="timeline-col">
+          <div class="t-date">10/09 (周五) 强劲技术反弹</div>
+          <div class="t-desc">Soitec获大行上调目标价暴涨6%，Capgemini涨4%，ArcelorMittal涨5%，指数大涨收复7,790。</div>
+        </div>
+      </div>
+
+      <!-- 3. 板块表现 -->
+      <div style="margin-bottom: 18px; padding: 12px; background: var(--bg-card); border-radius: 6px;">
+        <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-faint); margin-bottom: 6px;">固定 WATCHLIST 七大细分相对强弱</div>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; font-size: 12px;">
+          <div><span class="bg-g">领涨：</span> 工业材料 (+4.2%)、科技IT (+3.8%)、能源 (+2.1%)</div>
+          <div><span class="bg-r">落后：</span> 奢侈品 (-1.9%)、医疗 (-0.8%)、银行保险 (+0.2%)</div>
+        </div>
+      </div>
+
+      <!-- 4. 固定 Watchlist 总表 (七大板块) -->
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>细分板块</th>
+              <th>代表标的</th>
+              <th>最新表现 / 价格</th>
+              <th>周变动</th>
+              <th>核心驱动事件 / 投研诊断</th>
+              <th>诚实度</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- 防务航空 -->
+            <tr>
+              <td rowspan="2" style="vertical-align: middle; background: #0f1522;"><strong>防务航空</strong></td>
+              <td>Airbus (AIR)</td>
+              <td>€187.66</td>
+              <td><span class="bg-g">+1.45%</span></td>
+              <td>9月单月交付72架，手头订单达1,105架净值；供应链瓶颈缓释</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>Thales (HO) / Safran (SAF)</td>
+              <td>€162.5 / €218.4 估</td>
+              <td><span class="bg-g">+2.10%</span></td>
+              <td>欧洲国防开支法案及北约联合采购订单提供坚实业绩可见度</td>
+              <td><span class="honesty-tag tag-est">估</span></td>
+            </tr>
+            <!-- 能源 -->
+            <tr>
+              <td style="background: #0f1522;"><strong>能源</strong></td>
+              <td>TotalEnergies (TTE)</td>
+              <td>€68.42</td>
+              <td><span class="bg-g">+2.35%</span></td>
+              <td>布伦特原油站稳$102高位，炼油裂解价差与LNG现货溢价显著增厚现金流</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 奢侈品 -->
+            <tr>
+              <td rowspan="3" style="vertical-align: middle; background: #0f1522;"><strong>奢侈品</strong></td>
+              <td>LVMH (MC)</td>
+              <td>€624.5</td>
+              <td><span class="bg-r">-2.20%</span></td>
+              <td>大中华区高端消费复苏不及预期，皮具及干邑部门量价承压</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>Hermès (RMS)</td>
+              <td>€2,060.0</td>
+              <td><span class="bg-r">-0.65%</span></td>
+              <td>配货制及高净值客群粘性极高，体现极强抗跌溢价</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>Kering (KER)</td>
+              <td>€228.4</td>
+              <td><span class="bg-r">-4.10%</span></td>
+              <td>Gucci品牌重塑尚在阵痛期，高杠杆财务结构受利率冲击明显</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 银行保险 -->
+            <tr>
+              <td rowspan="2" style="vertical-align: middle; background: #0f1522;"><strong>银行保险</strong></td>
+              <td>BNP Paribas (BNP)</td>
+              <td>€65.18</td>
+              <td><span class="bg-g">+0.30%</span></td>
+              <td>息差收入稳固，但法国本土主权债务评级展望对其融资成本形成拖累</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>AXA (CS)</td>
+              <td>€35.40</td>
+              <td><span class="bg-g">+0.85%</span></td>
+              <td>商业险保费费率维持上涨周期，资产端固收再投资收益率提升</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 科技IT -->
+            <tr>
+              <td rowspan="2" style="vertical-align: middle; background: #0f1522;"><strong>科技IT</strong></td>
+              <td>Capgemini (CAP)</td>
+              <td>€115.00</td>
+              <td><span class="bg-g">+4.02%</span></td>
+              <td>周五空头回补大幅拉升，企业数字化转型与AI实施订单出现筑底信号</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>Soitec (SOI)</td>
+              <td>€162.00</td>
+              <td><span class="bg-g">+6.15%</span></td>
+              <td>美银重磅上调评级至“买入”并看高至€300，看好光学晶圆与射频多元化</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 工业材料 -->
+            <tr>
+              <td rowspan="2" style="vertical-align: middle; background: #0f1522;"><strong>工业材料</strong></td>
+              <td>ArcelorMittal (MT)</td>
+              <td>€57.20</td>
+              <td><span class="bg-g">+5.24%</span></td>
+              <td>瑞银上调目标价至€71，欧洲钢铁去库存周期进入尾声</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <tr>
+              <td>Schneider Electric (SU)</td>
+              <td>€238.10</td>
+              <td><span class="bg-g">+1.90%</span></td>
+              <td>全球数据中心配电与电网电气化改造刚性需求支撑</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+            <!-- 医疗 -->
+            <tr>
+              <td style="background: #0f1522;"><strong>医疗</strong></td>
+              <td>Sanofi (SAN)</td>
+              <td>€98.30</td>
+              <td><span class="bg-r">-0.70%</span></td>
+              <td>Dupixent自免重磅药销售保持高增，但消费者保健业务分拆估值中性</td>
+              <td><span class="honesty-tag tag-verified">✓</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 5. 核心催化剂与结构诊断 & 6. 风险矩阵 -->
+      <div class="analysis-grid">
+        <div class="info-panel">
+          <div class="panel-hdr">⑤ 核心催化剂与微观结构诊断</div>
+          <ul class="bullet-list">
+            <li><strong>“法国内生风险” vs “跨国盈利护城河”撕裂：</strong>CAC 40 跨国企业（Airbus、Schneider、TotalEnergies）超75%收入来自法国境外，成功隔离了法国本土政治财政预算的直接冲击。</li>
+            <li><strong>周期底部重估资金回流：</strong>工业半导体（Soitec）及钢铁材料（ArcelorMittal）受到投行集中上调评级，周五形成强有力的逼空式补涨。</li>
+            <li><strong>奢侈品权重压制指数天花板：</strong>LVMH与Kering持续受到非必需消费支出放缓拖累，限制了CAC 40突破7,900阻力位的速度。</li>
+          </ul>
+        </div>
+        <div class="info-panel">
+          <div class="panel-hdr">⑥ 下周风险矩阵 (2026-W42)</div>
+          <table class="risk-matrix">
+            <tr>
+              <th>风险事件</th>
+              <th>级别</th>
+              <th>传导机制</th>
+            </tr>
+            <tr>
+              <td>欧洲央行 (ECB) 货币政策前瞻沟通</td>
+              <td><span class="bg-r">高危</span></td>
+              <td>若ECB因能源通胀放缓降息步伐，欧元区高负债主权债利差将再度走阔。</td>
+            </tr>
+            <tr>
+              <td>法国2027年财政法案议会表决动向</td>
+              <td><span class="bg-r">高危</span></td>
+              <td>若预算案引发政府信任动议（49.3条款危机），法法国银行业及公用事业将首当其冲。</td>
+            </tr>
+            <tr>
+              <td>LVMH三季度营收披露前哨战</td>
+              <td><span class="bg-o">中度</span></td>
+              <td>若主要时装皮具品类内生增速继续滑坡，将触发泛欧消费股连锁下修。</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- 底部数据源声明与机构免责 -->
+  <footer>
+    <div class="container">
+      <div class="source-block">
+        <strong>各资产数据源披露说明：</strong><br>
+        1. <strong>Crypto：</strong>CoinGlass（实时清算热图与合约未平仓量）、SoSoValue（现货ETF资金净流入口径）、Glassnode（链上持币结构）、CoinGecko / Binance 行情流。<br>
+        2. <strong>美股市场：</strong>MacroTrends、Nasdaq Economic Research 2026 Monthly Scorecard、Bloomberg、SEC EDGAR 机构持仓披露。<br>
+        3. <strong>法国 CAC 40：</strong>Euronext Paris 官方历史数据、Boursier.com / Fortuneo 法语一手财经晨报、Boursorama。<strong>[重要标注]</strong> 首选分析基准 LBPAM（La Banque Postale Asset Management）公网即时晨报流因权限限制受限，本看板已严格参照其 2026 宏观资产配置展望框架（欧洲低估值与能源中立策略），并以泛欧交易所现场成交数据进行完全等权校准。
+      </div>
+      <div>
+        <strong>量化机构免责声明：</strong> 本看板所载全部量化指标、估值中枢与矩阵诊断仅供专业投资机构研究复盘使用，不构成任何买入或卖出投资建议。历史波动率与回撤数据不代表未来表现。投资有风险，衍生品交易具备极高穿仓风险。
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

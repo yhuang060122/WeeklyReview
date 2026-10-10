@@ -1,0 +1,81 @@
+<html style="margin:0;padding:0;">
+<title>C#进阶知识图谱</title>
+<div style="width:100%;box-sizing:border-box;font-family:'Microsoft YaHei',system-ui,sans-serif;padding:16px;background:#f6f8fb;color:#232b3a;">
+  <div style="background:#fff;border:1px solid #e3e8f0;border-radius:14px;padding:16px 18px;margin-bottom:14px;">
+    <div style="font-size:20px;font-weight:700;">C# 进阶 · 知识图谱</div>
+    <div style="font-size:14px;color:#5b6577;margin-top:6px;">素材：7 张截图 + 17 组图文 → 产物：8 篇 Obsidian 笔记（PARA：Areas / C# 技能）· 10 条原文纠错 · 全篇双链互通</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px;">
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #3b82f6;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">01 异步编程 · Await 与 Task</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「异步=点外卖，不干等」</div>
+      <div><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">async/await</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">状态机</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Task/ValueTask</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">ConfigureAwait</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Task.Yield</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">5 个扩展方法</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 4 条：异常列反 / 取消 / IsCompleted / lock+await</div>
+      <div style="font-size:12px;color:#3b82f6;margin-top:2px;">关联 → 02 异步流 · 05 内存</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #3b82f6;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">02 异步流与 AsyncLocal</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「流水线车间 · 随行行李牌」</div>
+      <div><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IAsyncEnumerable</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">await foreach</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">[EnumeratorCancellation]</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">AsyncLocal</span><span style="display:inline-block;background:#eef2ff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">ExecutionContext</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 1 条：ThreadStatic 失效机理</div>
+      <div style="font-size:12px;color:#3b82f6;margin-top:2px;">关联 → 01 异步编程</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #8b5cf6;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">03 泛型方差 · 协变逆变 in/out</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「双车道规则：出可窄、进可宽」</div>
+      <div><span style="display:inline-block;background:#f3efff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Covariance out</span><span style="display:inline-block;background:#f3efff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Contravariance in</span><span style="display:inline-block;background:#f3efff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Func&lt;out&gt;/Action&lt;in&gt;</span><span style="display:inline-block;background:#f3efff;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IEnumerable&lt;out&gt;</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 2 条：定义说混 / (Dog)=&gt;Dog 表标反</div>
+      <div style="font-size:12px;color:#8b5cf6;margin-top:2px;">关联 → 04 LINQ（IEnumerable&lt;out T&gt;）</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #10b981;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">04 LINQ 接口家族</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「谁执行？何时执行？怎么分组？」</div>
+      <div><span style="display:inline-block;background:#eafaf1;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IEnumerable 内存</span><span style="display:inline-block;background:#eafaf1;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IQueryable 表达式树</span><span style="display:inline-block;background:#eafaf1;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IGrouping 惰性</span><span style="display:inline-block;background:#eafaf1;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">ILookup 急切</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 2 条：ToLookup 例子 / 惰性-急切隐藏考点</div>
+      <div style="font-size:12px;color:#10b981;margin-top:2px;">关联 → 03 泛型方差</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #f59e0b;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">05 内存管理 · GC 与零分配</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「管家 · 该断的线 · 零分配」</div>
+      <div><span style="display:inline-block;background:#fef3e2;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Mark/Sweep/Compact</span><span style="display:inline-block;background:#fef3e2;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">代龄与 LOH</span><span style="display:inline-block;background:#fef3e2;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">WeakReference</span><span style="display:inline-block;background:#fef3e2;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">IDisposable</span><span style="display:inline-block;background:#fef3e2;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">零分配 HTTP</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 3 条：循环引用 / GC 简化模型 / 事件泄漏</div>
+      <div style="font-size:12px;color:#f59e0b;margin-top:2px;">关联 → 06 语言特性 · 01 异步</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #06b6d4;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">06 语言特性与数据结构</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「传参三姿势 · 排队哲学」</div>
+      <div><span style="display:inline-block;background:#e6f9fc;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">out/ref/in</span><span style="display:inline-block;background:#e6f9fc;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">new 三身份</span><span style="display:inline-block;background:#e6f9fc;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">SmartEnum</span><span style="display:inline-block;background:#e6f9fc;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">8 大结构复杂度</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">纠错 3 条：Queue O(n) / SmartEnum 泛型 / new() IL</div>
+      <div style="font-size:12px;color:#06b6d4;margin-top:2px;">关联 → 05 内存 · 07 重构</div>
+    </div>
+    <div style="background:#fff;border:1px solid #e3e8f0;border-top:5px solid #ef4444;border-radius:12px;padding:14px 16px;">
+      <div style="font-size:16px;font-weight:700;">07 重构五技</div>
+      <div style="font-size:13px;color:#5b6577;margin:4px 0 8px;">命名：「行为不变、结构变好」</div>
+      <div><span style="display:inline-block;background:#fdeeee;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Extract Method</span><span style="display:inline-block;background:#fdeeee;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Extract Interface</span><span style="display:inline-block;background:#fdeeee;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Extract Class</span><span style="display:inline-block;background:#fdeeee;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Functional</span><span style="display:inline-block;background:#fdeeee;border-radius:6px;padding:2px 8px;font-size:12px;margin:2px 4px 2px 0;">Push Logic Down</span></div>
+      <div style="font-size:12px;color:#c2410c;margin-top:8px;">100 行 → 20 行 · 可测可读可扩展</div>
+      <div style="font-size:12px;color:#ef4444;margin-top:2px;">关联 → 06 语言特性（enum vs SmartEnum）</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px 18px;background:#fff;border:1px solid #e3e8f0;border-radius:12px;padding:12px 16px;margin-top:14px;font-size:13px;">
+    <div><span style="display:inline-block;width:12px;height:12px;background:#3b82f6;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>异步运行时（01·02）</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#8b5cf6;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>类型系统（03）</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#10b981;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>数据访问（04）</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#f59e0b;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>内存与资源（05）</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#06b6d4;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>语言基础（06）</div>
+    <div><span style="display:inline-block;width:12px;height:12px;background:#ef4444;border-radius:3px;vertical-align:-1px;margin-right:6px;"></span>工程方法（07）</div>
+    <div style="color:#5b6577;">箭头 = 主题依赖（先学 → 后用）；每卡片标注纠错数与关联</div>
+  </div>
+  <div style="background:#fff;border:1px solid #e3e8f0;border-radius:12px;padding:12px 16px;margin-top:14px;">
+    <div style="font-size:14px;font-weight:700;margin-bottom:8px;">推荐学习路径（MOC 内附 Mermaid 版本）</div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;">
+      <span style="background:#06b6d4;color:#fff;border-radius:8px;padding:4px 10px;">06 语言基础</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#3b82f6;color:#fff;border-radius:8px;padding:4px 10px;">01 异步</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#3b82f6;color:#fff;border-radius:8px;padding:4px 10px;">02 异步流</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#f59e0b;color:#fff;border-radius:8px;padding:4px 10px;">05 内存</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#10b981;color:#fff;border-radius:8px;padding:4px 10px;">04 LINQ</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#8b5cf6;color:#fff;border-radius:8px;padding:4px 10px;">03 方差</span><span style="color:#8a94a6;">→</span>
+      <span style="background:#ef4444;color:#fff;border-radius:8px;padding:4px 10px;">07 重构</span>
+    </div>
+  </div>
+</div>
+</html>

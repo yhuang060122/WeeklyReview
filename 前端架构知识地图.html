@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>前端架构知识地图：Slice组织 · 微前端 · 监控</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Microsoft YaHei", "PingFang SC", sans-serif; background: #f6f8fb; color: #1f2937; line-height: 1.55; padding: 28px 20px 40px; }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header { text-align: center; margin-bottom: 26px; }
+  h1 { font-size: 26px; font-weight: 700; letter-spacing: .5px; }
+  .subtitle { margin-top: 8px; font-size: 15px; color: #4b5563; }
+  .subtitle b { color: #111827; }
+  .chain { margin: 14px auto 0; max-width: 760px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; font-size: 13px; color: #374151; }
+  .chain span { background: #fff; border: 1px solid #d1d5db; border-radius: 20px; padding: 4px 12px; }
+  .chain i { color: #9ca3af; font-style: normal; font-weight: 700; }
+
+  /* layers */
+  .layer { border-radius: 14px; padding: 18px 20px 16px; margin: 18px 0 0; position: relative; }
+  .layer .tag { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: 1px; padding: 3px 10px; border-radius: 6px; color: #fff; margin-bottom: 10px; }
+  .layer-l1 { background: #eaf2fc; border: 1px solid #b9d4f2; }
+  .layer-l1 .tag { background: #1e6fd9; }
+  .layer-l2 { background: #e9f7ef; border: 1px solid #b3ddc3; }
+  .layer-l2 .tag { background: #1a7f4d; }
+  .layer-l3 { background: #fdf1e6; border: 1px solid #efcfae; }
+  .layer-l3 .tag { background: #c2571a; }
+  .layer h2 { font-size: 16px; margin-bottom: 4px; }
+  .layer .desc { font-size: 13px; color: #4b5563; margin-bottom: 12px; }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px 14px; flex: 1 1 200px; min-width: 200px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+  .card h3 { font-size: 14px; margin-bottom: 6px; }
+  .card ul { list-style: none; }
+  .card li { font-size: 12.5px; color: #374151; padding: 3px 0 3px 14px; position: relative; }
+  .card li::before { content: "›"; position: absolute; left: 2px; color: #9ca3af; font-weight: 700; }
+  .hl { font-weight: 700; color: #111827; }
+
+  /* connectors */
+  .conn { text-align: center; margin: 0; font-size: 13px; color: #6b7280; position: relative; padding: 10px 0 2px; }
+  .conn .arrow { display: block; font-size: 22px; line-height: 1; color: #9ca3af; }
+  .conn .label { background: #fff; border: 1px dashed #c4ccd6; border-radius: 12px; display: inline-block; padding: 2px 12px; font-size: 12px; margin-top: 4px; color: #374151; }
+
+  /* loop back */
+  .loop { text-align: center; margin-top: 14px; font-size: 12.5px; color: #b45309; background: #fff8ef; border: 1px solid #f2d9b8; border-radius: 10px; padding: 8px 12px; }
+
+  /* cheat strip */
+  .cheat { margin-top: 26px; }
+  .cheat h2 { font-size: 16px; margin-bottom: 10px; }
+  .cheat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .cheat-box { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px 14px; }
+  .cheat-box h3 { font-size: 13px; margin-bottom: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th, td { text-align: left; padding: 4px 6px; border-bottom: 1px solid #f0f1f3; vertical-align: top; }
+  th { color: #6b7280; font-weight: 600; }
+  td code { background: #f3f4f6; border-radius: 4px; padding: 0 4px; font-size: 11px; color: #b91c1c; }
+  .mini { font-size: 11.5px; color: #6b7280; margin-top: 4px; }
+  footer { margin-top: 24px; font-size: 12px; color: #9ca3af; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>前端架构知识地图</h1>
+    <p class="subtitle">三篇文章，三个尺度，一条完整工程链：<b>代码怎么摆 → 应用怎么拆 → 系统怎么被看见</b></p>
+    <div class="chain">
+      <span>① Slice 组织法</span><i>→</i>
+      <span>② 微前端 + Module Federation</span><i>→</i>
+      <span>③ 前端监控</span>
+    </div>
+  </header>
+
+  <!-- Layer 1 -->
+  <section class="layer layer-l1">
+    <span class="tag">代码尺度 · 应用内</span>
+    <h2>① 六边形架构落地：Slice 文件组织法</h2>
+    <p class="desc">文件夹的名字 = 业务功能的名字（Screaming Architecture）；读写分离，依赖永远指向内部。</p>
+    <div class="row">
+      <div class="card">
+        <h3>Feature Slice</h3>
+        <ul>
+          <li><span class="hl">list-flashcards/</span> → query：controller + dto + query 服务，<b>直接查 DB</b>，不走领域层</li>
+          <li><span class="hl">notify-answer/</span> → command：写操作走领域模型</li>
+          <li><span class="hl">flashcard.module.ts</span> → Bounded Context 根组合</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>model/（领域层 · 最内层）</h3>
+        <ul>
+          <li>纯实体：box.entity / flashcard.entity</li>
+          <li><span class="hl">定义端口</span>：box.repository、date-provider 接口</li>
+          <li>不 import 任何 infra —— 依赖指向内部</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>infra/（适配器 · 最外层）</h3>
+        <ul>
+          <li>仓储实现：postgres / inmemory 各一套</li>
+          <li>prisma.service、real/stub date-provider</li>
+          <li>测试可注入 stub，无真实 IO</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>四大优势</h3>
+        <ul>
+          <li>Screaming Architecture：看目录即知功能</li>
+          <li>Collocation：改一个功能只进一个目录</li>
+          <li>无 ports/adapters 技术术语文件夹</li>
+          <li>轻量 CQS → 可演进为 CQRS</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="conn"><span class="arrow">▼</span><span class="label">每个微前端内部仍可用 Slice 组织 —— 外层部署边界 ⊃ 内层代码边界</span></div>
+
+  <!-- Layer 2 -->
+  <section class="layer layer-l2">
+    <span class="tag">部署尺度 · 应用间</span>
+    <h2>② 微前端 + Module Federation</h2>
+    <p class="desc">微前端解决"拆"（独立部署、团队自治），Module Federation 解决"运行时合"（动态加载、共享依赖）。</p>
+    <div class="row">
+      <div class="card">
+        <h3>Host 宿主</h3>
+        <ul>
+          <li>消费并集成远程模块的主容器</li>
+          <li>负责编排、运行时动态加载</li>
+          <li>可同时暴露自己的模块 → <span class="hl">Bidirectional Hosts（双向宿主）</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Remote 远程</h3>
+        <ul>
+          <li>独立开发、独立部署、可跨域名</li>
+          <li>暴露组件 / 函数 / 资源</li>
+          <li>被 Host 在运行时消费渲染</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>五大收益</h3>
+        <ul>
+          <li>按需增删模块 → 可扩展</li>
+          <li>独立发布 → 低耦合风险</li>
+          <li>自选技术栈 → 团队自治</li>
+          <li>懒加载 + 共享缓存 → 性能</li>
+          <li>组件跨应用复用</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>挑战 → 最佳实践</h3>
+        <ul>
+          <li>内聚难 → 小而聚焦</li>
+          <li>通信难 → 公共 API / 事件总线</li>
+          <li>部署复杂 → 集中配置 + 版本控制</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="conn"><span class="arrow">▼</span><span class="label">应用上线后，一切运行行为进入观测层</span></div>
+
+  <!-- Layer 3 -->
+  <section class="layer layer-l3">
+    <span class="tag">运行尺度 · 线上</span>
+    <h2>③ 前端监控体系：可观测性闭环</h2>
+    <p class="desc">把"用户看到的、浏览器经历的、业务发生的"变成结构化数据，走完五环节闭环。</p>
+    <div class="row">
+      <div class="card">
+        <h3>三类目标</h3>
+        <ul>
+          <li><span class="hl">稳定性</span>：JS 错误 / Promise 异常 / 资源错误 / 接口错误 / 白屏</li>
+          <li><span class="hl">体验</span>：加载性能 / 卡顿 / 交互延迟</li>
+          <li><span class="hl">业务</span>：PV / UV / 停留时间</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>五环节闭环</h3>
+        <ul>
+          <li>① 前端埋点 → ② 数据上报 → ③ 加工汇总</li>
+          <li>④ 可视化展示 → ⑤ 监控报警</li>
+          <li>报警 → 修复 → 再埋点（反馈回路）</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>埋点三方案</h3>
+        <ul>
+          <li>代码埋点：精确但工作量大</li>
+          <li>可视化埋点：系统代替手工</li>
+          <li>无痕埋点：全量数据，压力大</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>错误捕获四通道</h3>
+        <ul>
+          <li><code>error</code> + target.src/href → <b>resourceError</b></li>
+          <li><code>error</code>（捕获阶段）→ <b>jsError</b></li>
+          <li><code>unhandledrejection</code> → <b>promiseError</b></li>
+          <li>重写 XHR open/send → <b>接口异常</b></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="loop">↺ 闭环：监控报警 → 定位到具体 slice / 具体 remote 模块 → 修复 → 重新部署 → 监控验证</div>
+
+  <!-- Cheat strips -->
+  <section class="cheat">
+    <h2>高密度速查条</h2>
+    <div class="cheat-grid">
+      <div class="cheat-box">
+        <h3>性能时间线关键计算</h3>
+        <table>
+          <tr><th>指标</th><th>计算</th></tr>
+          <tr><td>TTFB（首字节）</td><td><code>responseStart – requestStart</code></td></tr>
+          <tr><td>白屏（首次渲染）</td><td><code>responseEnd – fetchStart</code></td></tr>
+          <tr><td>首次可交互</td><td><code>domInteractive – fetchStart</code></td></tr>
+          <tr><td>DOM 解析</td><td><code>domInteractive – responseEnd</code></td></tr>
+          <tr><td>页面完全加载</td><td><code>loadEventStart – fetchStart</code></td></tr>
+        </table>
+        <p class="mini">注：performance.timing 已被 PerformanceNavigationTiming 取代，新项目用新 API。</p>
+      </div>
+      <div class="cheat-box">
+        <h3>Web Vitals 核心指标</h3>
+        <table>
+          <tr><th>指标</th><th>一句话</th></tr>
+          <tr><td>FCP</td><td>首个内容渲染（≈ 白屏）</td></tr>
+          <tr><td>LCP</td><td>最大内容渲染</td></tr>
+          <tr><td>TTI</td><td>可交互时间</td></tr>
+          <tr><td>TBT</td><td>FCP→TTI 主线程总阻塞</td></tr>
+          <tr><td>FID</td><td>首次输入延迟</td></tr>
+          <tr><td>CLS</td><td>累积布局偏移</td></tr>
+        </table>
+        <p class="mini">获取：PerformanceObserver（FP/FCP/LCP/CLS/FID/longTask）＋ performance.timing（各阶段耗时）。</p>
+      </div>
+      <div class="cheat-box">
+        <h3>Node 监控九维度</h3>
+        <table>
+          <tr><th>维度</th><th>关键信号</th></tr>
+          <tr><td>日志</td><td>异常类型/数量变动</td></tr>
+          <tr><td>进程</td><td>工作进程数低于阈值</td></tr>
+          <tr><td>内存</td><td>只升不降 = 泄漏</td></tr>
+          <tr><td>CPU 占用</td><td>用户态&lt;70% 内核态&lt;35%</td></tr>
+          <tr><td>CPU Load</td><td>1/5/15 分钟平均负载</td></tr>
+          <tr><td>磁盘 / I/O / 网络</td><td>用量上限 + 流量预警</td></tr>
+          <tr><td>应用状态 / DNS</td><td>健康检查接口 + 域名探活</td></tr>
+        </table>
+      </div>
+      <div class="cheat-box">
+        <h3>内存泄漏四来源</h3>
+        <table>
+          <tr><th>来源</th><th>典型场景</th></tr>
+          <tr><td>全局变量</td><td>window 挂载数据</td></tr>
+          <tr><td>被遗忘的定时器</td><td>setInterval 未清理</td></tr>
+          <tr><td>脱离 DOM 的引用</td><td>已移除节点仍被持有</td></tr>
+          <tr><td>闭包</td><td>外部引用未释放</td></tr>
+        </table>
+        <p class="mini">监控：window.performance.memory；开发期用浏览器 Performance 面板。</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>信息来源：CraftAcademy Substack ① · Medium (Luis Cameroon) ② · 微信文章《前端监控》+ github.com/miracle90/monitor ③ ｜ 图为示意，供学习使用</footer>
+</div>
+</body>
+</html>

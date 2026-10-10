@@ -1,0 +1,779 @@
+<!doctype html>
+<html lang="en" data-theme="shadcn" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Answer me with HTML 0.4.6">
+<title>Evolution of LLM Architecture</title>
+<style>
+html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0px;
+  --shadow: none;
+  --bw: 1.5px;
+  --head-font: var(--font-sans);
+  --bg: #f6f6f3;
+  --paper: #ffffff;
+  --ink: #16181d;
+  --ink-2: #4b5260;
+  --ink-3: #8b929e;
+  --line: #1d2026;
+  --line-2: #d6dae1;
+  --fill: #f3f5f8;
+  --accent: #1d5fbf;
+  --accent-bg: #e4ecf8;
+  --ok: #1d5fbf;
+  --ok-bg: #e4ecf8;
+  --err: #c62828;
+  --err-bg: #fbeaea;
+  --warn: #a8620a;
+  --warn-bg: #fdf3e2;
+  --head-bg: #16181d;
+  --head-fg: #ffffff;
+}
+html[data-theme="blueprint"][data-mode="dark"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="blueprint"][data-mode="auto"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+}
+
+html[data-theme="shadcn"], html[data-theme="shadcn"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 8px;
+  --shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --bw: 1px;
+  --head-font: var(--font-sans);
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --ink: #09090b;
+  --ink-2: #71717a;
+  --ink-3: #a1a1aa;
+  --line: #e4e4e7;
+  --line-2: #f0f0f2;
+  --fill: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --err: #dc2626;
+  --err-bg: #fef2f2;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --head-bg: #18181b;
+  --head-fg: #fafafa;
+}
+html[data-theme="shadcn"][data-mode="dark"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="shadcn"][data-mode="auto"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+}
+
+html[lang="ja"][data-theme][data-mode] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html[lang="ja"][data-theme="3b1b"][data-mode] {
+  --v-title-font: "CMU Serif", "Latin Modern Roman", "Iowan Old Style", "Palatino", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif JP", "Songti SC", serif;
+}
+
+/* Answer me with HTML base — 只引用主题变量，禁止写死颜色（主题 token 见 themes/index.js） */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, kbd { font-family: var(--font-mono); }
+
+/* ── 工具栏 ─────────────────────────────── */
+.am-toolbar {
+  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;
+}
+.am-btn {
+  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;
+}
+.am-btn:hover { border-color: var(--ink-3); }
+.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 页头 ───────────────────────────────── */
+.am-head { margin: 0 0 20px; padding-right: 260px; }
+.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+.am-sub { margin: 4px 0 0; color: var(--ink-2); }
+.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }
+.am-intro { margin-top: 12px; max-width: 80ch; }
+
+/* ── sheet 图纸板 ────────────────────────── */
+.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }
+.am-frame { position: relative; }
+.am-grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 20px; align-items: start;
+}
+.am-ruler { display: none; }
+html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
+html[data-theme="blueprint"] .am-frame::before {
+  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
+}
+html[data-theme="blueprint"] .am-ruler {
+  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);
+}
+.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }
+.am-ruler--top { top: 0; }
+.am-ruler--bottom { bottom: 0; }
+.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }
+.am-ruler--left { left: 0; }
+.am-ruler--right { right: 0; }
+.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }
+.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }
+
+/* ── 面板 ───────────────────────────────── */
+.am-panel {
+  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); min-width: 0; overflow: hidden;
+}
+.am-panel-head {
+  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;
+}
+.am-panel-id {
+  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;
+  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;
+}
+html[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }
+html[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }
+.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }
+.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }
+.am-panel-body { padding: 14px 16px 16px; }
+.am-panel-body > * + * { margin-top: 12px; }
+
+/* ── Markdown 正文 ───────────────────────── */
+.am-md > :first-child { margin-top: 0; }
+.am-md > :last-child { margin-bottom: 0; }
+.am-md p { margin: 0 0 8px; }
+.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }
+.am-md li + li { margin-top: 3px; }
+.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }
+.am-md a { color: var(--accent); }
+.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }
+.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }
+.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }
+.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.am-md th {
+  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;
+  padding: 6px 10px; border-bottom: 1px solid var(--line-2);
+}
+.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.am-md tbody tr:nth-child(even) td { background: var(--fill); }
+.am-table-wrap { overflow-x: auto; }
+.am-code {
+  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);
+  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── 状态徽章 ok / no / warn ──────────────── */
+.am-status { white-space: nowrap; font-weight: 500; }
+.am-status--ok { color: var(--ok); }
+.am-status--no { color: var(--err); }
+.am-status--warn { color: var(--warn); }
+.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }
+
+/* ── callout ─────────────────────────────── */
+.am-callout {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: var(--radius);
+}
+.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }
+.am-callout-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── kv 标题栏格 ─────────────────────────── */
+.am-kv {
+  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;
+  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);
+}
+.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }
+.am-kv-cell--wide { grid-column: 1 / -1; }
+.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }
+.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }
+html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ── timeline ────────────────────────────── */
+.am-timeline { list-style: none; margin: 0; padding: 0; }
+.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }
+.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }
+.am-timeline--h li::before {
+  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);
+}
+.am-timeline--h li:first-child::before { left: 50%; }
+.am-timeline--h li:last-child::before { right: 50%; }
+.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }
+.am-tl-dot {
+  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
+  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
+}
+.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
+.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }
+.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }
+.am-timeline--v li:last-child::before { display: none; }
+.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }
+.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }
+.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }
+.am-timeline--v .am-tl-text { margin-top: 2px; }
+
+/* ── annot 句子标注 ──────────────────────── */
+.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }
+.am-annot-scroll { overflow-x: auto; }
+.am-annot-line {
+  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);
+  padding-bottom: calc(var(--rows, 0) * 17px + 14px);
+}
+.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }
+.am-annot-line--wrap .am-seg { white-space: nowrap; }
+.am-seg { position: relative; }
+.am-seg::after {
+  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;
+  border: 1px solid var(--accent); border-top: 0;
+}
+.am-seg-n {
+  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);
+  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;
+}
+.am-seg--err { color: var(--err); }
+.am-seg--err::after { border-color: var(--err); }
+.am-seg--err .am-seg-n { color: var(--err); }
+.am-annot-caption { font-size: 12px; color: var(--ink-2); }
+
+/* ── limits 限值条 ───────────────────────── */
+.am-lim + .am-lim { margin-top: 14px; }
+.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }
+.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }
+.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }
+.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }
+.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }
+.am-lim.is-over .am-lim-val { color: var(--err); }
+.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }
+.am-lim-ticks span { position: absolute; transform: translateX(-50%); }
+.am-lim-ticks span:first-child { transform: none; }
+.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }
+
+/* ── tree 结构树 ─────────────────────────── */
+.am-tree { font-size: 13px; }
+.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }
+.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-root--solo { padding-bottom: 12px; }
+.am-tree-root--solo::after { display: none; }
+.am-tree-box {
+  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
+  border-radius: var(--radius); font-weight: 600;
+}
+.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
+.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
+.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
+.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
+.am-tree-col:first-child::before { left: 50%; }
+.am-tree-col:last-child::before { right: 50%; }
+.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }
+.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }
+.am-tree-list ul { margin-left: 16px; }
+.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }
+.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }
+.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }
+.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }
+.am-tree code { font: 12px var(--font-mono); }
+.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }
+.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }
+
+/* ── 图（flow / sequence）───────────────── */
+.am-diagram { margin: 0; overflow-x: auto; text-align: center; }
+.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }
+.am-diagram text { fill: var(--ink); font-size: 13px; }
+.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }
+.am-node--hi text { fill: var(--accent); font-weight: 600; }
+.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }
+.am-edge--dashed { stroke-dasharray: 5 4; }
+.am-arrow { fill: var(--ink-2); }
+.am-edge-label rect { fill: var(--paper); }
+.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }
+.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }
+.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
+.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
+
+/* ── doc 线性讲解 ────────────────────────── */
+.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
+.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+.am-toc { position: sticky; top: 24px; font-size: 13px; }
+.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }
+.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }
+
+/* ── 响应式与打印 ─────────────────────────── */
+@media (max-width: 1100px) {
+  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .am-grid > .am-panel { grid-column: auto !important; }
+  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 760px) {
+  .am-sheet, .am-doc { padding: 56px 12px 24px; }
+  .am-head { padding-right: 0; }
+  .am-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }
+  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }
+  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }
+  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .am-toc { position: static; }
+  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }
+  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }
+}
+.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }
+
+@media print {
+  .am-toolbar { display: none; }
+  body { background: var(--paper); }
+  .am-panel { break-inside: avoid; box-shadow: none; }
+}
+.am-panel--bare { border: 0; background: transparent; box-shadow: none; }
+.am-panel--bare > .am-panel-body { padding: 0; }
+.am-panel--bare .am-kv { background: var(--paper); }
+
+</style>
+</head>
+<body>
+<div class="am-toolbar">
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;Theme: Blueprint&quot;,&quot;shadcn&quot;:&quot;Theme: Cards&quot;}">Theme: Cards</button>
+<button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;Mode: Auto&quot;,&quot;light&quot;:&quot;Mode: Light&quot;,&quot;dark&quot;:&quot;Mode: Dark&quot;}">Mode: Light</button>
+<button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
+</div>
+<main class="am-sheet">
+<header class="am-head"><h1>Evolution of LLM Architecture</h1><p class="am-sub">Six stages. Each stage kept what worked and fixed the biggest problem.</p><div class="am-head-meta"><span><b>source</b>Outcome School — Evolution of LLM Architecture</span></div><div class="am-intro am-md"><div class="am-md"><p>An LLM architecture is the blueprint of a model: how it reads text, how it remembers it, how it predicts the next word. Every big step happened because the previous design had one big problem.</p>
+</div></div></header>
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 3">
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>1 The whole journey</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 1388 63" width="1388" height="63" role="img" aria-label="流程图：RNN、Attention、Transformer、Scaling、MoE、New Directions" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M90,31.5 L124.7,31.5 Q159.4,31.5 194,31.5 L228.7,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="114" y="22.5" width="90.7" height="18" rx="3"/><text x="159.4" y="31.5" text-anchor="middle" dominant-baseline="central">fixes forgetting</text></g></g><g data-step="1"><path class="am-edge" d="M323.3,31.5 L362.7,31.5 Q402.1,31.5 441.5,31.5 L480.9,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="347.3" y="22.5" width="109.6" height="18" rx="3"/><text x="402.1" y="31.5" text-anchor="middle" dominant-baseline="central">fixes slow reading</text></g></g><g data-step="2"><path class="am-edge" d="M594,31.5 L631,31.5 Q668.1,31.5 705.1,31.5 L742.1,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="618" y="22.5" width="100.2" height="18" rx="3"/><text x="668.1" y="31.5" text-anchor="middle" dominant-baseline="central">makes it smarter</text></g></g><g data-step="3"><path class="am-edge" d="M828.4,31.5 L866,31.5 Q903.7,31.5 941.3,31.5 L978.9,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="852.4" y="22.5" width="102.5" height="18" rx="3"/><text x="903.7" y="31.5" text-anchor="middle" dominant-baseline="central">cuts running cost</text></g></g><g data-step="4"><path class="am-edge" d="M1054.9,31.5 L1100.8,31.5 Q1146.7,31.5 1192.6,31.5 L1238.5,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="1078.9" y="22.5" width="135.6" height="18" rx="3"/><text x="1146.7" y="31.5" text-anchor="middle" dominant-baseline="central">long context, reasoning</text></g></g></g><g><g class="am-node am-node--round" data-key="RNN" data-step="0"><rect class="am-node-shape" x="14" y="14" width="76" height="35" rx="17.5"/><text x="52" y="31.5" text-anchor="middle" dominant-baseline="central">RNN</text></g><g class="am-node am-node--round" data-key="Attention" data-step="0"><rect class="am-node-shape" x="228.7" y="14" width="94.6" height="35" rx="17.5"/><text x="276" y="31.5" text-anchor="middle" dominant-baseline="central">Attention</text></g><g class="am-node am-node--round" data-key="Transformer" data-step="1"><rect class="am-node-shape" x="480.9" y="14" width="113.1" height="35" rx="17.5"/><text x="537.5" y="31.5" text-anchor="middle" dominant-baseline="central">Transformer</text></g><g class="am-node am-node--round" data-key="Scaling" data-step="2"><rect class="am-node-shape" x="742.1" y="14" width="86.3" height="35" rx="17.5"/><text x="785.3" y="31.5" text-anchor="middle" dominant-baseline="central">Scaling</text></g><g class="am-node am-node--round" data-key="MoE" data-step="3"><rect class="am-node-shape" x="978.9" y="14" width="76" height="35" rx="17.5"/><text x="1016.9" y="31.5" text-anchor="middle" dominant-baseline="central">MoE</text></g><g class="am-node am-node--round" data-key="New Directions" data-step="4"><rect class="am-node-shape" x="1238.5" y="14" width="135.4" height="35" rx="17.5"/><text x="1306.2" y="31.5" text-anchor="middle" dominant-baseline="central">New Directions</text></g></g></svg></figure>
+<div class="am-md"><p>Each arrow solves one problem. When you see a new model, ask one question: which problem from this timeline is it trying to solve?</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-B">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>2 Stage 1: RNN — one word at a time</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 92 468" width="92" height="468" role="img" aria-label="流程图：The、cat、sat、on、the、mat" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M46,49 L46,60.5 Q46,72 46,83.5 L46,95" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M46,130 L46,141.5 Q46,153 46,164.5 L46,176" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M46,211 L46,222.5 Q46,234 46,245.5 L46,257" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M46,292 L46,303.5 Q46,315 46,326.5 L46,338" marker-end="url(#am2-arrow)"/></g><g data-step="0"><path class="am-edge" d="M46,373 L46,384.5 Q46,396 46,407.5 L46,419" marker-end="url(#am2-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="The" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">The</text></g><g class="am-node am-node--rect" data-key="cat" data-step="0"><rect class="am-node-shape" x="14" y="95" width="64" height="35" rx="3"/><text x="46" y="112.5" text-anchor="middle" dominant-baseline="central">cat</text></g><g class="am-node am-node--rect" data-key="sat" data-step="0"><rect class="am-node-shape" x="14" y="176" width="64" height="35" rx="3"/><text x="46" y="193.5" text-anchor="middle" dominant-baseline="central">sat</text></g><g class="am-node am-node--rect" data-key="on" data-step="0"><rect class="am-node-shape" x="14" y="257" width="64" height="35" rx="3"/><text x="46" y="274.5" text-anchor="middle" dominant-baseline="central">on</text></g><g class="am-node am-node--rect" data-key="the" data-step="0"><rect class="am-node-shape" x="14" y="338" width="64" height="35" rx="3"/><text x="46" y="355.5" text-anchor="middle" dominant-baseline="central">the</text></g><g class="am-node am-node--rect" data-key="mat" data-step="0"><rect class="am-node-shape" x="14" y="419" width="64" height="35" rx="3"/><text x="46" y="436.5" text-anchor="middle" dominant-baseline="central">mat</text></g></g></svg></figure>
+<div class="am-md"><p>An RNN reads one word at a time. After each word, it rewrites one small note. At the end, the whole sentence lives in that one note.</p>
+</div>
+<div class="am-callout am-callout--err" role="note"><div class="am-callout-title">Two problems</div><div class="am-callout-body am-md"><p>It forgets. The note is rewritten so many times that early words fade. &quot;Riya&quot; and later &quot;she&quot; lose their link.
+It is slow to train. Word 2 must wait for word 1, so the GPU works one step at a time.</p>
+</div></div>
+<div class="am-md"><p>LSTM and GRU reduced the forgetting. They did not remove it. The one-by-one reading stayed.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>3 Stage 2: Attention — look at every word</h2></header>
+<div class="am-panel-body"><div class="am-annot"><div class="am-annot-head"><span>Building &quot;she&quot; from earlier words</span></div><div class="am-annot-scroll"><div class="am-annot-line" style="--rows: 1"><span class="am-seg"><span class="am-seg-t">0.70 × Riya</span><span class="am-seg-n" style="--row: 0">strong match, a person&#39;s name</span></span></div></div><div class="am-annot-scroll"><div class="am-annot-line" style="--rows: 1"><span class="am-seg"><span class="am-seg-t">0.10 × went</span><span class="am-seg-n" style="--row: 0">weak match</span></span></div></div><div class="am-annot-scroll"><div class="am-annot-line" style="--rows: 1"><span class="am-seg"><span class="am-seg-t">0.15 × market</span><span class="am-seg-n" style="--row: 0">weak match</span></span></div></div><div class="am-annot-scroll"><div class="am-annot-line" style="--rows: 1"><span class="am-seg"><span class="am-seg-t">0.05 × then</span><span class="am-seg-n" style="--row: 0">weak match</span></span></div></div><div class="am-annot-caption">the weights add up to 1.00</div></div>
+<div class="am-md"><p>Attention keeps the whole page open. To understand &quot;she&quot;, the model looks directly at every earlier word. Each word gets a weight, and the weighted mix builds the meaning.</p>
+</div>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 764 80" width="764" height="80" role="img" aria-label="流程图：she asks a Query、the Query matches every Key、strong matches win、collect Values by score" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M149.1,40 L160.6,40 Q172.1,40 183.6,40 L195.1,40" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M338.6,40 L350.1,40 Q361.6,40 373.1,40 L384.6,40" marker-end="url(#am3-arrow)"/></g><g data-step="0"><path class="am-edge" d="M532.2,40 L543.7,40 Q555.2,40 566.7,40 L578.2,40" marker-end="url(#am3-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="she asks a Query" data-step="0"><rect class="am-node-shape" x="14" y="22.5" width="135.1" height="35" rx="3"/><text x="81.6" y="40" text-anchor="middle" dominant-baseline="central">she asks a Query</text></g><g class="am-node am-node--rect" data-key="the Query matches every Key" data-step="0"><rect class="am-node-shape" x="195.1" y="14" width="143.4" height="52" rx="3"/><text x="266.8" y="31.5" text-anchor="middle" dominant-baseline="central">the Query matches</text><text x="266.8" y="48.5" text-anchor="middle" dominant-baseline="central">every Key</text></g><g class="am-node am-node--rect" data-key="strong matches win" data-step="0"><rect class="am-node-shape" x="384.6" y="22.5" width="147.6" height="35" rx="3"/><text x="458.4" y="40" text-anchor="middle" dominant-baseline="central">strong matches win</text></g><g class="am-node am-node--rect" data-key="collect Values by score" data-step="0"><rect class="am-node-shape" x="578.2" y="22.5" width="171.3" height="35" rx="3"/><text x="663.8" y="40" text-anchor="middle" dominant-baseline="central">collect Values by score</text></g></g></svg></figure>
+<div class="am-md"><p>Query is the question. Key is the label on each word. Value is the content. Multi-Head Attention runs several scans side by side. One head tracks names, one tracks grammar, one tracks position.</p>
+<p>Attention solved forgetting. Early attention still sat on top of RNNs, so slow reading remained.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-D">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>4 Stage 3: Transformer — all words at once</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>In 2017, the paper &quot;Attention Is All You Need&quot; removed the RNN completely.</p>
+</div>
+<div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: 2"><div class="am-tree-col"><div class="am-tree-box" data-key="A Transformer block" data-step="0">A Transformer block</div><ul class="am-tree-list"><li data-key="Multi-Head Attention" data-step="1"><span class="am-tree-label">Multi-Head Attention</span><ul><li data-key="the looking step, words gather information" data-step="2"><span class="am-tree-label">the looking step, words gather information</span></li></ul></li><li data-key="Feed-Forward Network" data-step="3"><span class="am-tree-label">Feed-Forward Network</span><ul><li data-key="the thinking step, each word processes alone" data-step="4"><span class="am-tree-label">the thinking step, each word processes alone</span></li></ul></li></ul></div><div class="am-tree-col"><div class="am-tree-box" data-key="Stack many blocks" data-step="5">Stack many blocks</div><ul class="am-tree-list"><li data-key="early blocks learn grammar" data-step="6"><span class="am-tree-label">early blocks learn grammar</span></li><li data-key="deep blocks learn meaning and reasoning" data-step="7"><span class="am-tree-label">deep blocks learn meaning and reasoning</span></li></ul></div></div></div>
+<div class="am-md"><p>The model reads all words in parallel. Positional encoding tells it which word came first. Today, models like LLaMA use RoPE for this job.</p>
+</div>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 241 323" width="241" height="323" role="img" aria-label="流程图：The capital of India is、Decoder、New、The capital of India is New、Delhi" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M94.8,49 L94.8,60.5 Q94.8,72 94.8,83.5 L94.8,95" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M134.7,128.6 L164.8,140.8 Q194.8,153 194.8,164.5 L194.8,176" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M194.8,211 L194.8,222.5 Q194.8,234 176,245.5 L157.3,257" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M72.4,257 L53.6,245.5 Q34.8,234 34.8,213.8 Q34.8,193.5 34.8,173.3 Q34.8,153 51.9,141.5 L68.9,130" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M94.8,130 L94.8,141.5 Q94.8,153 94.8,164.5 L94.8,176" marker-end="url(#am4-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="The capital of India is" data-step="0"><rect class="am-node-shape" x="14" y="14" width="161.6" height="35" rx="3"/><text x="94.8" y="31.5" text-anchor="middle" dominant-baseline="central">The capital of India is</text></g><g class="am-node am-node--rect" data-key="Decoder" data-step="0"><rect class="am-node-shape" x="54.9" y="95" width="79.7" height="35" rx="3"/><text x="94.8" y="112.5" text-anchor="middle" dominant-baseline="central">Decoder</text></g><g class="am-node am-node--rect" data-key="New" data-step="0"><rect class="am-node-shape" x="162.8" y="176" width="64" height="35" rx="3"/><text x="194.8" y="193.5" text-anchor="middle" dominant-baseline="central">New</text></g><g class="am-node am-node--rect" data-key="The capital of India is New" data-step="0"><rect class="am-node-shape" x="34" y="257" width="161.6" height="52" rx="3"/><text x="114.8" y="274.5" text-anchor="middle" dominant-baseline="central">The capital of India is</text><text x="114.8" y="291.5" text-anchor="middle" dominant-baseline="central">New</text></g><g class="am-node am-node--rect" data-key="Delhi" data-step="0"><rect class="am-node-shape" x="62.8" y="176" width="64" height="35" rx="3"/><text x="94.8" y="193.5" text-anchor="middle" dominant-baseline="central">Delhi</text></g></g></svg></figure>
+<div class="am-md"><p>Chat models are decoder-only. Reading is parallel. Writing stays one word at a time. That loop is autoregressive generation. It matters later for the KV Cache.</p>
+<p>Why it won: all words process in one step, so GPU cores stay busy. Training that took weeks on RNNs took days on Transformers.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-E">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>5 Stage 4: Scaling — bigger is better, up to a point</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>Scaling grows three things. Parameters are the internal knobs. Data is the training text. Compute is the GPU time.</p>
+</div>
+<ol class="am-timeline am-timeline--h" style="--n: 4"><li class="am-tl-item"><span class="am-tl-when">2020</span><span class="am-tl-dot"></span><span class="am-tl-title">Scaling Laws</span><span class="am-tl-text">quality grows smoothly with compute, no wall</span></li><li class="am-tl-item"><span class="am-tl-when">2020</span><span class="am-tl-dot"></span><span class="am-tl-title">GPT-2</span><span class="am-tl-text">about 1.5B parameters</span></li><li class="am-tl-item am-tl-item--hi"><span class="am-tl-when">2021</span><span class="am-tl-dot"></span><span class="am-tl-title">GPT-3</span><span class="am-tl-text">about 175B parameters, 100× bigger in one year</span></li><li class="am-tl-item"><span class="am-tl-when">2022</span><span class="am-tl-dot"></span><span class="am-tl-title">Chinchilla</span><span class="am-tl-text">big models were undertrained, grow data with parameters</span></li></ol>
+<div class="am-md"><p>Emergent abilities appear only at large size. Then Chinchilla corrected the course. A smaller model trained on much more data can beat a bigger model trained on less.</p>
+</div>
+<div class="am-callout am-callout--err" role="note"><div class="am-callout-title">The cost problem</div><div class="am-callout-body am-md"><p>A dense model activates every parameter for every word. A 100-word answer runs all 175B parameters 100 times. Doubling the size doubles the cost of every answer.</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-F">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>6 Stage 5: MoE — big knowledge, small running cost</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>MoE = many experts + a router that picks a few.</p>
+</div>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 185 404" width="185" height="404" role="img" aria-label="流程图：Word、Attention、Router scores each expert、top 2 experts work、combine and pass on" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M92.5,49 L92.5,60.5 Q92.5,72 92.5,83.5 L92.5,95" marker-end="url(#am5-arrow)"/></g><g data-step="0"><path class="am-edge" d="M92.5,130 L92.5,141.5 Q92.5,153 92.5,164.5 L92.5,176" marker-end="url(#am5-arrow)"/></g><g data-step="0"><path class="am-edge" d="M92.5,228 L92.5,239.5 Q92.5,251 92.5,262.5 L92.5,274" marker-end="url(#am5-arrow)"/></g><g data-step="0"><path class="am-edge" d="M92.5,309 L92.5,320.5 Q92.5,332 92.5,343.5 L92.5,355" marker-end="url(#am5-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="Word" data-step="0"><rect class="am-node-shape" x="60.5" y="14" width="64" height="35" rx="3"/><text x="92.5" y="31.5" text-anchor="middle" dominant-baseline="central">Word</text></g><g class="am-node am-node--rect" data-key="Attention" data-step="0"><rect class="am-node-shape" x="51.2" y="95" width="82.6" height="35" rx="3"/><text x="92.5" y="112.5" text-anchor="middle" dominant-baseline="central">Attention</text></g><g class="am-node am-node--rect" data-key="Router scores each expert" data-step="0"><rect class="am-node-shape" x="20.2" y="176" width="144.5" height="52" rx="3"/><text x="92.5" y="193.5" text-anchor="middle" dominant-baseline="central">Router scores each</text><text x="92.5" y="210.5" text-anchor="middle" dominant-baseline="central">expert</text></g><g class="am-node am-node--rect" data-key="top 2 experts work" data-step="0"><rect class="am-node-shape" x="22.3" y="274" width="140.3" height="35" rx="3"/><text x="92.5" y="291.5" text-anchor="middle" dominant-baseline="central">top 2 experts work</text></g><g class="am-node am-node--rect" data-key="combine and pass on" data-step="0"><rect class="am-node-shape" x="14" y="355" width="157" height="35" rx="3"/><text x="92.5" y="372.5" text-anchor="middle" dominant-baseline="central">combine and pass on</text></g></g></svg></figure>
+<div class="am-md"><p>Only the thinking step changes. One Feed-Forward Network becomes many expert networks. Attention stays the same.</p>
+</div>
+<div class="am-limits"><div class="am-lim">
+<div class="am-lim-head"><span>Total parameters</span><span class="am-lim-val">max 47 billion</span></div>
+<div class="am-lim-track"><div class="am-lim-fill" style="width: 58.75%"></div><div class="am-lim-mark" style="left: 58.75%"></div></div>
+<div class="am-lim-ticks" aria-hidden="true"><span style="left: 0%">0</span><span style="left: 25%">20</span><span style="left: 50%">40</span><span style="left: 75%">60</span><span style="left: 100%">80</span></div>
+</div><div class="am-lim">
+<div class="am-lim-head"><span>Active per word</span><span class="am-lim-val">13 / max 47 billion</span></div>
+<div class="am-lim-track"><div class="am-lim-fill" style="width: 16.25%"></div><div class="am-lim-mark" style="left: 58.75%"></div></div>
+<div class="am-lim-ticks" aria-hidden="true"><span style="left: 0%">0</span><span style="left: 25%">20</span><span style="left: 50%">40</span><span style="left: 75%">60</span><span style="left: 100%">80</span></div>
+</div></div>
+<div class="am-md"><p>Mixtral 8x7B holds 47B of knowledge. It runs near the cost of 13B. DeepSeek-V3 goes further: 671B total, about 37B active.</p>
+</div>
+<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">The problems with MoE</div><div class="am-callout-body am-md"><p>Memory: all experts stay loaded. MoE saves compute, not memory.
+Load balancing: the router must spread the work, or some experts never learn.
+Training complexity: routing makes training less stable.</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-G">
+<header class="am-panel-head"><span class="am-panel-id">G</span><h2>7 Stage 6: New Directions — what happens now</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 404 276" width="404" height="276" role="img" aria-label="流程图：Dense attention, cost squares、GQA or MLA or sliding window、long context、RNN with smart memory、Mamba, linear cost、hybrids of attention and Mamba" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am6-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M98.1,66 L98.1,77.5 Q98.1,89 98.1,100.5 L98.1,112" marker-end="url(#am6-arrow)"/></g><g data-step="0"><path class="am-edge" d="M98.1,164 L98.1,175.5 Q98.1,187 98.1,202.8 L98.1,218.5" marker-end="url(#am6-arrow)"/></g><g data-step="1"><path class="am-edge" d="M301.4,57.5 L301.4,73.3 Q301.4,89 301.4,104.8 L301.4,120.5" marker-end="url(#am6-arrow)"/></g><g data-step="1"><path class="am-edge" d="M301.4,155.5 L301.4,171.3 Q301.4,187 301.4,198.5 L301.4,210" marker-end="url(#am6-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="Dense attention, cost squares" data-step="0"><rect class="am-node-shape" x="18.4" y="14" width="159.3" height="52" rx="3"/><text x="98.1" y="31.5" text-anchor="middle" dominant-baseline="central">Dense attention, cost</text><text x="98.1" y="48.5" text-anchor="middle" dominant-baseline="central">squares</text></g><g class="am-node am-node--rect" data-key="GQA or MLA or sliding window" data-step="0"><rect class="am-node-shape" x="14" y="112" width="168.1" height="52" rx="3"/><text x="98.1" y="129.5" text-anchor="middle" dominant-baseline="central">GQA or MLA or sliding</text><text x="98.1" y="146.5" text-anchor="middle" dominant-baseline="central">window</text></g><g class="am-node am-node--rect" data-key="long context" data-step="0"><rect class="am-node-shape" x="46.8" y="218.5" width="102.6" height="35" rx="3"/><text x="98.1" y="236" text-anchor="middle" dominant-baseline="central">long context</text></g><g class="am-node am-node--rect" data-key="RNN with smart memory" data-step="1"><rect class="am-node-shape" x="213.7" y="22.5" width="175.4" height="35" rx="3"/><text x="301.4" y="40" text-anchor="middle" dominant-baseline="central">RNN with smart memory</text></g><g class="am-node am-node--rect" data-key="Mamba, linear cost" data-step="1"><rect class="am-node-shape" x="229.2" y="120.5" width="144.5" height="35" rx="3"/><text x="301.4" y="138" text-anchor="middle" dominant-baseline="central">Mamba, linear cost</text></g><g class="am-node am-node--rect" data-key="hybrids of attention and Mamba" data-step="1"><rect class="am-node-shape" x="216.1" y="210" width="170.7" height="52" rx="3"/><text x="301.4" y="227.5" text-anchor="middle" dominant-baseline="central">hybrids of attention and</text><text x="301.4" y="244.5" text-anchor="middle" dominant-baseline="central">Mamba</text></g></g></svg></figure>
+<div class="am-md"><p>Attention compares every word with every other word. Doubling the input makes it four times costlier. The KV Cache also eats memory.</p>
+<div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Input length</th>
+<th>1,000</th>
+<th>2,000</th>
+<th>4,000</th>
+<th>8,000</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Attention cost</td>
+<td>1</td>
+<td>4</td>
+<td>16</td>
+<td>64</td>
+</tr>
+<tr>
+<td>Mamba cost</td>
+<td>1</td>
+<td>2</td>
+<td>4</td>
+<td>8</td>
+</tr>
+</tbody></table></div>
+<p>Mamba keeps a running memory like an RNN. It decides what to keep and what to throw away. Far-away information survives better than in the old RNN.</p>
+<p>The same Transformer now reads images, audio, and video as tokens. And models can think longer before answering. That is scaling at inference time.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-H">
+<header class="am-panel-head"><span class="am-panel-id">H</span><h2>8 Summary: the whole journey in one table</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Key idea</th>
+<th>Problem solved</th>
+<th>Left behind</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RNN</td>
+<td>One word at a time, one memory</td>
+<td>Could read any length</td>
+<td>Forgetting, slow training</td>
+</tr>
+<tr>
+<td>Attention</td>
+<td>Look at every earlier word with weights</td>
+<td>Forgetting</td>
+<td>Still slow with RNN below</td>
+</tr>
+<tr>
+<td>Transformer</td>
+<td>Only attention, all words in parallel</td>
+<td>Slow training</td>
+<td>How big should it be?</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>More parameters, data, compute</td>
+<td>Model quality</td>
+<td>Cost grows with size</td>
+</tr>
+<tr>
+<td>MoE</td>
+<td>Use a few experts per word</td>
+<td>Running cost</td>
+<td>Memory, load balancing</td>
+</tr>
+<tr>
+<td>New Directions</td>
+<td>GQA, MLA, Mamba, multimodal, reasoning</td>
+<td>Long context, new inputs</td>
+<td>Still evolving</td>
+</tr>
+</tbody></table></div>
+<p>Every stage kept the good part and fixed the biggest problem. Next time you see a new model, ask: which problem is it solving?</p>
+</div></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.6 · 2026-10-07 22:55</footer>
+<textarea id="am-source" hidden readonly aria-hidden="true">---
+title: Evolution of LLM Architecture
+subtitle: Six stages. Each stage kept what worked and fixed the biggest problem.
+source: Outcome School — Evolution of LLM Architecture
+---
+
+An LLM architecture is the blueprint of a model: how it reads text, how it remembers it, how it predicts the next word. Every big step happened because the previous design had one big problem.
+
+## 1 The whole journey {span=2}
+```flow LR
+(RNN) -&gt; (Attention): fixes forgetting
+(Attention) -&gt; (Transformer): fixes slow reading
+(Transformer) -&gt; (Scaling): makes it smarter
+(Scaling) -&gt; (MoE): cuts running cost
+(MoE) -&gt; (New Directions): long context, reasoning
+```
+Each arrow solves one problem. When you see a new model, ask one question: which problem from this timeline is it trying to solve?
+
+## 2 Stage 1: RNN — one word at a time
+```flow
+The -&gt; cat -&gt; sat -&gt; on -&gt; the -&gt; mat
+```
+An RNN reads one word at a time. After each word, it rewrites one small note. At the end, the whole sentence lives in that one note.
+
+```callout err Two problems
+It forgets. The note is rewritten so many times that early words fade. &quot;Riya&quot; and later &quot;she&quot; lose their link.
+It is slow to train. Word 2 must wait for word 1, so the GPU works one step at a time.
+```
+LSTM and GRU reduced the forgetting. They did not remove it. The one-by-one reading stayed.
+
+## 3 Stage 2: Attention — look at every word
+```annot
+# Building &quot;she&quot; from earlier words
+[0.70 × Riya]{strong match, a person&#39;s name}
+[0.10 × went]{weak match}
+[0.15 × market]{weak match}
+[0.05 × then]{weak match}
+&gt; the weights add up to 1.00
+```
+Attention keeps the whole page open. To understand &quot;she&quot;, the model looks directly at every earlier word. Each word gets a weight, and the weighted mix builds the meaning.
+
+```flow LR
+she asks a Query -&gt; the Query matches every Key -&gt; strong matches win -&gt; collect Values by score
+```
+Query is the question. Key is the label on each word. Value is the content. Multi-Head Attention runs several scans side by side. One head tracks names, one tracks grammar, one tracks position.
+
+Attention solved forgetting. Early attention still sat on top of RNNs, so slow reading remained.
+
+## 4 Stage 3: Transformer — all words at once
+In 2017, the paper &quot;Attention Is All You Need&quot; removed the RNN completely.
+
+```tree
+A Transformer block
+  Multi-Head Attention
+    the looking step, words gather information
+  Feed-Forward Network
+    the thinking step, each word processes alone
+Stack many blocks
+  early blocks learn grammar
+  deep blocks learn meaning and reasoning
+```
+The model reads all words in parallel. Positional encoding tells it which word came first. Today, models like LLaMA use RoPE for this job.
+
+```flow
+The capital of India is -&gt; Decoder -&gt; New -&gt; The capital of India is New -&gt; Decoder -&gt; Delhi
+```
+Chat models are decoder-only. Reading is parallel. Writing stays one word at a time. That loop is autoregressive generation. It matters later for the KV Cache.
+
+Why it won: all words process in one step, so GPU cores stay busy. Training that took weeks on RNNs took days on Transformers.
+
+## 5 Stage 4: Scaling — bigger is better, up to a point
+Scaling grows three things. Parameters are the internal knobs. Data is the training text. Compute is the GPU time.
+
+```timeline
+2020 | Scaling Laws | quality grows smoothly with compute, no wall
+2020 | GPT-2 | about 1.5B parameters
+*2021 | GPT-3 | about 175B parameters, 100× bigger in one year
+2022 | Chinchilla | big models were undertrained, grow data with parameters
+```
+Emergent abilities appear only at large size. Then Chinchilla corrected the course. A smaller model trained on much more data can beat a bigger model trained on less.
+
+```callout err The cost problem
+A dense model activates every parameter for every word. A 100-word answer runs all 175B parameters 100 times. Doubling the size doubles the cost of every answer.
+```
+
+## 6 Stage 5: MoE — big knowledge, small running cost
+MoE = many experts + a router that picks a few.
+
+```flow
+Word -&gt; Attention -&gt; Router scores each expert -&gt; top 2 experts work -&gt; combine and pass on
+```
+Only the thinking step changes. One Feed-Forward Network becomes many expert networks. Attention stays the same.
+
+```limits
+Total parameters | max 47 | billion
+Active per word | 13 / 47 | billion
+```
+Mixtral 8x7B holds 47B of knowledge. It runs near the cost of 13B. DeepSeek-V3 goes further: 671B total, about 37B active.
+
+```callout warn The problems with MoE
+Memory: all experts stay loaded. MoE saves compute, not memory.
+Load balancing: the router must spread the work, or some experts never learn.
+Training complexity: routing makes training less stable.
+```
+
+## 7 Stage 6: New Directions — what happens now
+```flow
+Dense attention, cost squares -&gt; GQA or MLA or sliding window -&gt; long context
+RNN with smart memory -&gt; Mamba, linear cost -&gt; hybrids of attention and Mamba
+```
+Attention compares every word with every other word. Doubling the input makes it four times costlier. The KV Cache also eats memory.
+
+| Input length | 1,000 | 2,000 | 4,000 | 8,000 |
+|---|---|---|---|---|
+| Attention cost | 1 | 4 | 16 | 64 |
+| Mamba cost | 1 | 2 | 4 | 8 |
+
+Mamba keeps a running memory like an RNN. It decides what to keep and what to throw away. Far-away information survives better than in the old RNN.
+
+The same Transformer now reads images, audio, and video as tokens. And models can think longer before answering. That is scaling at inference time.
+
+## 8 Summary: the whole journey in one table
+| Stage | Key idea | Problem solved | Left behind |
+|---|---|---|---|
+| RNN | One word at a time, one memory | Could read any length | Forgetting, slow training |
+| Attention | Look at every earlier word with weights | Forgetting | Still slow with RNN below |
+| Transformer | Only attention, all words in parallel | Slow training | How big should it be? |
+| Scaling | More parameters, data, compute | Model quality | Cost grows with size |
+| MoE | Use a few experts per word | Running cost | Memory, load balancing |
+| New Directions | GQA, MLA, Mamba, multimodal, reasoning | Long context, new inputs | Still evolving |
+
+Every stage kept the good part and fixed the biggest problem. Next time you see a new model, ask: which problem is it solving?
+</textarea>
+<script>
+(() => {
+  const root = document.documentElement;
+  const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+  const label = (btn, value) => {
+    const map = JSON.parse(btn.dataset.labels || '{}');
+    btn.textContent = map[value] || value;
+  };
+  const bind = (name, attr, values) => {
+    const btn = document.querySelector(`[data-am="${name}"]`);
+    if (!btn) return;
+    label(btn, root.getAttribute(attr));
+    btn.addEventListener('click', () => {
+      const next = cycle(values, root.getAttribute(attr));
+      root.setAttribute(attr, next);
+      label(btn, next);
+    });
+  };
+  bind('theme', 'data-theme', ['blueprint', 'shadcn']);
+  bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+  const copyBtn = document.querySelector('[data-am="copy"]');
+  copyBtn?.addEventListener('click', async () => {
+    const nodes = document.querySelectorAll('#am-source');
+    const text = nodes[nodes.length - 1]?.value ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = copyBtn.dataset.done;
+    setTimeout(() => { copyBtn.textContent = original; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>

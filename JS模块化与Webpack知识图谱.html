@@ -1,0 +1,79 @@
+<html style="margin:0;padding:0;">
+<title>JS模块化与Webpack知识图谱</title>
+<div style="width:100%;box-sizing:border-box;background:#f4f6f9;color:#1f2733;font-family:'Microsoft YaHei','PingFang SC',sans-serif;padding:20px 24px 28px;">
+  <div style="border-left:6px solid #2f6fed;padding:4px 0 4px 14px;margin-bottom:6px;">
+    <div style="font-size:22px;font-weight:700;">JS 模块化与 Webpack · 一图掌握</div>
+    <div style="font-size:14px;color:#5a6472;margin-top:4px;">主线：为什么（痛点）→ 怎么演进（7 时代）→ 用什么规范（4 大规范）→ 怎么落地（Webpack）→ 底层怎么跑（ESM 三阶段）</div>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin:14px 0;">
+    <div style="flex:1 1 220px;min-width:220px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#2f6fed;font-size:15px;">模块化 = 封装 + 暴露 + 加载</div>
+      <div style="font-size:13.5px;line-height:1.7;margin-top:6px;">把复杂程序按规范拆成若干文件：内部私有，只通过接口暴露成员，可依赖其他模块。<b>避免命名冲突 / 按需加载 / 高复用 / 高可维护。</b></div>
+    </div>
+    <div style="flex:1 1 220px;min-width:220px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#e5534b;font-size:15px;">没有模块化时的四大痛点</div>
+      <div style="font-size:13.5px;line-height:1.8;margin-top:6px;">① script 请求过多（Too much HTTP calls）② 依赖模糊（Unclear Dependencies）③ 难以维护 ④ 全局污染、命名冲突</div>
+    </div>
+    <div style="flex:1 1 220px;min-width:220px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#2e9e6b;font-size:15px;">模块化好处</div>
+      <div style="font-size:13.5px;line-height:1.8;margin-top:6px;">减少命名空间污染 · 更好的分离与按需加载 · 更高复用性 · 高可维护性</div>
+    </div>
+  </div>
+
+  <div style="font-size:16px;font-weight:700;margin:16px 0 10px;color:#1f2733;">① 演进史：7 个时代（黄玄《前端模块化七日谈》）</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;">
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#1 上古·设计模式</b><br>全局函数→Namespace→IIFE→依赖注入<br><span style="color:#5a6472;">IIFE 是现代模块基石</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#2 石器·Script Loader</b><br>基于文件的依赖管理<br><span style="color:#5a6472;">封装之外还需「加载」</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#3 蒸汽朋克·Module Loader</b><br>YUI3 Loader + Combo<br><span style="color:#5a6472;">合并/压缩/混淆，解决请求过多</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#4 号角·CommonJS</b><br>跳出浏览器，同步加载<br><span style="color:#5a6472;">浏览器环境才是问题</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#5 双塔·AMD/CMD</b><br>RequireJS / SeaJS<br><span style="color:#5a6472;">浏览器异步方案</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#e8effd;border-radius:8px;padding:8px 10px;font-size:13px;"><b>#6 精灵宝钻·打包器</b><br>Browserify / Webpack<br><span style="color:#5a6472;">AST 遍历依赖图，去包裹</span></div>
+    <div style="flex:1 1 130px;min-width:130px;background:#fdeeda;border-radius:8px;padding:8px 10px;font-size:13px;border:1px solid #f5a623;"><b>#7 王者·ES6 Module</b><br>官方标准、通用<br><span style="color:#5a6472;">ES6→Babel→CJS→Browserify→ES5</span></div>
+  </div>
+
+  <div style="font-size:16px;font-weight:700;margin:18px 0 10px;color:#1f2733;">② 四大规范对比（AMD vs CMD 差异 = 依赖前置/就近 × 提前/延迟执行）</div>
+  <div style="background:#fff;border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.08);overflow:hidden;">
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <tr style="background:#2f6fed;color:#fff;">
+        <th style="padding:8px 10px;text-align:left;">规范</th><th style="padding:8px 10px;text-align:left;">环境 / 实现</th><th style="padding:8px 10px;text-align:left;">定义模块</th><th style="padding:8px 10px;text-align:left;">加载模块</th><th style="padding:8px 10px;text-align:left;">依赖 / 执行时机</th>
+      </tr>
+      <tr style="border-bottom:1px solid #eef0f4;"><td style="padding:8px 10px;"><b>CommonJS</b></td><td style="padding:8px 10px;">服务器 / Node.js</td><td style="padding:8px 10px;"><code>module.exports</code>·<code>exports.xxx</code></td><td style="padding:8px 10px;"><code>require('id')</code></td><td style="padding:8px 10px;">依赖就近 · 同步运行时</td></tr>
+      <tr style="border-bottom:1px solid #eef0f4;"><td style="padding:8px 10px;"><b>AMD</b></td><td style="padding:8px 10px;">浏览器 / RequireJS</td><td style="padding:8px 10px;"><code>define(id?, deps, factory)</code></td><td style="padding:8px 10px;"><code>require([mod], cb)</code></td><td style="padding:8px 10px;"><b>依赖前置 · 提前执行</b></td></tr>
+      <tr style="border-bottom:1px solid #eef0f4;"><td style="padding:8px 10px;"><b>CMD</b></td><td style="padding:8px 10px;">浏览器 / SeaJS</td><td style="padding:8px 10px;"><code>define(function(require, exports, module){})</code></td><td style="padding:8px 10px;"><code>require</code> / <code>require.async</code></td><td style="padding:8px 10px;"><b>依赖就近 · 延迟执行</b></td></tr>
+      <tr><td style="padding:8px 10px;"><b>ES6</b></td><td style="padding:8px 10px;">通用 / 语言层面</td><td style="padding:8px 10px;"><code>export</code>·<code>export default</code></td><td style="padding:8px 10px;"><code>import ... from</code></td><td style="padding:8px 10px;">静态分析 · 编译期</td></tr>
+    </table>
+  </div>
+
+  <div style="font-size:16px;font-weight:700;margin:18px 0 10px;color:#1f2733;">③ ES6 语法三件套 · ④ ESM 内部三阶段 · ⑤ Webpack 落地</div>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;">
+    <div style="flex:1 1 300px;min-width:280px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#2f6fed;font-size:14.5px;">ES6 语法（导出 / 导入）</div>
+      <div style="font-size:13px;line-height:1.9;margin-top:6px;">
+        <b>默认</b>：<code>export default {...}</code> ⇄ <code>import m1 from './m1.js'</code>（每模块仅一次）<br>
+        <b>按需</b>：<code>export let s1=...</code> ⇄ <code>import { s1, s2 as ss2 } from '...'</code><br>
+        <b>直接执行</b>：<code>import './m2.js'</code>（不取成员只跑代码）
+      </div>
+    </div>
+    <div style="flex:1 1 300px;min-width:280px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#2e9e6b;font-size:14.5px;">ESM 三阶段（vs CommonJS）</div>
+      <div style="font-size:13px;line-height:1.9;margin-top:6px;">
+        <b>构建</b>：解析→下载→模块记录（Module Map 缓存）<br>
+        <b>实例化</b>：开内存、导出/导入指向同一地址（实时绑定）<br>
+        <b>评估</b>：执行顶层代码填值（深度优先后序，副作用只跑一次）<br>
+        <span style="color:#5a6472;">CJS：一次同步完成 · 导出值复制；ESM：分阶段异步 · 实时绑定 · 支持循环依赖</span>
+      </div>
+    </div>
+    <div style="flex:1 1 300px;min-width:280px;background:#fff;border-radius:10px;padding:12px 14px;box-shadow:0 1px 3px rgba(0,0,0,.08);">
+      <div style="font-weight:700;color:#e5534b;font-size:14.5px;">Webpack 工作流</div>
+      <div style="font-size:13px;line-height:1.9;margin-top:6px;">
+        入口 <code>src/index.js</code> → 出口 <code>dist/main.js</code>（<code>entry</code>/<code>output</code>/<code>mode</code>）<br>
+        loader 管线：<code>style→css→postcss(autoprefixer)→sass</code> · <code>url-loader(limit 转 base64)</code> · <code>babel-loader(exclude node_modules)</code><br>
+        <code>webpack-dev-server</code> 自动打包（localhost:8080，虚拟产物）+ <code>html-webpack-plugin</code> 预览 → 发布压缩混淆
+      </div>
+    </div>
+  </div>
+
+  <div style="font-size:12.5px;color:#8a93a2;margin-top:16px;line-height:1.7;">素材来源：黑马前端课程 · 黄玄《前端模块化七日谈》(huangxuan.me/js-module-7day) · 程序员优雅哥《JS模块化4大规范》· 《ES modules: A cartoon deep-dive》译文（前端晚间课）· Browserify 原理分析</div>
+</div>
+</html>

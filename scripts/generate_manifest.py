@@ -44,8 +44,16 @@ def classify(name: str):
         return CAT_WEEKLY, "常驻模块", ""
     if "数学" in base:
         return CAT_NOTE, "数学", ""
-    if re.search(r"promise|js|javascript", base, re.I):
+    if re.search(r"c#|csharp", base, re.I):
+        return CAT_NOTE, "C#", ""
+    if re.search(r"前端|js|javascript|webpack|模块化|promise", base, re.I):
         return CAT_NOTE, "前端", ""
+    if re.search(r"llm|大模型|gemini", base, re.I):
+        return CAT_NOTE, "AI", ""
+    if re.search(r"correlation|trace", base, re.I):
+        return CAT_NOTE, "可观测性", ""
+    if re.search(r"软件|开发", base):
+        return CAT_NOTE, "开发", ""
     return CAT_NOTE, "笔记", ""
 
 
