@@ -9,7 +9,7 @@
 ## 部署机制
 
 - 推送（或合并）到 `main` 分支后，`.github/workflows/deploy.yml` 自动构建并部署；也可在仓库 Actions 页面手动触发（workflow_dispatch）。
-- 工作流只把仓库根目录的 `*.html` 与 `.nojekyll` 打包成 Pages 产物，`.git`、`.github` 不会进入站点。
+- 工作流只把仓库根目录的 `*.html`、`.nojekyll` 与 `favicon.*` 打包成 Pages 产物，`.git`、`.github` 不会进入站点。
 
 ### 首次启用（只需一次）
 
@@ -21,6 +21,7 @@
 | --- | --- |
 | `index.html` | 目录导航页。通过 JavaScript 读取构建时生成的 `manifest.json` 动态渲染，无需手工维护 |
 | `handoff.html` | 站点使用与维护指南，置顶展示于目录「📖 使用指南」 |
+| `favicon.png` / `favicon.ico` | 站点图标（秋日枫叶），在 `index.html` / `handoff.html` 头部引用 |
 | `*.html` | 各周复盘看板与学习笔记，直接以相对链接互相跳转 |
 | `scripts/generate_manifest.py` | 在 CI 中扫描 HTML、提取 `<title>`、分类排序并生成 `manifest.json` |
 | `.github/workflows/deploy.yml` | 部署工作流（打包站点 + 生成 manifest） |

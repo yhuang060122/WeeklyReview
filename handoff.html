@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WeeklyReview 站点使用与维护指南</title>
+<link rel="icon" type="image/png" sizes="128x128" href="favicon.png">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
 <style>
   :root {
     --bg: #0f1419;
@@ -195,6 +197,7 @@
     <tr><th>文件 / 目录</th><th>作用</th><th>需要维护？</th></tr>
     <tr><td><code>index.html</code></td><td>目录导航页（JS 动态渲染）</td><td>否（自动）</td></tr>
     <tr><td><code>*.html</code>（根目录）</td><td>各周复盘与学习笔记正文</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>favicon.png / favicon.ico</code></td><td>站点图标（秋日枫叶，随站部署）</td><td>想换图标时替换这两个文件即可</td></tr>
     <tr><td><code>manifest.json</code></td><td>目录元数据，CI 构建时生成</td><td>否（自动，勿手改）</td></tr>
     <tr><td><code>scripts/generate_manifest.py</code></td><td>扫描 HTML、提取标题、分类排序</td><td>仅改分类规则时</td></tr>
     <tr><td><code>.github/workflows/deploy.yml</code></td><td>部署工作流</td><td>否</td></tr>
@@ -250,7 +253,7 @@ git push origin main</code></pre>
   <p>推送 <code>main</code> 后工作流 <code>deploy.yml</code> 依次执行：</p>
   <ol>
     <li>Checkout 代码 → Configure Pages</li>
-    <li>把根目录 <code>*.html</code> 与 <code>.nojekyll</code> 复制进 <code>public/</code></li>
+    <li>把根目录 <code>*.html</code>、<code>.nojekyll</code> 与 <code>favicon.*</code> 复制进 <code>public/</code></li>
     <li>运行 <code>python3 scripts/generate_manifest.py public</code> 生成 <code>manifest.json</code></li>
     <li>上传产物并部署到 GitHub Pages</li>
   </ol>
