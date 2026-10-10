@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="shadcn" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Answer me with HTML 0.4.6">
+<title>Angular 取消 HTTP 请求的 4 种方式</title>
+<style>
+html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0px;
+  --shadow: none;
+  --bw: 1.5px;
+  --head-font: var(--font-sans);
+  --bg: #f6f6f3;
+  --paper: #ffffff;
+  --ink: #16181d;
+  --ink-2: #4b5260;
+  --ink-3: #8b929e;
+  --line: #1d2026;
+  --line-2: #d6dae1;
+  --fill: #f3f5f8;
+  --accent: #1d5fbf;
+  --accent-bg: #e4ecf8;
+  --ok: #1d5fbf;
+  --ok-bg: #e4ecf8;
+  --err: #c62828;
+  --err-bg: #fbeaea;
+  --warn: #a8620a;
+  --warn-bg: #fdf3e2;
+  --head-bg: #16181d;
+  --head-fg: #ffffff;
+}
+html[data-theme="blueprint"][data-mode="dark"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="blueprint"][data-mode="auto"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+}
+
+html[data-theme="shadcn"], html[data-theme="shadcn"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 8px;
+  --shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --bw: 1px;
+  --head-font: var(--font-sans);
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --ink: #09090b;
+  --ink-2: #71717a;
+  --ink-3: #a1a1aa;
+  --line: #e4e4e7;
+  --line-2: #f0f0f2;
+  --fill: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --err: #dc2626;
+  --err-bg: #fef2f2;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --head-bg: #18181b;
+  --head-fg: #fafafa;
+}
+html[data-theme="shadcn"][data-mode="dark"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="shadcn"][data-mode="auto"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+}
+
+html[lang="ja"][data-theme][data-mode] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html[lang="ja"][data-theme="3b1b"][data-mode] {
+  --v-title-font: "CMU Serif", "Latin Modern Roman", "Iowan Old Style", "Palatino", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif JP", "Songti SC", serif;
+}
+
+/* Answer me with HTML base — 只引用主题变量，禁止写死颜色（主题 token 见 themes/index.js） */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, kbd { font-family: var(--font-mono); }
+
+/* ── 工具栏 ─────────────────────────────── */
+.am-toolbar {
+  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;
+}
+.am-btn {
+  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;
+}
+.am-btn:hover { border-color: var(--ink-3); }
+.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 页头 ───────────────────────────────── */
+.am-head { margin: 0 0 20px; padding-right: 260px; }
+.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+.am-sub { margin: 4px 0 0; color: var(--ink-2); }
+.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }
+.am-intro { margin-top: 12px; max-width: 80ch; }
+
+/* ── sheet 图纸板 ────────────────────────── */
+.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }
+.am-frame { position: relative; }
+.am-grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 20px; align-items: start;
+}
+.am-ruler { display: none; }
+html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
+html[data-theme="blueprint"] .am-frame::before {
+  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
+}
+html[data-theme="blueprint"] .am-ruler {
+  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);
+}
+.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }
+.am-ruler--top { top: 0; }
+.am-ruler--bottom { bottom: 0; }
+.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }
+.am-ruler--left { left: 0; }
+.am-ruler--right { right: 0; }
+.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }
+.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }
+
+/* ── 面板 ───────────────────────────────── */
+.am-panel {
+  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); min-width: 0; overflow: hidden;
+}
+.am-panel-head {
+  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;
+}
+.am-panel-id {
+  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;
+  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;
+}
+html[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }
+html[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }
+.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }
+.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }
+.am-panel-body { padding: 14px 16px 16px; }
+.am-panel-body > * + * { margin-top: 12px; }
+
+/* ── Markdown 正文 ───────────────────────── */
+.am-md > :first-child { margin-top: 0; }
+.am-md > :last-child { margin-bottom: 0; }
+.am-md p { margin: 0 0 8px; }
+.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }
+.am-md li + li { margin-top: 3px; }
+.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }
+.am-md a { color: var(--accent); }
+.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }
+.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }
+.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }
+.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.am-md th {
+  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;
+  padding: 6px 10px; border-bottom: 1px solid var(--line-2);
+}
+.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.am-md tbody tr:nth-child(even) td { background: var(--fill); }
+.am-table-wrap { overflow-x: auto; }
+.am-code {
+  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);
+  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── 状态徽章 ok / no / warn ──────────────── */
+.am-status { white-space: nowrap; font-weight: 500; }
+.am-status--ok { color: var(--ok); }
+.am-status--no { color: var(--err); }
+.am-status--warn { color: var(--warn); }
+.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }
+
+/* ── callout ─────────────────────────────── */
+.am-callout {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: var(--radius);
+}
+.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }
+.am-callout-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── kv 标题栏格 ─────────────────────────── */
+.am-kv {
+  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;
+  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);
+}
+.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }
+.am-kv-cell--wide { grid-column: 1 / -1; }
+.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }
+.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }
+html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ── timeline ────────────────────────────── */
+.am-timeline { list-style: none; margin: 0; padding: 0; }
+.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }
+.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }
+.am-timeline--h li::before {
+  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);
+}
+.am-timeline--h li:first-child::before { left: 50%; }
+.am-timeline--h li:last-child::before { right: 50%; }
+.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }
+.am-tl-dot {
+  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
+  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
+}
+.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
+.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }
+.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }
+.am-timeline--v li:last-child::before { display: none; }
+.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }
+.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }
+.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }
+.am-timeline--v .am-tl-text { margin-top: 2px; }
+
+/* ── annot 句子标注 ──────────────────────── */
+.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }
+.am-annot-scroll { overflow-x: auto; }
+.am-annot-line {
+  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);
+  padding-bottom: calc(var(--rows, 0) * 17px + 14px);
+}
+.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }
+.am-annot-line--wrap .am-seg { white-space: nowrap; }
+.am-seg { position: relative; }
+.am-seg::after {
+  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;
+  border: 1px solid var(--accent); border-top: 0;
+}
+.am-seg-n {
+  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);
+  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;
+}
+.am-seg--err { color: var(--err); }
+.am-seg--err::after { border-color: var(--err); }
+.am-seg--err .am-seg-n { color: var(--err); }
+.am-annot-caption { font-size: 12px; color: var(--ink-2); }
+
+/* ── limits 限值条 ───────────────────────── */
+.am-lim + .am-lim { margin-top: 14px; }
+.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }
+.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }
+.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }
+.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }
+.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }
+.am-lim.is-over .am-lim-val { color: var(--err); }
+.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }
+.am-lim-ticks span { position: absolute; transform: translateX(-50%); }
+.am-lim-ticks span:first-child { transform: none; }
+.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }
+
+/* ── tree 结构树 ─────────────────────────── */
+.am-tree { font-size: 13px; }
+.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }
+.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-root--solo { padding-bottom: 12px; }
+.am-tree-root--solo::after { display: none; }
+.am-tree-box {
+  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
+  border-radius: var(--radius); font-weight: 600;
+}
+.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
+.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
+.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
+.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
+.am-tree-col:first-child::before { left: 50%; }
+.am-tree-col:last-child::before { right: 50%; }
+.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }
+.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }
+.am-tree-list ul { margin-left: 16px; }
+.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }
+.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }
+.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }
+.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }
+.am-tree code { font: 12px var(--font-mono); }
+.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }
+.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }
+
+/* ── 图（flow / sequence）───────────────── */
+.am-diagram { margin: 0; overflow-x: auto; text-align: center; }
+.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }
+.am-diagram text { fill: var(--ink); font-size: 13px; }
+.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }
+.am-node--hi text { fill: var(--accent); font-weight: 600; }
+.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }
+.am-edge--dashed { stroke-dasharray: 5 4; }
+.am-arrow { fill: var(--ink-2); }
+.am-edge-label rect { fill: var(--paper); }
+.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }
+.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }
+.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
+.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
+
+/* ── doc 线性讲解 ────────────────────────── */
+.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
+.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+.am-toc { position: sticky; top: 24px; font-size: 13px; }
+.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }
+.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }
+
+/* ── 响应式与打印 ─────────────────────────── */
+@media (max-width: 1100px) {
+  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .am-grid > .am-panel { grid-column: auto !important; }
+  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 760px) {
+  .am-sheet, .am-doc { padding: 56px 12px 24px; }
+  .am-head { padding-right: 0; }
+  .am-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }
+  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }
+  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }
+  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .am-toc { position: static; }
+  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }
+  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }
+}
+.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }
+
+@media print {
+  .am-toolbar { display: none; }
+  body { background: var(--paper); }
+  .am-panel { break-inside: avoid; box-shadow: none; }
+}
+.am-panel--bare { border: 0; background: transparent; box-shadow: none; }
+.am-panel--bare > .am-panel-body { padding: 0; }
+.am-panel--bare .am-kv { background: var(--paper); }
+
+</style>
+</head>
+<body>
+<div class="am-toolbar">
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;主题：图纸&quot;,&quot;shadcn&quot;:&quot;主题：卡片&quot;}">主题：卡片</button>
+<button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;明暗：跟随系统&quot;,&quot;light&quot;:&quot;明暗：亮&quot;,&quot;dark&quot;:&quot;明暗：暗&quot;}">明暗：亮</button>
+<button class="am-btn" type="button" data-am="copy" data-done="已复制 ✓">复制源稿</button>
+</div>
+<main class="am-sheet">
+<header class="am-head"><h1>Angular 取消 HTTP 请求的 4 种方式</h1><p class="am-sub">从最差到最好，根治“旧响应覆盖新数据”的竞态 bug</p><div class="am-head-meta"><span><b>source</b>Medium @saneekadam1326 · 2026-10-06 · Angular 22</span></div><div class="am-intro am-md"><div class="am-md"><p>导语：竞态 bug 的根源不是服务器慢，而是“谁最后到达，谁就赢”。解法只有一条：<strong>新请求一发起，旧请求必须死</strong>。Angular 22 的 HttpClient 默认走 Fetch API。unsubscribe 会真正 abort 请求，Network 面板里能看到 <code>(canceled)</code>。</p>
+</div></div></header>
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 3">
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>先看这个 bug</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>用户快速输入 a → an → ang，三个请求并发发出，按各自速度返回：</p>
+</div>
+<figure class="am-diagram am-flow"><svg viewBox="0 0 440 261" width="440" height="261" role="img" aria-label="流程图：输入 a、请求 #1、输入 an、请求 #2、输入 ang、请求 #3、屏幕显示 &quot;a&quot;、屏幕显示 &quot;ang&quot;" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M66.9,49 L66.9,65 Q66.9,81 66.9,97 L66.9,113" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="47.3" y="72" width="39.2" height="18" rx="3"/><text x="66.9" y="81" text-anchor="middle" dominant-baseline="central">80ms</text></g></g><g data-step="1"><path class="am-edge" d="M212.3,49 L212.3,65 Q212.3,81 212.3,97 L212.3,113" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="189.4" y="72" width="45.7" height="18" rx="3"/><text x="212.3" y="81" text-anchor="middle" dominant-baseline="central">900ms</text></g></g><g data-step="2"><path class="am-edge" d="M364.9,49 L364.9,65 Q364.9,81 364.9,97 L364.9,113" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="342.1" y="72" width="45.7" height="18" rx="3"/><text x="364.9" y="81" text-anchor="middle" dominant-baseline="central">120ms</text></g></g><g data-step="3"><path class="am-edge" d="M66.9,148 L66.9,164 Q66.9,180 66.9,196 L66.9,212" marker-end="url(#am1-arrow)"/></g><g data-step="4"><path class="am-edge" d="M364.9,148 L364.9,164 Q364.9,180 364.9,196 L364.9,212" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="348.4" y="171" width="33" height="18" rx="3"/><text x="364.9" y="180" text-anchor="middle" dominant-baseline="central">正确</text></g></g><g data-step="5"><path class="am-edge" d="M212.3,148 L212.3,164 Q212.3,180 212.3,196 L212.3,212" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="178.5" y="171" width="67.5" height="18" rx="3"/><text x="212.3" y="180" text-anchor="middle" dominant-baseline="central">错误且保留</text></g></g></g><g><g class="am-node am-node--round" data-key="输入 a" data-step="0"><rect class="am-node-shape" x="28.3" y="14" width="77.2" height="35" rx="17.5"/><text x="66.9" y="31.5" text-anchor="middle" dominant-baseline="central">输入 a</text></g><g class="am-node am-node--rect" data-key="请求 #1" data-step="0"><rect class="am-node-shape" x="30.6" y="113" width="72.5" height="35" rx="3"/><text x="66.9" y="130.5" text-anchor="middle" dominant-baseline="central">请求 #1</text></g><g class="am-node am-node--round" data-key="输入 an" data-step="1"><rect class="am-node-shape" x="170" y="14" width="84.5" height="35" rx="17.5"/><text x="212.3" y="31.5" text-anchor="middle" dominant-baseline="central">输入 an</text></g><g class="am-node am-node--rect" data-key="请求 #2" data-step="1"><rect class="am-node-shape" x="176" y="113" width="72.5" height="35" rx="3"/><text x="212.3" y="130.5" text-anchor="middle" dominant-baseline="central">请求 #2</text></g><g class="am-node am-node--round" data-key="输入 ang" data-step="2"><rect class="am-node-shape" x="319" y="14" width="91.7" height="35" rx="17.5"/><text x="364.9" y="31.5" text-anchor="middle" dominant-baseline="central">输入 ang</text></g><g class="am-node am-node--rect" data-key="请求 #3" data-step="2"><rect class="am-node-shape" x="328.7" y="113" width="72.5" height="35" rx="3"/><text x="364.9" y="130.5" text-anchor="middle" dominant-baseline="central">请求 #3</text></g><g class="am-node am-node--rect" data-key="屏幕显示 &quot;a&quot;" data-step="3"><rect class="am-node-shape" x="14" y="212" width="105.7" height="35" rx="3"/><text x="66.9" y="229.5" text-anchor="middle" dominant-baseline="central">屏幕显示 &quot;a&quot;</text></g><g class="am-node am-node--rect" data-key="屏幕显示 &quot;ang&quot;" data-step="4"><rect class="am-node-shape" x="304.8" y="212" width="120.3" height="35" rx="3"/><text x="364.9" y="229.5" text-anchor="middle" dominant-baseline="central">屏幕显示 &quot;ang&quot;</text></g><g class="am-node am-node--rect" data-key="屏幕显示 &quot;an&quot;" data-step="5"><rect class="am-node-shape" x="155.7" y="212" width="113" height="35" rx="3"/><text x="212.3" y="229.5" text-anchor="middle" dominant-baseline="central">屏幕显示 &quot;an&quot;</text></g></g></svg></figure>
+<div class="am-callout am-callout--err" role="note"><div class="am-callout-title">竞态</div><div class="am-callout-body am-md"><p>请求 #2 最慢，最后到达，把正确结果覆盖了。它不报错，只是悄悄给用户看错数据。你的搜索框、筛选、Tab、下拉框、路由切换里可能都有。</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-B">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>排名总览</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>排名</th>
+<th>方案</th>
+<th>取消时机</th>
+<th>代价</th>
+<th>状态</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>httpResource()</td>
+<td>变更 + 销毁</td>
+<td>零手写代码</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span></span></td>
+</tr>
+<tr>
+<td>2</td>
+<td>switchMap</td>
+<td>新值到达</td>
+<td>需要 RxJS</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span></span></td>
+</tr>
+<tr>
+<td>3</td>
+<td>takeUntilDestroyed()</td>
+<td>仅销毁</td>
+<td>竞态仍在</td>
+<td><span class="am-status am-status--warn"><span class="am-status-icon" aria-hidden="true">!</span></span></td>
+</tr>
+<tr>
+<td>4</td>
+<td>手动 unsubscribe</td>
+<td>记得才取消</td>
+<td>两处手动</td>
+<td><span class="am-status am-status--no"><span class="am-status-icon" aria-hidden="true">✗</span></span></td>
+</tr>
+</tbody></table></div>
+</div></div>
+</section>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>4. 手动取消：最差</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="ts">private sub?: Subscription;
+
+search(q: string) {
+  this.sub?.unsubscribe();
+  this.sub = this.http.get&lt;Item[]&gt;(...).subscribe(...);
+}
+ngOnDestroy() { this.sub?.unsubscribe(); }</code></pre>
+<div class="am-md"><ul>
+<li>能跑，但两处 unsubscribe 必须每次都记得。</li>
+<li>组件里两个请求 = 两个字段，五个 = 五个。</li>
+<li>有人重构时删掉 ngOnDestroy，什么都不报错，bug 悄悄回来。</li>
+<li>结论：不是错，是脆弱。</li>
+</ul>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>3. takeUntilDestroyed()：好一半</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="ts">this.http.get&lt;User&gt;(&#39;/api/me&#39;)
+  .pipe(takeUntilDestroyed())
+  .subscribe(u =&gt; this.user = u);</code></pre>
+<div class="am-md"><ul>
+<li>修复：离开页面即取消。无泄漏，无回调。</li>
+<li>不修复：搜索竞态。它只在销毁时取消，不在新请求开始时。</li>
+<li>同页输入三个字母，三个请求照样赛跑。</li>
+<li>用途：一次性加载。别信它处理“用户会触发两次”的场景。</li>
+</ul>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-E" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>2. switchMap：经典解</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="ts">items = toSignal(
+  this.query.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(q =&gt; this.http.get&lt;Item[]&gt;(`/api/search?q=${q}`))
+  ),
+  { initialValue: [] }
+);</code></pre>
+<div class="am-md"><p>新值一到，switchMap 立刻取消上一个请求。debounceTime(300) 等用户停手。distinctUntilChanged 跳过没变化的文本。toSignal 管订阅和销毁清理。</p>
+<p>输入 “angular”（7 次击键）：</p>
+<div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>方案</th>
+<th>发出</th>
+<th>完成</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>不取消</td>
+<td>7</td>
+<td>7（乱序）</td>
+</tr>
+<tr>
+<td>仅 switchMap</td>
+<td>7</td>
+<td>1（6 个被 abort）</td>
+</tr>
+<tr>
+<td>debounce + switchMap</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">保存场景禁用 switchMap</div><div class="am-callout-body am-md"><p>点两次 Save，第一次可能已被服务端写入。取消请求 ≠ 撤销写入。保存用 exhaustMap（飞行中忽略新点击）或 concatMap（排队执行）。</p>
+</div></div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-F" style="grid-column: span 3">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>1. httpResource()：最佳</h2></header>
+<div class="am-panel-body"><pre class="am-code"><code data-lang="ts">query = signal(&#39;&#39;);
+q = debounced(() =&gt; this.query(), 300);
+items = httpResource&lt;Item[]&gt;(() =&gt;
+  this.q.value() ? `/api/search?q=${this.q.value()}` : undefined
+);</code></pre>
+<div class="am-md"><ul>
+<li>输入变化 → 取消旧请求，发新请求。</li>
+<li>组件销毁 → 取消进行中的请求。</li>
+<li>返回 undefined → 空搜索框不发请求。</li>
+<li>isLoading()、error()、value() 全部内置。</li>
+</ul>
+<div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>switchMap</th>
+<th>httpResource</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>RxJS 操作符</td>
+<td>4</td>
+<td>0</td>
+</tr>
+<tr>
+<td>组件行数</td>
+<td>12</td>
+<td>6</td>
+</tr>
+<tr>
+<td>新输入时取消</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span></span></td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span></span></td>
+</tr>
+<tr>
+<td>销毁时取消</td>
+<td>ok（toSignal）</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span></span></td>
+</tr>
+<tr>
+<td>加载状态</td>
+<td>自己写</td>
+<td>内置</td>
+</tr>
+</tbody></table></div>
+<p>同样的安全，一半的代码。新同事第一天就能读懂。</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-G" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">G</span><h2>Bonus：resource() 和导航取消</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>用第三方 SDK 或原生 fetch？resource() 在正确时机给你 abortSignal：</p>
+</div>
+<pre class="am-code"><code data-lang="ts">items = resource({
+  params: () =&gt; ({ q: this.query() }),
+  loader: ({ params, abortSignal }) =&gt;
+    fetch(`/api/search?q=${params.q}`, { signal: abortSignal })
+});</code></pre>
+<div class="am-md"><p>仪表盘一次发 10 个请求，用户 1 秒后跳走，它们还在空跑。一个小拦截器解决：</p>
+</div>
+<pre class="am-code"><code data-lang="ts">export const cancelOnNav: HttpInterceptorFn = (req, next) =&gt; {
+  if (req.method !== &#39;GET&#39;) return next(req);
+  // 只有读请求被取消
+};</code></pre>
+<div class="am-md"><p>第一行是重点：<strong>只取消 GET</strong>。永远别让导航静默取消付款或保存。</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-H">
+<header class="am-panel-head"><span class="am-panel-id">H</span><h2>午餐前检查清单</h2></header>
+<div class="am-panel-body"><div class="am-md"><ul>
+<li>在方法里搜索 <code>.subscribe(</code>——每个都是潜在的竞态。</li>
+<li>HTTP 调用旁的 <code>mergeMap</code>——几乎都应改成 switchMap。</li>
+<li>POST/PUT 旁的 switchMap——几乎都应改成 exhaustMap 或 concatMap。</li>
+<li>DevTools 限速 Slow 4G，快速打字；Network 里看不到 <code>(canceled)</code> 就是 bug。</li>
+<li>挑一个界面迁到 httpResource()，感受一下。</li>
+</ul>
+</div></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.6 · 2026-10-10 16:52</footer>
+<textarea id="am-source" hidden readonly aria-hidden="true">---
+title: Angular 取消 HTTP 请求的 4 种方式
+subtitle: 从最差到最好，根治“旧响应覆盖新数据”的竞态 bug
+source: Medium @saneekadam1326 · 2026-10-06 · Angular 22
+---
+导语：竞态 bug 的根源不是服务器慢，而是“谁最后到达，谁就赢”。解法只有一条：**新请求一发起，旧请求必须死**。Angular 22 的 HttpClient 默认走 Fetch API。unsubscribe 会真正 abort 请求，Network 面板里能看到 `(canceled)`。
+
+## 先看这个 bug {span=2}
+用户快速输入 a → an → ang，三个请求并发发出，按各自速度返回：
+
+```flow
+(输入 a) -&gt; 请求 #1: 80ms
+(输入 an) -&gt; 请求 #2: 900ms
+(输入 ang) -&gt; 请求 #3: 120ms
+请求 #1 -&gt; 屏幕显示 &quot;a&quot;
+请求 #3 -&gt; 屏幕显示 &quot;ang&quot;: 正确
+请求 #2 -&gt; 屏幕显示 &quot;an&quot;: 错误且保留
+```
+
+```callout err 竞态
+请求 #2 最慢，最后到达，把正确结果覆盖了。它不报错，只是悄悄给用户看错数据。你的搜索框、筛选、Tab、下拉框、路由切换里可能都有。
+```
+
+## 排名总览
+| 排名 | 方案 | 取消时机 | 代价 | 状态 |
+|---|---|---|---|---|
+| 1 | httpResource() | 变更 + 销毁 | 零手写代码 | ok |
+| 2 | switchMap | 新值到达 | 需要 RxJS | ok |
+| 3 | takeUntilDestroyed() | 仅销毁 | 竞态仍在 | warn |
+| 4 | 手动 unsubscribe | 记得才取消 | 两处手动 | no |
+
+## 4. 手动取消：最差
+```ts
+private sub?: Subscription;
+
+search(q: string) {
+  this.sub?.unsubscribe();
+  this.sub = this.http.get&lt;Item[]&gt;(...).subscribe(...);
+}
+ngOnDestroy() { this.sub?.unsubscribe(); }
+```
+- 能跑，但两处 unsubscribe 必须每次都记得。
+- 组件里两个请求 = 两个字段，五个 = 五个。
+- 有人重构时删掉 ngOnDestroy，什么都不报错，bug 悄悄回来。
+- 结论：不是错，是脆弱。
+
+## 3. takeUntilDestroyed()：好一半
+```ts
+this.http.get&lt;User&gt;(&#39;/api/me&#39;)
+  .pipe(takeUntilDestroyed())
+  .subscribe(u =&gt; this.user = u);
+```
+- 修复：离开页面即取消。无泄漏，无回调。
+- 不修复：搜索竞态。它只在销毁时取消，不在新请求开始时。
+- 同页输入三个字母，三个请求照样赛跑。
+- 用途：一次性加载。别信它处理“用户会触发两次”的场景。
+
+## 2. switchMap：经典解 {span=2}
+```ts
+items = toSignal(
+  this.query.pipe(
+    debounceTime(300),
+    distinctUntilChanged(),
+    switchMap(q =&gt; this.http.get&lt;Item[]&gt;(`/api/search?q=${q}`))
+  ),
+  { initialValue: [] }
+);
+```
+新值一到，switchMap 立刻取消上一个请求。debounceTime(300) 等用户停手。distinctUntilChanged 跳过没变化的文本。toSignal 管订阅和销毁清理。
+
+输入 “angular”（7 次击键）：
+
+| 方案 | 发出 | 完成 |
+|---|---|---|
+| 不取消 | 7 | 7（乱序） |
+| 仅 switchMap | 7 | 1（6 个被 abort） |
+| debounce + switchMap | 1 | 1 |
+
+```callout warn 保存场景禁用 switchMap
+点两次 Save，第一次可能已被服务端写入。取消请求 ≠ 撤销写入。保存用 exhaustMap（飞行中忽略新点击）或 concatMap（排队执行）。
+```
+
+## 1. httpResource()：最佳 {span=2}
+```ts
+query = signal(&#39;&#39;);
+q = debounced(() =&gt; this.query(), 300);
+items = httpResource&lt;Item[]&gt;(() =&gt;
+  this.q.value() ? `/api/search?q=${this.q.value()}` : undefined
+);
+```
+- 输入变化 → 取消旧请求，发新请求。
+- 组件销毁 → 取消进行中的请求。
+- 返回 undefined → 空搜索框不发请求。
+- isLoading()、error()、value() 全部内置。
+
+| 特性 | switchMap | httpResource |
+|---|---|---|
+| RxJS 操作符 | 4 | 0 |
+| 组件行数 | 12 | 6 |
+| 新输入时取消 | ok | ok |
+| 销毁时取消 | ok（toSignal） | ok |
+| 加载状态 | 自己写 | 内置 |
+
+同样的安全，一半的代码。新同事第一天就能读懂。
+
+## Bonus：resource() 和导航取消 {span=2}
+用第三方 SDK 或原生 fetch？resource() 在正确时机给你 abortSignal：
+
+```ts
+items = resource({
+  params: () =&gt; ({ q: this.query() }),
+  loader: ({ params, abortSignal }) =&gt;
+    fetch(`/api/search?q=${params.q}`, { signal: abortSignal })
+});
+```
+
+仪表盘一次发 10 个请求，用户 1 秒后跳走，它们还在空跑。一个小拦截器解决：
+
+```ts
+export const cancelOnNav: HttpInterceptorFn = (req, next) =&gt; {
+  if (req.method !== &#39;GET&#39;) return next(req);
+  // 只有读请求被取消
+};
+```
+
+第一行是重点：**只取消 GET**。永远别让导航静默取消付款或保存。
+
+## 午餐前检查清单
+- 在方法里搜索 `.subscribe(`——每个都是潜在的竞态。
+- HTTP 调用旁的 `mergeMap`——几乎都应改成 switchMap。
+- POST/PUT 旁的 switchMap——几乎都应改成 exhaustMap 或 concatMap。
+- DevTools 限速 Slow 4G，快速打字；Network 里看不到 `(canceled)` 就是 bug。
+- 挑一个界面迁到 httpResource()，感受一下。
+</textarea>
+<script>
+(() => {
+  const root = document.documentElement;
+  const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+  const label = (btn, value) => {
+    const map = JSON.parse(btn.dataset.labels || '{}');
+    btn.textContent = map[value] || value;
+  };
+  const bind = (name, attr, values) => {
+    const btn = document.querySelector(`[data-am="${name}"]`);
+    if (!btn) return;
+    label(btn, root.getAttribute(attr));
+    btn.addEventListener('click', () => {
+      const next = cycle(values, root.getAttribute(attr));
+      root.setAttribute(attr, next);
+      label(btn, next);
+    });
+  };
+  bind('theme', 'data-theme', ['blueprint', 'shadcn']);
+  bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+  const copyBtn = document.querySelector('[data-am="copy"]');
+  copyBtn?.addEventListener('click', async () => {
+    const nodes = document.querySelectorAll('#am-source');
+    const text = nodes[nodes.length - 1]?.value ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = copyBtn.dataset.done;
+    setTimeout(() => { copyBtn.textContent = original; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>

@@ -50,7 +50,7 @@ def classify(name: str):
         return CAT_NOTE, "数学", ""
     if re.search(r"c#|csharp", base, re.I):
         return CAT_NOTE, "C#", ""
-    if re.search(r"前端|js|javascript|webpack|模块化|promise", base, re.I):
+    if re.search(r"前端|js|javascript|webpack|模块化|promise|angular|httpresource", base, re.I):
         return CAT_NOTE, "前端", ""
     if re.search(r"llm|大模型|gemini", base, re.I):
         return CAT_NOTE, "AI", ""
