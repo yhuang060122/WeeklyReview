@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mag7 周报 2026-11-06</title>
+<style>
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel2:#1c232d; --line:#2b3442;
+  --text:#e6edf3; --muted:#8b949e; --red:#f85149; --green:#3fb950;
+  --amber:#d29922; --blue:#58a6ff; --violet:#bc8cff;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);
+  font:14px/1.65 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+  padding:0 16px 64px}
+.wrap{max-width:1080px;margin:0 auto}
+header{padding:28px 0 12px;border-bottom:1px solid var(--line)}
+h1{margin:0 0 4px;font-size:24px;letter-spacing:.3px}
+.sub{color:var(--muted);font-size:13px}
+h2{margin:36px 0 12px;font-size:17px;padding-left:10px;border-left:3px solid var(--blue)}
+h3{margin:0 0 8px;font-size:15px}
+.legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.tag{display:inline-block;padding:0 7px;border-radius:10px;font-size:11px;line-height:18px;font-weight:600;white-space:nowrap;vertical-align:1px}
+.ok{background:#12301c;color:var(--green)}
+.est{background:#3a2d0b;color:var(--amber)}
+.na{background:#2b3442;color:var(--muted)}
+.chg{background:#1b2b45;color:var(--blue)}
+.red{background:#4a1a1a;color:var(--red)}
+.alert{margin-top:18px;background:#2a1315;border:1px solid #5a2326;border-radius:8px;padding:14px 16px}
+.alert h3{color:var(--red);margin-bottom:6px}
+.alert ul{margin:0;padding-left:18px}
+.alert li{margin:4px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:16px;margin:14px 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.card ul{margin:4px 0 8px;padding-left:18px}
+.card li{margin:3px 0}
+.muted{color:var(--muted)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--panel)}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+th,td{padding:8px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{background:var(--panel2);color:var(--muted);font-weight:600;font-size:12px;position:sticky;top:0}
+tr:last-child td{border-bottom:0}
+.dn{color:var(--red)} .up{color:var(--green)}
+.num{font-variant-numeric:tabular-nums}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:4px 10px;font-size:13px}
+.kv b{color:var(--muted);font-weight:600}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+.box{background:var(--panel2);border-radius:6px;padding:10px 12px;margin:8px 0;font-size:13px}
+a{color:var(--blue);text-decoration:none} a:hover{text-decoration:underline}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+footer li{margin:3px 0}
+@media (max-width:760px){.grid{grid-template-columns:1fr}.kv{grid-template-columns:80px 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <h1>Mag7 周报 · 2026-11-06（周五）</h1>
+  <div class="sub">周期 11/02–11/06 · 美股收盘后生成 · <b>基准版（首期，无上期记录可对比）</b>：下文「变化项」取自本周来源中的边际变化，从下一期起才与本报告对比</div>
+  <div class="legend">
+    <span><span class="tag ok">✓</span> 权威源或多源一致</span>
+    <span><span class="tag est">估</span> 盘中快照 / 单一来源 / 源间口径有差异 / 我的推算</span>
+    <span><span class="tag na">N/A</span> 未找到，不编造</span>
+    <span><span class="tag chg">变化</span> 本周边际变化</span>
+    <span><span class="tag red">🔴</span> 红色预警事件</span>
+  </div>
+  <div class="alert">
+    <h3>🔴 本周红色预警事件</h3>
+    <ul>
+      <li><b>监管 / 政策</b>：民主党在 11/3 中期选举取得优势，市场担忧 AI 数据中心监管趋严、建设放缓；11/5 纳指100 单日 −6.36%（2020 年 3 月以来最差），费城半导体指数 −12%，Mag7 单日合计蒸发约 $1 万亿 <span class="tag ok">✓</span></li>
+      <li><b>宏观</b>：10 月非农 +165K（预期约 59–65K），失业率 4.1%，12 月加息概率升至约 77–80%，10Y 约 4.87% <span class="tag ok">✓</span></li>
+      <li><b>财报（上周事件，影响延续）</b>：GOOGL 营收/EPS 低于预期且自由现金流为 −$9.07B；AMZN EPS 低于预期且 capex 单季 $75.9B；AAPL 给出 12 月季度毛利率下调指引；META 单季 $9.89B 诉讼和解计提 <span class="tag ok">✓</span></li>
+      <li><b>你的 thesis 规则触发</b>：NVDA 11/5 单日 −9.26%，超过「单日放量大跌超 8%，减仓 50%」的线（QQQ 当日成交创纪录；NVDA 自身成交量 <span class="tag na">N/A</span>）</li>
+    </ul>
+  </div>
+</header>
+
+<!-- ============ 1 宏观前置 ============ -->
+<h2>一、宏观前置</h2>
+<div class="tw"><table>
+<thead><tr><th>项目</th><th>读数</th><th>备注 / 来源</th></tr></thead>
+<tbody>
+<tr><td>S&amp;P 500</td><td class="num">11/6 收 7,376.92（+0.32%）<span class="tag ok">✓</span><br>11/5 <span class="dn">−4.36%</span> <span class="tag ok">✓</span></td><td>本周为 6 月以来最差单周（Yahoo Finance）；全周涨跌幅未找到统一收盘口径，<span class="tag na">N/A</span>（截至周四各源约 −2.7% 至 −3%）。Reuters / Yahoo Finance 11/6</td></tr>
+<tr><td>Nasdaq Composite</td><td class="num">11/6 收 24,579.43（+1.09%）<span class="tag ok">✓</span><br>11/5 <span class="dn">−5.52%</span> <span class="tag ok">✓</span></td><td>连续第 4 周下跌，进入技术性回调区间。Reuters 11/6</td></tr>
+<tr><td>Dow</td><td class="num">11/6 收 51,286.21（−0.46%）<span class="tag ok">✓</span></td><td>11/4 曾单日大涨近 1,600 点，11/5 全部回吐。Reuters / investingLive</td></tr>
+<tr><td>Nasdaq 100 / QQQ</td><td class="num">NDX 11/5 收 26,629.81（<span class="dn">−6.36%</span>）<span class="tag ok">✓</span><br>QQQ 11/5 收 $647.05 <span class="tag ok">✓</span></td><td>较 10/6 纪录高点约 −15%；周内约 −4.5%（周五下午盘中，<span class="tag est">估</span>）；年内 +6.7%（截至 11/5）。QQQ 11/6 午盘 $655.61（+1.32%，<span class="tag est">估</span>）</td></tr>
+<tr><td>SPY</td><td class="num">11/6 午盘 $736.31（+0.45%）<span class="tag est">估</span></td><td>Finnhub 快照 11/6 18:01 UTC（非收盘）</td></tr>
+<tr><td>MAGS</td><td class="num">11/5 约 −4.6% 至 −4.8%（$66.92–67.04）<span class="tag est">估</span></td><td>两个来源口径略有差异；11/6 收盘 <span class="tag na">N/A</span></td></tr>
+<tr><td>VIX</td><td class="num">11/5 单日飙升近 70% <span class="tag est">估</span><br>绝对水平 <span class="tag na">N/A</span></td><td>前一日偏低、事件后跳升；<b>是否越过你 thesis 里的 28 线需你用终端核对</b></td></tr>
+<tr><td>10Y 美债</td><td class="num">约 4.87%（11/6 非农后盘中）<span class="tag ok">✓</span><br>10/30 收 4.94% <span class="tag ok">✓</span></td><td>2Y 4.52%、30Y 5.27%（同一时点）。9 月下旬曾处于 2007 年以来高位附近。Reuters / FRED</td></tr>
+<tr><td>美联储</td><td>主席 Warsh；下次 FOMC 12/9<br>12/9 加息概率：约 77%（CME FedWatch）、79%（Morningstar）、约 80%（Polymarket）<span class="tag ok">✓</span></td><td>本周变化：加息概率由约 70% 升至约 78%（Reuters）<span class="tag chg">变化</span>。当前联邦基金利率区间 <span class="tag na">N/A</span></td></tr>
+<tr><td>就业</td><td class="num">非农 +165K（预期 59–65K），失业率 4.1%，时薪环比 +0.4%，前两月共上修 84K <span class="tag ok">✓</span></td><td>CNBC / Benzinga / Reuters 11/6</td></tr>
+<tr><td>通胀 / 能源</td><td>10 月 CPI 将于 11/10 公布 <span class="tag ok">✓</span>；最新 CPI 读数 <span class="tag na">N/A</span><br>油价周内大幅下跌，S&amp;P 能源板块周内约 −11%（盘中）<span class="tag est">估</span></td><td>中东冲突带来的能源通胀是加息逻辑之一（Reuters）。油价绝对水平 <span class="tag na">N/A</span></td></tr>
+<tr><td>美元指数</td><td><span class="tag na">N/A</span></td><td>本轮未抓到可靠读数</td></tr>
+<tr><td>出口管制</td><td>本周未检索到新的管制事件</td><td>NVDA 10-K 称其已被实质性排除在中国数据中心市场之外；FQ3 指引不含中国数据中心算力收入 <span class="tag ok">✓</span></td></tr>
+</tbody></table></div>
+
+<!-- ============ 2 群组汇总 ============ -->
+<h2>二、群组汇总表</h2>
+<div class="tw"><table>
+<thead><tr><th>代码</th><th>11/5 单日</th><th>11/5 收盘约</th><th>11/6 状态</th><th>Fwd PE（11/5）</th><th>vs thesis 中枢</th><th>近期催化</th></tr></thead>
+<tbody>
+<tr><td><b>TSLA</b></td><td class="dn num">−10.77% <span class="tag ok">✓</span></td><td class="num">$343.69</td><td class="num">午盘 +4.3%（$358.36）<span class="tag est">估</span></td><td class="num">248x <span class="tag est">估</span></td><td>thesis 不设估值中枢</td><td>10/21 财报；Cybertruck 相关标题 11/6（细节 <span class="tag na">N/A</span>）</td></tr>
+<tr><td><b>NVDA</b></td><td class="dn num">−9.26% <span class="tag ok">✓</span></td><td class="num">≈$181.6–182.1</td><td class="num">≈+3.1%（报价页）；盘中最高 +5.6–6.9% <span class="tag est">估</span></td><td class="num">21.5x <span class="tag est">估</span></td><td class="up">低于 28–34；低于「低估 &lt;25」线</td><td>11/17 盘后财报</td></tr>
+<tr><td><b>META</b></td><td class="dn num">−3.9% <span class="tag ok">✓</span></td><td class="num">≈$605–609</td><td class="num">午盘 +2.0% <span class="tag est">估</span></td><td class="num">21.3x <span class="tag est">估</span></td><td>落在 20–26 区间内偏低</td><td>10/21 财报；诉讼；Class C 股 2027-01-19</td></tr>
+<tr><td><b>MSFT</b></td><td class="dn num">−3.6% <span class="tag ok">✓</span></td><td class="num">≈$534–536</td><td class="num">午盘 −0.5% <span class="tag est">估</span></td><td class="num">27.8x <span class="tag est">估</span></td><td>落在 26–32 区间内</td><td>10/28 财报：Azure +48%</td></tr>
+<tr><td><b>GOOGL</b></td><td class="dn num">−2.2% <span class="tag ok">✓</span></td><td class="num">≈$283–285</td><td class="num">午盘 +0.9% <span class="tag est">估</span></td><td class="num">15.3x <span class="tag est">估</span></td><td class="up">显著低于 22–28</td><td>10/28 财报后 −10% 以上；PT 下调</td></tr>
+<tr><td><b>AMZN</b></td><td class="dn num">−2.2% <span class="tag ok">✓</span></td><td class="num">≈$259.3–259.7</td><td class="num">午盘 +0.5% <span class="tag est">估</span></td><td class="num">20.5x <span class="tag est">估</span></td><td>低于 28–33（口径存疑，见下注）</td><td>10/29 财报：AWS +39%</td></tr>
+<tr><td><b>AAPL</b></td><td class="dn num">−1.5% <span class="tag ok">✓</span></td><td class="num">≈$345–346</td><td class="num">午盘持平 <span class="tag est">估</span></td><td class="num">36.9x <span class="tag est">估</span></td><td class="dn">高于 24–28</td><td>11/2 财报：毛利率指引下调</td></tr>
+</tbody></table></div>
+<div class="note">
+  强弱排序（按 11/5 单日跌幅，由强到弱）：AAPL &gt; AMZN ≈ GOOGL &gt; MSFT &gt; META &gt; NVDA &gt; TSLA。个股<b>本周累计涨跌幅</b>：未找到统一来源的周收盘，<span class="tag na">N/A</span>，未自行拼凑。<br>
+  收盘价为多个来源的区间（各源有 ±$1–2 差异）；11/6「午盘」为 18:01 UTC 快照，不是收盘价。<br>
+  Fwd PE 来自单一来源（finwire，11/5），与其他来源口径差异大（例：AMZN 在 Motley Fool 10/17 为约 31x），<b>仅作方向参考</b>，建议 <code>/deep</code> 时用统一数据源重算。<br>
+  其他：S&amp;P 500 中有 174 只（34.6%）较 52 周高点回落至少 20%（Yahoo Finance 11/6）；市值权重与标普集中度读数 <span class="tag na">N/A</span>。
+</div>
+
+<!-- ============ 3 单标的 ============ -->
+<h2>三、单标的要点</h2>
+
+<div class="card">
+  <h3>NVDA　<span class="tag red">🔴 thesis 规则触发</span></h3>
+  <div class="kv">
+    <b>本周变化</b><div>11/5 −9.26%，单日市值蒸发约 $440–450B，年内由正转负（−2.6%）<span class="tag ok">✓</span>；SOX 较 6/22 高点 −38% <span class="tag ok">✓</span>；跌破 200 日均线（二手来源，<span class="tag est">估</span>）；11/6 反弹</div>
+    <b>财报日历</b><div>11/17 盘后，电话会 5:00pm ET（公司 10/28 公告；个别日历仍写 11/18 或 11/25，以公司为准）<span class="tag ok">✓</span></div>
+    <b>指引</b><div>FQ3 FY27 营收 $108B ±2%，毛利率 74% ±50bp <span class="tag ok">✓</span>；上季营收 $96.2B vs 指引 $91.0B <span class="tag ok">✓</span>；FQ4 毛利率因内存成本降至 71–72%（二手引述，<span class="tag est">估</span>）</div>
+    <b>核心多头</b><div>算力龙头地位；上季大幅超指引；估值已压缩到 thesis「低估」区间下方</div>
+    <b>核心空头</b><div>风险重心从估值转向「AI capex 可持续性 + 数据中心监管 + 内存成本侵蚀毛利」；出口管制导致中国数据中心收入≈0</div>
+    <b>关键观察</b><div>11/17 数据中心营收与毛利率路径（74% → 71–72%）、渠道库存、客户 capex 指引；20 日均线读数 <span class="tag na">N/A</span></div>
+  </div>
+</div>
+
+<div class="grid">
+<div class="card">
+  <h3>MSFT</h3>
+  <div class="kv">
+    <b>FQ1 FY27</b><div>营收 $92.28B vs 预期 $90.75B；EPS $4.89 vs $4.72；Azure +48%（固定汇率，高于 44–45% 指引）<span class="tag ok">✓</span></div>
+    <b>现金流 / capex</b><div>capex $39.4B（翻倍，低于市场预期的 $50B）<span class="tag ok">✓</span>；FCF $18.6B <span class="tag est">估</span>；管理层称 FY27 全年 FCF 为正</div>
+    <b>下季指引</b><div>营收 $96.0–97.1B，Azure 49–50%（固定汇率）<span class="tag ok">✓</span></div>
+    <b>股价</b><div>财报后盘后约 +4–5%；11/5 −3.6% <span class="tag ok">✓</span></div>
+    <b>核心多头</b><div>Azure 加速 + 现金流为正的 AI 变现路径</div>
+    <b>核心空头</b><div>capex 翻倍；FY27 起分部披露由三个改为两个，口径变化增加跨期比较难度 <span class="tag est">估</span>；Devices 收入 −3%</div>
+    <b>关键观察</b><div>Azure 增速能否兑现 49–50%、capex 节奏、FCF；Copilot 付费渗透率本期 <span class="tag na">N/A</span></div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>GOOGL　<span class="tag red">🔴 财报 / 评级</span></h3>
+  <div class="kv">
+    <b>FQ3</b><div>营收 $127.58B vs 预期约 $128.2B（未达）；调整后 EPS $2.67 vs $3.02（未达）；Cloud $30.71B vs $29.10B（超）<span class="tag ok">✓</span></div>
+    <b>现金流 / capex</b><div>capex $51.4B；FCF −$9.07B，连续第 2 季为负；2026 capex 指引 $195–205B 维持，2027「显著增加」<span class="tag ok">✓</span></div>
+    <b>股价 / 评级</b><div>财报后 −10% 以上 <span class="tag ok">✓</span>；Piper Sandler PT $345（原 $400）、Barclays $405、共识 PT $423→$400 <span class="tag est">估</span></div>
+    <b>核心多头</b><div>Cloud 高增长与 TPU；估值已降至 thesis 中枢下方很多（15.3x，<span class="tag est">估</span>）</div>
+    <b>核心空头</b><div>FCF 为负且 2027 capex 继续上升；Google Services 营收低于预期（单一来源，<span class="tag est">估</span>）</div>
+    <b>关键观察</b><div>FCF 拐点、2027 capex 细节（Q4 电话会）、Cloud 增速与 backlog</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>AMZN　<span class="tag red">🔴 财报</span></h3>
+  <div class="kv">
+    <b>FQ3</b><div>营收 $201.9B（+12%）；AWS $45.98B（+39%，近 5 年最快）；EPS $1.89 vs 预期 $1.97（未达）；营业利润 $28.1B、利润率 13.9% 创纪录 <span class="tag ok">✓</span></div>
+    <b>现金流 / capex</b><div>单季现金 capex $75.9B；近 12 个月 FCF −$42.4B；2026 capex 约 $220B，2027 将「显著更多」<span class="tag ok">✓</span></div>
+    <b>指引 / backlog</b><div>Q4 营收 $240–247B；AWS backlog $578B；AWS 2027–2028 增速预计超 40%（管理层表述）</div>
+    <b>股价</b><div>10/30 收 $240.35；11/5 约 $259.5，意味着周内上行（推算，<span class="tag est">估</span>）；11/5 −2.2% <span class="tag ok">✓</span></div>
+    <b>核心多头</b><div>AWS 持续加速、双线增长</div>
+    <b>核心空头</b><div>FCF 深度为负、capex 持续上调；Q4 燃油与干线运输成本压力</div>
+    <b>关键观察</b><div>AWS 增速与利润率、capex 与融资节奏、电商营业利润率</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>META　<span class="tag red">🔴 法律 / 监管</span></h3>
+  <div class="kv">
+    <b>FQ3</b><div>营收 $64.60B（+26%，超预期）；EPS $3.83（剔除 $9.89B 诉讼计提后 $7.40）；营业利润 $12.99B（剔除计提 $22.88B）<span class="tag ok">✓</span></div>
+    <b>现金流 / capex</b><div>capex $34.91B；FCF −$2.12B；2026 capex 指引 $135–145B（下限上调）<span class="tag ok">✓</span></div>
+    <b>指引</b><div>Q4 营收 $73–76B；2026 费用 $175–179B；未给 2027 capex 与收入展望 <span class="tag ok">✓</span></div>
+    <b>法律 / 公司行动</b><div>与 52 个州总检察长的青少年案和解，计提 $9.89B；另有媒体报道新墨西哥州判赔约 $250 亿、公司拟上诉（单一来源标题，<span class="tag est">估</span>）；新增无投票权 Class C 股，2027-01-19 生效；多起未成年人案件将在近月开庭</div>
+    <b>股价</b><div>财报后盘后约 +4–5%；11/5 −3.9% <span class="tag ok">✓</span></div>
+    <b>核心多头 / 空头</b><div>AI 推荐引擎带来广告量价齐升；空头：FCF 转负、监管与诉讼不确定性</div>
+    <b>关键观察</b><div>广告增速、capex 回报、诉讼进展（后续开庭）</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>AAPL　<span class="tag red">🔴 指引下调</span></h3>
+  <div class="kv">
+    <b>FQ4 FY26（11/2）</b><div>营收 $114.48B（+12%，预期 $113.39B）；EPS $2.10（预期 $1.99，含约 5 美分关税退款）；iPhone $57.58B（+17.5%）<span class="tag ok">✓</span></div>
+    <b>指引</b><div>12 月季度毛利率 45–46%（上季 47.9%）；Services 增速 8–9%，低于市场预期约 10.7% <span class="tag ok">✓</span>；管理层称内存成本上涨「前所未有」，预计继续上升</div>
+    <b>公司 / 股价</b><div>Ternus 首次以 CEO 身份主持财报电话会；11/2 收 $338.32，盘后一度跌约 4.4%；11/5 −1.5%（市值约 $5.0 万亿）<span class="tag ok">✓</span></div>
+    <b>核心多头</b><div>现金流与品牌壁垒；本周相对最抗跌，符合「压舱石」定位</div>
+    <b>核心空头</b><div>估值 36.9x（<span class="tag est">估</span>）远高于你 thesis 的 24–28，而增速与利润率指引都在走弱</div>
+    <b>关键观察</b><div>内存成本传导至毛利率、Services 增速、Siri AI 成本</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3>TSLA</h3>
+  <div class="kv">
+    <b>FQ3（10/21）</b><div>营收 $28.05B（持平）；非 GAAP EPS $0.48 vs $0.45；毛利率 19.6%；营业利润 $718M（同比 −56%）；FCF $1.5B <span class="tag ok">✓</span></div>
+    <b>业务进展</b><div>FSD 活跃订阅 174 万；9/3 起在奥斯汀开展无安全员 Cybercab 载客 <span class="tag ok">✓</span></div>
+    <b>股价</b><div>11/5 −10.77% 至 $343.69（单日最弱）<span class="tag ok">✓</span>；11/6 午盘 +4.3% <span class="tag est">估</span></div>
+    <b>核心多头</b><div>FSD / Robotaxi 商业化与稀缺 AI 汽车叙事</div>
+    <b>核心空头</b><div>营业费用同比 +39% 压低利润；情绪溢价极高（Fwd PE 约 248x，<span class="tag est">估</span>）</div>
+    <b>关键观察</b><div>毛利率可持续性、Cybercab 放量节奏、FSD 订阅增速</div>
+  </div>
+</div>
+</div>
+
+<!-- ============ 4 风险/拥挤度 ============ -->
+<h2>四、风险 / 拥挤度打分</h2>
+<div class="note" style="margin:0 0 8px">下表为<b>我基于上文数据的主观评级</b>（高 / 中 / 低），不是数据源给出的分数。</div>
+<div class="tw"><table>
+<thead><tr><th>标的</th><th>利率敏感</th><th>监管 / 政策</th><th>FCF / 融资压力</th><th>估值位置（vs thesis）</th><th>综合风险</th></tr></thead>
+<tbody>
+<tr><td><b>TSLA</b></td><td>高</td><td>中</td><td>低（FCF 为正）</td><td>极高估值，无锚</td><td class="dn"><b>高</b></td></tr>
+<tr><td><b>NVDA</b></td><td>高</td><td>高（数据中心 + 出口管制）</td><td>低</td><td>低估区间</td><td class="dn"><b>中高</b>（估值低，但事件与拥挤风险高）</td></tr>
+<tr><td><b>META</b></td><td>中</td><td>高（诉讼 + 监管）</td><td>中（FCF 转负）</td><td>区间内偏低</td><td><b>中高</b></td></tr>
+<tr><td><b>GOOGL</b></td><td>中</td><td>中</td><td>高（FCF 连续为负）</td><td>显著偏低</td><td><b>中</b></td></tr>
+<tr><td><b>AMZN</b></td><td>中</td><td>中</td><td>高（TTM FCF −$42.4B）</td><td>偏低（口径存疑）</td><td><b>中</b></td></tr>
+<tr><td><b>MSFT</b></td><td>中</td><td>中</td><td>低（FCF 为正）</td><td>区间内</td><td class="up"><b>中低</b></td></tr>
+<tr><td><b>AAPL</b></td><td>低</td><td>低</td><td>低</td><td>明显偏高</td><td><b>中</b>（防御属性强，但估值与利润率指引是裂缝）</td></tr>
+</tbody></table></div>
+
+<div class="grid" style="margin-top:14px">
+<div class="card">
+  <h3>拥挤度 / 情绪（可得数据）</h3>
+  <ul>
+    <li>QQQ 11/5 成交约 $800 亿，创该 ETF 纪录（Balchunas 引述，<span class="tag est">估</span>）</li>
+    <li>有来源称对冲基金总杠杆处于约 97 分位（单一来源，<span class="tag est">估</span>）</li>
+    <li>NVDA 约占 QQQ 8%（<span class="tag est">估</span>）</li>
+    <li>对冲基金 13F 持仓、空头比例、put/call、1M/3M IV、skew、机构资金流向：<span class="tag na">N/A</span></li>
+  </ul>
+  <div class="note">13F、FINRA 空头数据本身滞后，即使抓到也不是实时信号。</div>
+</div>
+<div class="card">
+  <h3>对照你的情景矩阵</h3>
+  <ul>
+    <li><b>情景2（长端利率上行）</b>：thesis 预期受损排序 NVDA &gt; TSLA &gt; META，抗跌 AAPL、GOOGL。实际 11/5：TSLA &gt; NVDA &gt; META，AAPL 最抗跌，基本吻合；GOOGL 当日跌幅小，但它此前已因财报下跌 10% 以上，属个股事件而非利率</li>
+    <li><b>情景3（抱团瓦解）</b>：半导体较高点 −38%、Mag7 单日 −$1T，信号明显；但 NVDA 11/6 反弹，尚不能判定趋势</li>
+    <li><b>情景4（监管加强）</b>：thesis 写「MSFT、AAPL、GOOGL 影响有限」。本周数据与此不完全一致：MSFT 11/5 −3.6%，高于 GOOGL / AAPL，因为数据中心监管直接指向超大规模云厂商的 capex</li>
+  </ul>
+</div>
+</div>
+
+<div class="box">
+  <b>建议更新 thesis 的两处缺口（供你决定）</b>
+  <ul style="margin:6px 0 0;padding-left:18px">
+    <li>目前五个情景里没有「<b>数据中心监管 / 电力约束</b>」这一独立情景，而它是本周最大的冲击来源</li>
+    <li>关键观察指标建议统一加入「<b>FCF / 融资压力</b>」：GOOGL、AMZN、META 本季 FCF 均为负，这一维度在当前 thesis 里没有字段</li>
+  </ul>
+</div>
+
+<!-- ============ 5 持仓/交易备注 ============ -->
+<h2>五、我的持仓 / 交易备注</h2>
+<div class="card">
+  <p class="muted" style="margin-top:0">你的持仓、成本价、期权仓位我这边没有，<b>以下仅做规则核对，不构成交易建议</b>（我不是投资顾问）。发我持仓后，我再按你的 20% 单标的上限与三档仓位规则对照。</p>
+  <div class="tw"><table>
+  <thead><tr><th>thesis 规则</th><th>当前状态</th></tr></thead>
+  <tbody>
+  <tr><td>单一标的 ≤ 账户 20%</td><td><span class="tag na">N/A</span>（需要你的持仓）</td></tr>
+  <tr><td>防御仓触发条件：拥挤度高 / 利率上行 / 宏观不确定</td><td>利率上行 <span class="tag ok">✓</span>（10Y 约 4.87%，加息概率 77–80%）；宏观不确定 <span class="tag ok">✓</span>（中期选举 + 监管）；拥挤度 部分满足，量化数据 <span class="tag na">N/A</span>。thesis 对应动作为增配 AAPL / GOOGL、清减 TSLA 与高位弹性标的。<b>但这两只各有裂缝：AAPL 估值与利润率指引，GOOGL 的 FCF 为负</b>，是否执行由你判断</td></tr>
+  <tr><td>NVDA 单日放量大跌超 8% → 减仓 50%</td><td>11/5 −9.26%，价格条件已满足；「放量」需核对 NVDA 成交量（<span class="tag na">N/A</span>）</td></tr>
+  <tr><td>VIX &gt; 28 禁止新开高杠杆多单</td><td>VIX 水平 <span class="tag na">N/A</span>，请你用终端确认</td></tr>
+  <tr><td>财报前降低裸期权仓位</td><td>NVDA 11/17 财报在即；上次财报期权隐含波动与实际波动的对比见二手来源，<span class="tag est">估</span>。IV / skew / gamma 数据 <span class="tag na">N/A</span>，需要时用 <code>/option NVDA</code> 专项再查</td></tr>
+  </tbody></table></div>
+</div>
+
+<h2>事件日历</h2>
+<div class="tw"><table>
+<thead><tr><th>日期</th><th>事件</th></tr></thead>
+<tbody>
+<tr><td class="num">11/10</td><td>美国 10 月 CPI <span class="tag ok">✓</span></td></tr>
+<tr><td class="num">11/17（盘后）</td><td>NVDA FQ3 FY27 财报 <span class="tag ok">✓</span></td></tr>
+<tr><td class="num">12/9</td><td>FOMC 年内最后一次利率决议 <span class="tag ok">✓</span></td></tr>
+<tr><td class="num">2027-01-19</td><td>META 新增 Class C 无投票权股生效 <span class="tag ok">✓</span></td></tr>
+<tr><td class="num">待定</td><td>META 青少年相关案件开庭、国会 AI / 数据中心听证：具体日期 <span class="tag na">N/A</span></td></tr>
+</tbody></table></div>
+
+<footer>
+  <b>未覆盖项</b>：SEC 10-Q / 10-K 原文、电话会逐字稿未逐份抓取（财报数字来自公司披露的二次报道，标 ✓ 的项为多源一致）；分析师一致预期上调 / 下调数量、PEG、对冲基金持仓、空头比例、IV 数据均为 N/A。
+  <br><br><b>主要来源（均检索于 2026-11-06）</b>
+  <ul>
+    <li>Reuters 经 Yahoo Finance / GV Wire：11/6 收盘、非农与国债收益率反应</li>
+    <li>CNBC：11/5 市场实况、10 月非农 · <a href="https://www.cnbc.com/2026/11/05/stock-market-today-live-updates.html">cnbc.com 11/5 live</a>、<a href="https://www.cnbc.com/2026/11/06/jobs-report-october-2026.html">jobs report</a></li>
+    <li>investingLive：<a href="https://investinglive.com/stocks/nasdaq-100-suffers-worst-day-since-2020/">Nasdaq 100 suffers worst day since 2020</a></li>
+    <li>Benzinga：<a href="https://www.benzinga.com/markets/market-summary/26/11/63012338/nasdaq-100-worst-day-since-2020-midterm-sweep-ai-selloff-jobs-fed-this-week-on-wall-street">本周回顾</a></li>
+    <li>Morningstar：<a href="https://www.morningstar.com/economy/hot-october-jobs-report-raises-odds-december-rate-hike">12 月加息概率</a></li>
+    <li>24/7 Wall St：<a href="https://247wallst.com/investing/2026/11/06/tech-stocks-just-had-their-worst-day-since-2020/">Tech Stocks Just Had Their Worst Day Since 2020</a></li>
+    <li>finwire：<a href="https://finwire.io/news/stock-markets-news/best-mag7-dip-buys-nvidia-leads-on-valuation-alphabet-on-rsi">Mag7 Fwd PE / RSI（11/5）</a></li>
+    <li>财报：<a href="https://www.cnbc.com/2026/10/28/alphabet-googl-earnings-q3-2026.html">Alphabet (CNBC)</a>、<a href="https://stockanalysis.com/news/meta-q3-2026-earnings/">Meta (StockAnalysis)</a>、<a href="https://stockanalysis.com/news/apple-fiscal-q4-2026-earnings/">Apple (StockAnalysis)</a>、<a href="https://vestedfinance.com/blog/us-stocks/tesla-q3-earnings-2026/">Tesla (Vested)</a>、<a href="https://247wallst.com/cards/microsoft-q1-2027-earnings-msft-01m6223bcjxyqzvby9cw8yzzqb">Microsoft (24/7 Wall St)</a>、<a href="https://aiweekly.co/alerts/amazons-aws-growth-hits-39-in-q3-as-capex-guide-jolts-stock">Amazon (AI Weekly)</a></li>
+    <li>NVDA 日历与指引：<a href="https://www.cmelitegroup.com/knowledge-hub/nvidia-earnings-date-fiscal-q3-2027-report-time-guidance-and-expected-move/?nocache=1">CME Group</a>、<a href="https://primexbt.com/for-traders/nvidia-earnings-date/">PrimeXBT</a>；出口管制：<a href="https://www.sec.gov/Archives/edgar/data/1045810/000104581026000021/nvda-20260125.htm">NVDA 10-K FY2026 (SEC)</a></li>
+    <li>FRED DGS10（10/30 收盘）· Reuters / Kitco：中期选举与 AI 数据中心政策风险</li>
+  </ul>
+</footer>
+
+</div>
+</body>
+</html>

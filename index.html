@@ -136,7 +136,7 @@
   <header>
     <span class="kicker">GITHUB PAGES · AUTOMATED</span>
     <h1>WeeklyReview 档案库</h1>
-    <p class="sub">周复盘看板与学习笔记的静态档案。目录由 <code>manifest.json</code> 动态生成——推送新文件到 main 分支后，GitHub Actions 自动提取标题并重建本页。</p>
+    <p class="sub">周复盘看板与学习笔记的静态档案，按主题分目录归档。目录由 <code>manifest.json</code> 动态生成——把新文件放进对应文件夹并推送 main 分支，GitHub Actions 自动提取标题并重建本页。</p>
   </header>
 
   <main id="content"></main>
@@ -186,7 +186,7 @@ function render(manifest) {
     for (const it of items) {
       const card = document.createElement("a");
       card.className = "card";
-      card.href = encodeURI(it.name);
+      card.href = encodeURI(it.path); // 相对路径，如 weekly/2026-11-02_2026-11-08.html
 
       const dateHtml = it.label
         ? '<span class="date">' + it.label + "</span>"

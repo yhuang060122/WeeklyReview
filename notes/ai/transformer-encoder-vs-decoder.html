@@ -1,0 +1,702 @@
+<!doctype html>
+<html lang="en" data-theme="blueprint" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Answer me with HTML 0.4.6">
+<title>Encoder vs Decoder in Transformers</title>
+<style>
+html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0px;
+  --shadow: none;
+  --bw: 1.5px;
+  --head-font: var(--font-sans);
+  --bg: #f6f6f3;
+  --paper: #ffffff;
+  --ink: #16181d;
+  --ink-2: #4b5260;
+  --ink-3: #8b929e;
+  --line: #1d2026;
+  --line-2: #d6dae1;
+  --fill: #f3f5f8;
+  --accent: #1d5fbf;
+  --accent-bg: #e4ecf8;
+  --ok: #1d5fbf;
+  --ok-bg: #e4ecf8;
+  --err: #c62828;
+  --err-bg: #fbeaea;
+  --warn: #a8620a;
+  --warn-bg: #fdf3e2;
+  --head-bg: #16181d;
+  --head-fg: #ffffff;
+}
+html[data-theme="blueprint"][data-mode="dark"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="blueprint"][data-mode="auto"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+}
+
+html[data-theme="shadcn"], html[data-theme="shadcn"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 8px;
+  --shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --bw: 1px;
+  --head-font: var(--font-sans);
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --ink: #09090b;
+  --ink-2: #71717a;
+  --ink-3: #a1a1aa;
+  --line: #e4e4e7;
+  --line-2: #f0f0f2;
+  --fill: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --err: #dc2626;
+  --err-bg: #fef2f2;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --head-bg: #18181b;
+  --head-fg: #fafafa;
+}
+html[data-theme="shadcn"][data-mode="dark"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="shadcn"][data-mode="auto"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+}
+
+html[lang="ja"][data-theme][data-mode] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html[lang="ja"][data-theme="3b1b"][data-mode] {
+  --v-title-font: "CMU Serif", "Latin Modern Roman", "Iowan Old Style", "Palatino", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif JP", "Songti SC", serif;
+}
+
+/* Answer me with HTML base — 只引用主题变量，禁止写死颜色（主题 token 见 themes/index.js） */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, kbd { font-family: var(--font-mono); }
+
+/* ── 工具栏 ─────────────────────────────── */
+.am-toolbar {
+  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;
+}
+.am-btn {
+  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;
+}
+.am-btn:hover { border-color: var(--ink-3); }
+.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 页头 ───────────────────────────────── */
+.am-head { margin: 0 0 20px; padding-right: 260px; }
+.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+.am-sub { margin: 4px 0 0; color: var(--ink-2); }
+.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }
+.am-intro { margin-top: 12px; max-width: 80ch; }
+
+/* ── sheet 图纸板 ────────────────────────── */
+.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }
+.am-frame { position: relative; }
+.am-grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 20px; align-items: start;
+}
+.am-ruler { display: none; }
+html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
+html[data-theme="blueprint"] .am-frame::before {
+  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
+}
+html[data-theme="blueprint"] .am-ruler {
+  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);
+}
+.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }
+.am-ruler--top { top: 0; }
+.am-ruler--bottom { bottom: 0; }
+.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }
+.am-ruler--left { left: 0; }
+.am-ruler--right { right: 0; }
+.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }
+.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }
+
+/* ── 面板 ───────────────────────────────── */
+.am-panel {
+  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); min-width: 0; overflow: hidden;
+}
+.am-panel-head {
+  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;
+}
+.am-panel-id {
+  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;
+  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;
+}
+html[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }
+html[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }
+.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }
+.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }
+.am-panel-body { padding: 14px 16px 16px; }
+.am-panel-body > * + * { margin-top: 12px; }
+
+/* ── Markdown 正文 ───────────────────────── */
+.am-md > :first-child { margin-top: 0; }
+.am-md > :last-child { margin-bottom: 0; }
+.am-md p { margin: 0 0 8px; }
+.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }
+.am-md li + li { margin-top: 3px; }
+.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }
+.am-md a { color: var(--accent); }
+.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }
+.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }
+.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }
+.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.am-md th {
+  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;
+  padding: 6px 10px; border-bottom: 1px solid var(--line-2);
+}
+.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.am-md tbody tr:nth-child(even) td { background: var(--fill); }
+.am-table-wrap { overflow-x: auto; }
+.am-code {
+  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);
+  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── 状态徽章 ok / no / warn ──────────────── */
+.am-status { white-space: nowrap; font-weight: 500; }
+.am-status--ok { color: var(--ok); }
+.am-status--no { color: var(--err); }
+.am-status--warn { color: var(--warn); }
+.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }
+
+/* ── callout ─────────────────────────────── */
+.am-callout {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: var(--radius);
+}
+.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }
+.am-callout-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── kv 标题栏格 ─────────────────────────── */
+.am-kv {
+  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;
+  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);
+}
+.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }
+.am-kv-cell--wide { grid-column: 1 / -1; }
+.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }
+.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }
+html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ── timeline ────────────────────────────── */
+.am-timeline { list-style: none; margin: 0; padding: 0; }
+.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }
+.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }
+.am-timeline--h li::before {
+  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);
+}
+.am-timeline--h li:first-child::before { left: 50%; }
+.am-timeline--h li:last-child::before { right: 50%; }
+.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }
+.am-tl-dot {
+  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
+  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
+}
+.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
+.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }
+.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }
+.am-timeline--v li:last-child::before { display: none; }
+.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }
+.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }
+.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }
+.am-timeline--v .am-tl-text { margin-top: 2px; }
+
+/* ── annot 句子标注 ──────────────────────── */
+.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }
+.am-annot-scroll { overflow-x: auto; }
+.am-annot-line {
+  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);
+  padding-bottom: calc(var(--rows, 0) * 17px + 14px);
+}
+.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }
+.am-annot-line--wrap .am-seg { white-space: nowrap; }
+.am-seg { position: relative; }
+.am-seg::after {
+  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;
+  border: 1px solid var(--accent); border-top: 0;
+}
+.am-seg-n {
+  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);
+  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;
+}
+.am-seg--err { color: var(--err); }
+.am-seg--err::after { border-color: var(--err); }
+.am-seg--err .am-seg-n { color: var(--err); }
+.am-annot-caption { font-size: 12px; color: var(--ink-2); }
+
+/* ── limits 限值条 ───────────────────────── */
+.am-lim + .am-lim { margin-top: 14px; }
+.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }
+.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }
+.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }
+.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }
+.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }
+.am-lim.is-over .am-lim-val { color: var(--err); }
+.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }
+.am-lim-ticks span { position: absolute; transform: translateX(-50%); }
+.am-lim-ticks span:first-child { transform: none; }
+.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }
+
+/* ── tree 结构树 ─────────────────────────── */
+.am-tree { font-size: 13px; }
+.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }
+.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-root--solo { padding-bottom: 12px; }
+.am-tree-root--solo::after { display: none; }
+.am-tree-box {
+  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
+  border-radius: var(--radius); font-weight: 600;
+}
+.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
+.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
+.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
+.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
+.am-tree-col:first-child::before { left: 50%; }
+.am-tree-col:last-child::before { right: 50%; }
+.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }
+.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }
+.am-tree-list ul { margin-left: 16px; }
+.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }
+.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }
+.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }
+.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }
+.am-tree code { font: 12px var(--font-mono); }
+.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }
+.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }
+
+/* ── 图（flow / sequence）───────────────── */
+.am-diagram { margin: 0; overflow-x: auto; text-align: center; }
+.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }
+.am-diagram text { fill: var(--ink); font-size: 13px; }
+.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }
+.am-node--hi text { fill: var(--accent); font-weight: 600; }
+.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }
+.am-edge--dashed { stroke-dasharray: 5 4; }
+.am-arrow { fill: var(--ink-2); }
+.am-edge-label rect { fill: var(--paper); }
+.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }
+.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }
+.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
+.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
+
+/* ── doc 线性讲解 ────────────────────────── */
+.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
+.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+.am-toc { position: sticky; top: 24px; font-size: 13px; }
+.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }
+.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }
+
+/* ── 响应式与打印 ─────────────────────────── */
+@media (max-width: 1100px) {
+  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .am-grid > .am-panel { grid-column: auto !important; }
+  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 760px) {
+  .am-sheet, .am-doc { padding: 56px 12px 24px; }
+  .am-head { padding-right: 0; }
+  .am-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }
+  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }
+  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }
+  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .am-toc { position: static; }
+  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }
+  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }
+}
+.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }
+
+@media print {
+  .am-toolbar { display: none; }
+  body { background: var(--paper); }
+  .am-panel { break-inside: avoid; box-shadow: none; }
+}
+.am-panel--bare { border: 0; background: transparent; box-shadow: none; }
+.am-panel--bare > .am-panel-body { padding: 0; }
+.am-panel--bare .am-kv { background: var(--paper); }
+
+</style>
+</head>
+<body>
+<div class="am-toolbar">
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;Theme: Blueprint&quot;,&quot;shadcn&quot;:&quot;Theme: Cards&quot;}">Theme: Blueprint</button>
+<button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;Mode: Auto&quot;,&quot;light&quot;:&quot;Mode: Light&quot;,&quot;dark&quot;:&quot;Mode: Dark&quot;}">Mode: Light</button>
+<button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
+</div>
+<main class="am-sheet">
+<header class="am-head"><h1>Encoder vs Decoder in Transformers</h1><p class="am-sub">The reader and the writer behind every LLM</p><div class="am-head-meta"><span><b>source</b>Amit Shekhar · Outcome School · Aug 2026</span></div><div class="am-intro am-md"><div class="am-md"><p>A Transformer has two building blocks. The Encoder understands the input. The Decoder writes the output. This page shows how they differ.</p>
+</div></div></header>
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 2">
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>The Big Picture</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 938 63" width="938" height="63" role="img" aria-label="流程图：Input、Encoder、Decoder、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L132.2,31.5 Q186.4,31.5 240.5,31.5 L294.7,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="102" y="22.5" width="168.7" height="18" rx="3"/><text x="186.4" y="31.5" text-anchor="middle" dominant-baseline="central">reads the whole input at once</text></g></g><g data-step="1"><path class="am-edge" d="M372.1,31.5 L423.3,31.5 Q474.5,31.5 525.7,31.5 L576.8,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="396.1" y="22.5" width="156.7" height="18" rx="3"/><text x="474.5" y="31.5" text-anchor="middle" dominant-baseline="central">passes deep understanding</text></g></g><g data-step="2"><path class="am-edge" d="M656.6,31.5 L706.1,31.5 Q755.6,31.5 805.1,31.5 L854.7,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="680.6" y="22.5" width="150.1" height="18" rx="3"/><text x="755.6" y="31.5" text-anchor="middle" dominant-baseline="central">writes one token at a time</text></g></g></g><g><g class="am-node am-node--rect" data-key="Input" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Input</text></g><g class="am-node am-node--rect" data-key="Encoder" data-step="0"><rect class="am-node-shape" x="294.7" y="14" width="77.4" height="35" rx="3"/><text x="333.4" y="31.5" text-anchor="middle" dominant-baseline="central">Encoder</text></g><g class="am-node am-node--rect" data-key="Decoder" data-step="1"><rect class="am-node-shape" x="576.8" y="14" width="79.7" height="35" rx="3"/><text x="616.7" y="31.5" text-anchor="middle" dominant-baseline="central">Decoder</text></g><g class="am-node am-node--rect" data-key="Output" data-step="2"><rect class="am-node-shape" x="854.7" y="14" width="69.3" height="35" rx="3"/><text x="889.3" y="31.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>A Transformer is the architecture behind most modern language AI. Tools like ChatGPT, Claude, and Gemini all use it.</p>
+</div>
+<div class="am-callout am-callout--ok" role="note"><div class="am-callout-title">The one big difference</div><div class="am-callout-body am-md"><p>The Encoder reads and understands the whole input at once. The Decoder writes new output one token at a time, looking only at the past.</p>
+</div></div></div>
+</section>
+<section class="am-panel" id="panel-B">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>The Encoder: It Understands</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 699 63" width="699" height="63" role="img" aria-label="流程图：Tokens、Self-Attention、Meanings" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M87.2,31.5 L141.1,31.5 Q194.9,31.5 248.7,31.5 L302.6,31.5" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="111.2" y="22.5" width="167.3" height="18" rx="3"/><text x="194.9" y="31.5" text-anchor="middle" dominant-baseline="central">every token sees every token</text></g></g><g data-step="1"><path class="am-edge" d="M416.9,31.5 L462,31.5 Q507.2,31.5 552.3,31.5 L597.5,31.5" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="440.9" y="22.5" width="132.6" height="18" rx="3"/><text x="507.2" y="31.5" text-anchor="middle" dominant-baseline="central">both directions at once</text></g></g></g><g><g class="am-node am-node--rect" data-key="Tokens" data-step="0"><rect class="am-node-shape" x="14" y="14" width="73.2" height="35" rx="3"/><text x="50.6" y="31.5" text-anchor="middle" dominant-baseline="central">Tokens</text></g><g class="am-node am-node--rect" data-key="Self-Attention" data-step="0"><rect class="am-node-shape" x="302.6" y="14" width="114.3" height="35" rx="3"/><text x="359.7" y="31.5" text-anchor="middle" dominant-baseline="central">Self-Attention</text></g><g class="am-node am-node--rect" data-key="Meanings" data-step="1"><rect class="am-node-shape" x="597.5" y="14" width="87" height="35" rx="3"/><text x="641" y="31.5" text-anchor="middle" dominant-baseline="central">Meanings</text></g></g></svg></figure>
+<div class="am-md"><p>The Encoder reads all tokens together. It looks left and right. This is bidirectional reading.</p>
+<p>Self-attention lets every token see every other token. Later words help explain earlier ones. In &quot;The bank of the river was muddy&quot;, the word &quot;river&quot; disambiguates &quot;bank&quot;.</p>
+<p>The Encoder builds a deep meaning for each token. It writes nothing new. It only understands.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>The Decoder: It Writes</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 1008 63" width="1008" height="63" role="img" aria-label="流程图：Start、The、Sky、Is、Blue" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L116.5,31.5 Q155.1,31.5 193.6,31.5 L232.1,31.5" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="102" y="22.5" width="106.1" height="18" rx="3"/><text x="155.1" y="31.5" text-anchor="middle" dominant-baseline="central">predict next token</text></g></g><g data-step="1"><path class="am-edge" d="M296.1,31.5 L333.1,31.5 Q370.1,31.5 407.1,31.5 L444.1,31.5" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="320.1" y="22.5" width="99.9" height="18" rx="3"/><text x="370.1" y="31.5" text-anchor="middle" dominant-baseline="central">look back at The</text></g></g><g data-step="2"><path class="am-edge" d="M508.1,31.5 L551.1,31.5 Q594.1,31.5 637.1,31.5 L680.1,31.5" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="532.1" y="22.5" width="124.1" height="18" rx="3"/><text x="594.1" y="31.5" text-anchor="middle" dominant-baseline="central">look back at The Sky</text></g></g><g data-step="3"><path class="am-edge" d="M744.1,31.5 L790.6,31.5 Q837,31.5 883.4,31.5 L929.8,31.5" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="768.1" y="22.5" width="137.7" height="18" rx="3"/><text x="837" y="31.5" text-anchor="middle" dominant-baseline="central">look back at The Sky Is</text></g></g></g><g><g class="am-node am-node--rect" data-key="Start" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Start</text></g><g class="am-node am-node--rect" data-key="The" data-step="0"><rect class="am-node-shape" x="232.1" y="14" width="64" height="35" rx="3"/><text x="264.1" y="31.5" text-anchor="middle" dominant-baseline="central">The</text></g><g class="am-node am-node--rect" data-key="Sky" data-step="1"><rect class="am-node-shape" x="444.1" y="14" width="64" height="35" rx="3"/><text x="476.1" y="31.5" text-anchor="middle" dominant-baseline="central">Sky</text></g><g class="am-node am-node--rect" data-key="Is" data-step="2"><rect class="am-node-shape" x="680.1" y="14" width="64" height="35" rx="3"/><text x="712.1" y="31.5" text-anchor="middle" dominant-baseline="central">Is</text></g><g class="am-node am-node--rect" data-key="Blue" data-step="3"><rect class="am-node-shape" x="929.8" y="14" width="64" height="35" rx="3"/><text x="961.8" y="31.5" text-anchor="middle" dominant-baseline="central">Blue</text></g></g></svg></figure>
+<div class="am-md"><p>The Decoder writes one token at a time, from left to right. Future tokens do not exist yet. Causal masking hides them.</p>
+<p>Each new token depends only on the past tokens. This is autoregressive generation. The Decoder is like a writer building a sentence word by word.</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-D" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Reader vs Writer</h2></header>
+<div class="am-panel-body"><div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: 2"><div class="am-tree-col"><div class="am-tree-box" data-key="Encoder" data-step="0">Encoder<small>the reader</small></div><ul class="am-tree-list"><li data-key="Reads the whole input at once" data-step="1"><span class="am-tree-label">Reads the whole input at once</span></li><li data-key="Looks in both directions" data-step="2"><span class="am-tree-label">Looks in both directions</span></li><li data-key="Builds deep understanding" data-step="3"><span class="am-tree-label">Builds deep understanding</span></li><li data-key="Writes nothing new" data-step="4"><span class="am-tree-label">Writes nothing new</span></li></ul></div><div class="am-tree-col"><div class="am-tree-box" data-key="Decoder" data-step="5">Decoder<small>the writer</small></div><ul class="am-tree-list"><li data-key="Writes output token by token" data-step="6"><span class="am-tree-label">Writes output token by token</span></li><li data-key="Looks only backward" data-step="7"><span class="am-tree-label">Looks only backward</span></li><li data-key="Uses past tokens only" data-step="8"><span class="am-tree-label">Uses past tokens only</span></li><li data-key="Generates new text" data-step="9"><span class="am-tree-label">Generates new text</span></li></ul></div></div></div>
+<div class="am-md"><p>Remember only this line. The Encoder is a reader that looks in both directions. The Decoder is a writer that looks only backward. That is the heart of the difference.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-E">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>Three Types of Transformers</h2></header>
+<div class="am-panel-body"><div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: 3"><div class="am-tree-col"><div class="am-tree-box" data-key="Encoder-only" data-step="0">Encoder-only<small>pure understanding</small></div><ul class="am-tree-list"><li data-key="Example: BERT" data-step="1"><span class="am-tree-label">Example: BERT</span></li><li data-key="Tasks: sentiment, embeddings for search" data-step="2"><span class="am-tree-label">Tasks: sentiment, embeddings for search</span></li></ul></div><div class="am-tree-col"><div class="am-tree-box" data-key="Decoder-only" data-step="3">Decoder-only<small>pure generation</small></div><ul class="am-tree-list"><li data-key="Example: ChatGPT, Claude, Gemini" data-step="4"><span class="am-tree-label">Example: ChatGPT, Claude, Gemini</span></li><li data-key="Tasks: chat, writing" data-step="5"><span class="am-tree-label">Tasks: chat, writing</span></li></ul></div><div class="am-tree-col"><div class="am-tree-box" data-key="Encoder-Decoder" data-step="6">Encoder-Decoder<small>understand, then generate</small></div><ul class="am-tree-list"><li data-key="Example: T5" data-step="7"><span class="am-tree-label">Example: T5</span></li><li data-key="Tasks: translation, summarization" data-step="8"><span class="am-tree-label">Tasks: translation, summarization</span></li></ul></div></div></div></div>
+</section>
+<section class="am-panel" id="panel-F">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>Translation Flow: &quot;I love AI&quot; → &quot;J&#39;aime l&#39;IA&quot;</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 1009 63" width="1009" height="63" role="img" aria-label="流程图：Input、Encoder、Decoder、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L146,31.5 Q214.1,31.5 282.1,31.5 L350.1,31.5" marker-end="url(#am4-arrow)"/><g class="am-edge-label"><rect x="102" y="22.5" width="224.1" height="18" rx="3"/><text x="214.1" y="31.5" text-anchor="middle" dominant-baseline="central">reads and understands the full sentence</text></g></g><g data-step="1"><path class="am-edge" d="M427.5,31.5 L471.4,31.5 Q515.3,31.5 559.2,31.5 L603.1,31.5" marker-end="url(#am4-arrow)"/><g class="am-edge-label"><rect x="451.5" y="22.5" width="127.5" height="18" rx="3"/><text x="515.3" y="31.5" text-anchor="middle" dominant-baseline="central">passes understanding</text></g></g><g data-step="2"><path class="am-edge" d="M682.8,31.5 L743.4,31.5 Q804,31.5 864.6,31.5 L925.3,31.5" marker-end="url(#am4-arrow)"/><g class="am-edge-label"><rect x="706.8" y="22.5" width="194.5" height="18" rx="3"/><text x="804" y="31.5" text-anchor="middle" dominant-baseline="central">writes French, one token at a time</text></g></g></g><g><g class="am-node am-node--rect" data-key="Input" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Input</text></g><g class="am-node am-node--rect" data-key="Encoder" data-step="0"><rect class="am-node-shape" x="350.1" y="14" width="77.4" height="35" rx="3"/><text x="388.8" y="31.5" text-anchor="middle" dominant-baseline="central">Encoder</text></g><g class="am-node am-node--rect" data-key="Decoder" data-step="1"><rect class="am-node-shape" x="603.1" y="14" width="79.7" height="35" rx="3"/><text x="642.9" y="31.5" text-anchor="middle" dominant-baseline="central">Decoder</text></g><g class="am-node am-node--rect" data-key="Output" data-step="2"><rect class="am-node-shape" x="925.3" y="14" width="69.3" height="35" rx="3"/><text x="959.9" y="31.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>The Encoder understands the English sentence fully. The Decoder writes the French output step by step.</p>
+<p>Cross-attention is the bridge. It carries the Encoder&#39;s understanding into the Decoder.</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-G" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">G</span><h2>Encoder vs Decoder at a Glance</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Point</th>
+<th>Encoder</th>
+<th>Decoder</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Main job</td>
+<td>Understand the input</td>
+<td>Generate the output</td>
+</tr>
+<tr>
+<td>How it reads</td>
+<td>Looks at all tokens at once</td>
+<td>Writes one token at a time</td>
+</tr>
+<tr>
+<td>Direction</td>
+<td>Both directions</td>
+<td>Only backward</td>
+</tr>
+<tr>
+<td>Good for</td>
+<td>Understanding tasks</td>
+<td>Writing tasks</td>
+</tr>
+<tr>
+<td>Example model</td>
+<td>BERT</td>
+<td>ChatGPT, Claude, Gemini</td>
+</tr>
+</tbody></table></div>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-H" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">H</span><h2>When to Use Which One</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Best fit</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Understand text: reviews, search</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>Encoder-only</span></td>
+</tr>
+<tr>
+<td>Generate text: chat, writing</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>Decoder-only</span></td>
+</tr>
+<tr>
+<td>Convert one text into another: translation, summary</td>
+<td><span class="am-status am-status--ok"><span class="am-status-icon" aria-hidden="true">✓</span>Encoder-Decoder</span></td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--info" role="note"><div class="am-callout-title">Why chat models are decoder-only</div><div class="am-callout-body am-md"><p>A good writer must also understand well. A large Decoder learns to do both at the same time. That is why decoder-only models power most chat tools today.</p>
+</div></div></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.6 · 2026-10-16 05:06</footer>
+<textarea id="am-source" hidden readonly aria-hidden="true">---
+title: Encoder vs Decoder in Transformers
+subtitle: The reader and the writer behind every LLM
+template: sheet
+theme: blueprint
+cols: 2
+source: Amit Shekhar · Outcome School · Aug 2026
+---
+A Transformer has two building blocks. The Encoder understands the input. The Decoder writes the output. This page shows how they differ.
+
+## A The Big Picture {span=2}
+```flow LR
+Input -&gt; Encoder: reads the whole input at once
+Encoder -&gt; Decoder: passes deep understanding
+Decoder -&gt; Output: writes one token at a time
+```
+
+A Transformer is the architecture behind most modern language AI. Tools like ChatGPT, Claude, and Gemini all use it.
+
+```callout ok The one big difference
+The Encoder reads and understands the whole input at once. The Decoder writes new output one token at a time, looking only at the past.
+```
+
+## B The Encoder: It Understands
+```flow LR
+Tokens -&gt; Self-Attention: every token sees every token
+Self-Attention -&gt; Meanings: both directions at once
+```
+
+The Encoder reads all tokens together. It looks left and right. This is bidirectional reading.
+
+Self-attention lets every token see every other token. Later words help explain earlier ones. In &quot;The bank of the river was muddy&quot;, the word &quot;river&quot; disambiguates &quot;bank&quot;.
+
+The Encoder builds a deep meaning for each token. It writes nothing new. It only understands.
+
+## C The Decoder: It Writes
+```flow LR
+Start -&gt; The: predict next token
+The -&gt; Sky: look back at The
+Sky -&gt; Is: look back at The Sky
+Is -&gt; Blue: look back at The Sky Is
+```
+
+The Decoder writes one token at a time, from left to right. Future tokens do not exist yet. Causal masking hides them.
+
+Each new token depends only on the past tokens. This is autoregressive generation. The Decoder is like a writer building a sentence word by word.
+
+## D Reader vs Writer {span=2}
+```tree
+Encoder | the reader
+  Reads the whole input at once
+  Looks in both directions
+  Builds deep understanding
+  Writes nothing new
+Decoder | the writer
+  Writes output token by token
+  Looks only backward
+  Uses past tokens only
+  Generates new text
+```
+
+Remember only this line. The Encoder is a reader that looks in both directions. The Decoder is a writer that looks only backward. That is the heart of the difference.
+
+## E Three Types of Transformers
+```tree
+Encoder-only | pure understanding
+  Example: BERT
+  Tasks: sentiment, embeddings for search
+Decoder-only | pure generation
+  Example: ChatGPT, Claude, Gemini
+  Tasks: chat, writing
+Encoder-Decoder | understand, then generate
+  Example: T5
+  Tasks: translation, summarization
+```
+
+## F Translation Flow: &quot;I love AI&quot; → &quot;J&#39;aime l&#39;IA&quot;
+```flow LR
+Input -&gt; Encoder: reads and understands the full sentence
+Encoder -&gt; Decoder: passes understanding
+Decoder -&gt; Output: writes French, one token at a time
+```
+
+The Encoder understands the English sentence fully. The Decoder writes the French output step by step.
+
+Cross-attention is the bridge. It carries the Encoder&#39;s understanding into the Decoder.
+
+## G Encoder vs Decoder at a Glance {span=2}
+| Point | Encoder | Decoder |
+|---|---|---|
+| Main job | Understand the input | Generate the output |
+| How it reads | Looks at all tokens at once | Writes one token at a time |
+| Direction | Both directions | Only backward |
+| Good for | Understanding tasks | Writing tasks |
+| Example model | BERT | ChatGPT, Claude, Gemini |
+
+## H When to Use Which One {span=2}
+| Task | Best fit |
+|---|---|
+| Understand text: reviews, search | ok Encoder-only |
+| Generate text: chat, writing | ok Decoder-only |
+| Convert one text into another: translation, summary | ok Encoder-Decoder |
+
+```callout info Why chat models are decoder-only
+A good writer must also understand well. A large Decoder learns to do both at the same time. That is why decoder-only models power most chat tools today.
+```
+</textarea>
+<script>
+(() => {
+  const root = document.documentElement;
+  const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+  const label = (btn, value) => {
+    const map = JSON.parse(btn.dataset.labels || '{}');
+    btn.textContent = map[value] || value;
+  };
+  const bind = (name, attr, values) => {
+    const btn = document.querySelector(`[data-am="${name}"]`);
+    if (!btn) return;
+    label(btn, root.getAttribute(attr));
+    btn.addEventListener('click', () => {
+      const next = cycle(values, root.getAttribute(attr));
+      root.setAttribute(attr, next);
+      label(btn, next);
+    });
+  };
+  bind('theme', 'data-theme', ['blueprint', 'shadcn']);
+  bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+  const copyBtn = document.querySelector('[data-am="copy"]');
+  copyBtn?.addEventListener('click', async () => {
+    const nodes = document.querySelectorAll('#am-source');
+    const text = nodes[nodes.length - 1]?.value ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = copyBtn.dataset.done;
+    setTimeout(() => { copyBtn.textContent = original; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

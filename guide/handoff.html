@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WeeklyReview 站点使用与维护指南</title>
-<link rel="icon" type="image/png" sizes="128x128" href="favicon.png">
-<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" sizes="128x128" href="../favicon.png">
+<link rel="icon" type="image/x-icon" href="../favicon.ico">
 <style>
   :root {
     --bg: #0f1419;
@@ -179,13 +179,13 @@
     <h1>WeeklyReview 站点使用与维护指南</h1>
     <p class="sub">本文档说明站点的结构、日常更新流程、命名约定与常见问题排查。全部内容与当前仓库配置保持一致。</p>
     <div class="links">
-      <a href="index.html">← 返回目录页</a>
+      <a href="../index.html">← 返回目录页</a>
       <a href="https://github.com/yhuang060122/WeeklyReview">仓库主页 ↗</a>
     </div>
   </header>
 
   <h2><span class="num">01</span> 这是什么</h2>
-  <p>WeeklyReview 是一个静态站点：仓库根目录的每个 <code>*.html</code> 都是一份独立文档（周复盘看板或学习笔记）。推送 <code>main</code> 分支后，GitHub Actions 自动打包部署到 GitHub Pages，目录页 <code>index.html</code> 通过 JavaScript 读取构建时生成的 <code>manifest.json</code> 动态渲染导航，因此<b>新增文档无需手工改目录页</b>。</p>
+  <p>WeeklyReview 是一个静态站点：仓库里每个 <code>*.html</code> 都是一份独立文档（周复盘看板或学习笔记），按主题放在 <code>weekly/</code>、<code>notes/&lt;主题&gt;/</code>、<code>guide/</code> 目录下。推送 <code>main</code> 分支后，GitHub Actions 自动打包部署到 GitHub Pages，目录页 <code>index.html</code> 通过 JavaScript 读取构建时生成的 <code>manifest.json</code> 动态渲染导航，因此<b>新增文档只需放进对应目录，无需手工改目录页</b>。</p>
   <ul>
     <li>站点地址：<code>https://yhuang060122.github.io/WeeklyReview/</code></li>
     <li>仓库地址：<code>git@github.com:yhuang060122/WeeklyReview.git</code></li>
@@ -195,8 +195,10 @@
   <h2><span class="num">02</span> 文件结构</h2>
   <table>
     <tr><th>文件 / 目录</th><th>作用</th><th>需要维护？</th></tr>
-    <tr><td><code>index.html</code></td><td>目录导航页（JS 动态渲染）</td><td>否（自动）</td></tr>
-    <tr><td><code>*.html</code>（根目录）</td><td>各周复盘与学习笔记正文</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>index.html</code></td><td>目录导航页（站点唯一入口，留在根目录）</td><td>否（自动）</td></tr>
+    <tr><td><code>weekly/</code></td><td>周复盘看板与常驻模块</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>notes/ai/ · frontend/ · csharp/ · math/ · observability/ · engineering/</code></td><td>学习笔记，按主题分目录</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>guide/handoff.html</code></td><td>本文档</td><td>是（结构变更时）</td></tr>
     <tr><td><code>favicon.png / favicon.ico</code></td><td>站点图标（秋日枫叶，随站部署）</td><td>想换图标时替换这两个文件即可</td></tr>
     <tr><td><code>manifest.json</code></td><td>目录元数据，CI 构建时生成</td><td>否（自动，勿手改）</td></tr>
     <tr><td><code>scripts/generate_manifest.py</code></td><td>扫描 HTML、提取标题、分类排序</td><td>仅改分类规则时</td></tr>
@@ -205,24 +207,26 @@
   </table>
 
   <h2><span class="num">03</span> 命名约定（强制）</h2>
-  <p>文件名决定分类与排序，新增文件必须按此命名：</p>
+  <p><b>目录决定分类，文件名决定排序</b>。新增文件必须按此规则落位与命名：</p>
   <table>
-    <tr><th>类型</th><th>格式</th><th>示例</th><th>目录分类</th></tr>
-    <tr><td>周复盘看板</td><td><code>周复盘看板_YYYYMMDD-YYYYMMDD.html</code></td><td><code>周复盘看板_20261005-20261011.html</code></td><td>📊 周复盘系列（按日期倒序）</td></tr>
-    <tr><td>常驻模块</td><td><code>周复盘模块_&lt;主题&gt;.html</code></td><td><code>周复盘模块_AI财务验证追踪.html</code></td><td>📊 周复盘系列（排最后）</td></tr>
-    <tr><td>学习笔记</td><td><code>&lt;主题&gt;.html</code>（不带导出时间戳）</td><td><code>LLM架构演进.html</code></td><td>🧠 学习笔记</td></tr>
-    <tr><td>站点指南</td><td><code>handoff.html</code></td><td>本文档</td><td>📖 使用指南（置顶）</td></tr>
+    <tr><th>类型</th><th>位置与格式</th><th>示例</th><th>目录分类</th></tr>
+    <tr><td>周复盘看板</td><td><code>weekly/YYYY-MM-DD_YYYY-MM-DD.html</code></td><td><code>weekly/2026-10-05_2026-10-11.html</code></td><td>📊 周复盘系列（按日期倒序）</td></tr>
+    <tr><td>周复盘变体</td><td>在日期后加语义后缀</td><td><code>weekly/2026-10-05_2026-10-11-multi-asset.html</code></td><td>📊 周复盘系列</td></tr>
+    <tr><td>单日周报</td><td><code>weekly/YYYY-MM-DD-&lt;主题&gt;.html</code></td><td><code>weekly/2026-11-06-mag7.html</code></td><td>📊 周复盘系列</td></tr>
+    <tr><td>常驻模块</td><td><code>weekly/module-&lt;主题&gt;.html</code></td><td><code>weekly/module-ai-financial-verification.html</code></td><td>📊 周复盘系列（排最后）</td></tr>
+    <tr><td>学习笔记</td><td><code>notes/&lt;主题&gt;/&lt;kebab-case&gt;.html</code></td><td><code>notes/frontend/angular-http-resource.html</code></td><td>🧠 学习笔记（标签取主题目录）</td></tr>
+    <tr><td>站点指南</td><td><code>guide/handoff.html</code></td><td>本文档</td><td>📖 使用指南（置顶）</td></tr>
   </table>
   <div class="callout">
     <span class="t">注意</span>
-    文件名避免使用 <code>#</code>（会被 URL 当作锚点）、空格与 <code>·</code> 等符号；导出工具自动加的时间戳后缀（如 <code>-20261010-144735</code>）应去掉。
+    文件名一律使用英文小写 kebab-case：不含空格、中文、<code>#</code>、<code>·</code> 与导出工具自动加的时间戳后缀。页面标题取自 HTML 的 <code>&lt;title&gt;</code>，中文标题不受文件名影响。
   </div>
 
   <h2><span class="num">04</span> 日常操作</h2>
 
   <p><b>① 新增一篇文档（最常用）</b></p>
   <ol class="steps">
-    <li>把 HTML 复制到仓库根目录，按上方约定命名。</li>
+    <li>把 HTML 放进对应目录（<code>weekly/</code> 或 <code>notes/&lt;主题&gt;/</code>），按上方约定命名。</li>
     <li>提交并推送：<br>
       <pre><code>git add -A
 git commit -m "add: &lt;文档名&gt;"
@@ -231,29 +235,31 @@ git push origin main</code></pre></li>
   </ol>
 
   <p><b>② 重命名 / 删除</b></p>
-  <pre><code>git mv "旧文件名.html" "新文件名.html"   # 重命名（保留历史）
-git rm "文件名.html"                     # 删除
+  <pre><code>git mv "notes/ai/旧名.html" "notes/ai/新名.html"   # 重命名 / 移动（保留历史）
+git rm "weekly/某文件.html"                        # 删除
 git push origin main</code></pre>
   <p class="dim">改名后旧链接会 404，如已在别处引用需同步更新。</p>
 
   <p><b>③ 调整分类 / 标签</b></p>
-  <p>编辑 <code>scripts/generate_manifest.py</code> 的 <code>classify()</code> 函数，推送后自动生效。当前标签规则：</p>
+  <p>编辑 <code>scripts/generate_manifest.py</code>：新增主题目录时在 <code>TOPIC_TAGS</code> 登记标签、在 <code>TOPIC_ORDER</code> 登记展示顺序，推送后自动生效。当前目录与标签对应关系：</p>
   <table>
-    <tr><th>文件名含关键词</th><th>标签</th></tr>
-    <tr><td><code>数学</code></td><td>数学</td></tr>
-    <tr><td><code>c# / csharp</code></td><td>C#</td></tr>
-    <tr><td><code>前端 / js / javascript / webpack / 模块化 / promise / angular / httpresource</code></td><td>前端</td></tr>
-    <tr><td><code>llm / 大模型 / gemini</code></td><td>AI</td></tr>
-    <tr><td><code>correlation / trace</code></td><td>可观测性</td></tr>
-    <tr><td><code>软件 / 开发</code></td><td>开发</td></tr>
-    <tr><td>以上都不含</td><td>笔记</td></tr>
+    <tr><th>所在目录</th><th>目录页分类 / 标签</th></tr>
+    <tr><td><code>guide/</code></td><td>📖 使用指南（置顶）</td></tr>
+    <tr><td><code>weekly/</code></td><td>📊 周复盘（有日期 → 周复盘，无日期 → 常驻模块）</td></tr>
+    <tr><td><code>notes/ai/</code></td><td>🧠 学习笔记 · AI</td></tr>
+    <tr><td><code>notes/frontend/</code></td><td>🧠 学习笔记 · 前端</td></tr>
+    <tr><td><code>notes/csharp/</code></td><td>🧠 学习笔记 · C#</td></tr>
+    <tr><td><code>notes/math/</code></td><td>🧠 学习笔记 · 数学</td></tr>
+    <tr><td><code>notes/observability/</code></td><td>🧠 学习笔记 · 可观测性</td></tr>
+    <tr><td><code>notes/engineering/</code></td><td>🧠 学习笔记 · 开发</td></tr>
+    <tr><td>其他未登记目录</td><td>🧠 学习笔记 · 笔记</td></tr>
   </table>
 
   <h2><span class="num">05</span> 部署机制</h2>
   <p>推送 <code>main</code> 后工作流 <code>deploy.yml</code> 依次执行：</p>
   <ol>
     <li>Checkout 代码 → Configure Pages</li>
-    <li>把根目录 <code>*.html</code>、<code>.nojekyll</code> 与 <code>favicon.*</code> 复制进 <code>public/</code></li>
+    <li>把站点内容（<code>index.html</code>、<code>favicon.*</code>、<code>.nojekyll</code> 与 <code>guide/</code>、<code>weekly/</code>、<code>notes/</code> 目录树）同步进 <code>public/</code>，排除 <code>.git</code>、<code>.github</code>、<code>scripts</code> 等非站点文件</li>
     <li>运行 <code>python3 scripts/generate_manifest.py public</code> 生成 <code>manifest.json</code></li>
     <li>上传产物并部署到 GitHub Pages</li>
   </ol>
@@ -265,13 +271,13 @@ git push origin main</code></pre>
     <tr><td>目录页显示「目录加载失败」</td><td>用 <code>file://</code> 直接双击打开时浏览器会拦截 fetch。请通过 GitHub Pages 地址访问，或本地起服务：<code>python -m http.server</code></td></tr>
     <tr><td>推送后目录没更新</td><td>先看 Actions 是否成功；若成功则是 CDN 缓存，强制刷新（Ctrl/Cmd + F5）</td></tr>
     <tr><td>部署在 Configure Pages 步骤失败</td><td>仓库 Settings → Pages → Source 选择 <b>GitHub Actions</b>（只需一次）</td></tr>
-    <tr><td>卡片分类不对</td><td>文件名未按命名约定；或需在 <code>classify()</code> 中加关键词规则</td></tr>
+    <tr><td>卡片分类不对</td><td>文件没放进对应目录（分类由目录决定），或该主题尚未在 <code>TOPIC_TAGS</code> 登记</td></tr>
     <tr><td>标题显示为文件名</td><td>HTML 里没有 <code>&lt;title&gt;</code> 标签，脚本会退回用文件名</td></tr>
   </table>
 
   <footer>
-    <span>本页是 handoff.html · 修改后同样自动部署</span>
-    <a href="index.html">返回目录</a>
+    <span>本页是 guide/handoff.html · 修改后同样自动部署</span>
+    <a href="../index.html">返回目录</a>
   </footer>
 
 </div>

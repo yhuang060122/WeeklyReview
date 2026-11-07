@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>周复盘看板 2026-10-26 → 11-01</title>
+<style>
+:root{--bg:#0a0e12;--panel:#10161c;--line:#1e2933;--tx:#c9d3dc;--dim:#7d8b97;--up:#2ecc71;--dn:#ff5a5f;--wr:#ffa63d;--nt:#8a97a3;--ac:#5fb4ff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.65 "SF Mono",Menlo,Consolas,"Noto Sans Mono CJK SC","PingFang SC",monospace}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px 60px}
+header{padding:28px 0 14px;border-bottom:1px solid var(--line)}
+h1{margin:0;font-size:22px;letter-spacing:.5px}
+h1 span{color:var(--ac)}
+.sub{color:var(--dim);font-size:12px;margin-top:4px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 0;display:flex;gap:10px;flex-wrap:wrap}
+nav a{color:var(--tx);text-decoration:none;border:1px solid var(--line);padding:4px 12px;border-radius:3px;font-size:12px}
+nav a:hover{border-color:var(--ac);color:var(--ac)}
+.legend{margin:14px 0;padding:10px 12px;background:var(--panel);border:1px solid var(--line);font-size:12px;color:var(--dim)}
+.up{color:var(--up)}.dn{color:var(--dn)}.wr{color:var(--wr)}.nt{color:var(--nt)}
+.t{display:inline-block;font-size:10px;font-weight:700;padding:0 5px;margin-left:4px;border-radius:2px;line-height:16px;vertical-align:1px}
+.t.ok{background:rgba(46,204,113,.15);color:var(--up);border:1px solid rgba(46,204,113,.4)}
+.t.es{background:rgba(255,166,61,.15);color:var(--wr);border:1px solid rgba(255,166,61,.4)}
+.t.na{background:rgba(138,151,163,.15);color:var(--nt);border:1px solid rgba(138,151,163,.4)}
+section.asset{margin-top:44px;padding-top:6px}
+.shead{display:flex;align-items:baseline;gap:12px;border-top:2px solid var(--ac);padding-top:12px;flex-wrap:wrap}
+.shead .no{color:var(--ac);font-size:13px}
+.shead h2{margin:0;font-size:20px}
+.shead .tag{margin-left:auto;font-size:12px;color:var(--dim)}
+.verdict{margin:12px 0;padding:12px 14px;border-left:3px solid var(--wr);background:var(--panel)}
+.verdict b{color:var(--wr)}
+h3{font-size:14px;margin:26px 0 10px;color:var(--ac);font-weight:600}
+h3 i{font-style:normal;color:var(--dim);margin-right:6px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.tile{background:var(--panel);border:1px solid var(--line);padding:10px 12px}
+.tile .k{font-size:11px;color:var(--dim)}
+.tile .v{font-size:18px;font-weight:700;margin:2px 0}
+.tile .d{font-size:12px}
+table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);font-size:12.5px}
+th,td{padding:6px 9px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{color:var(--dim);font-weight:500;font-size:11px;background:#0d1319}
+td.n,th.n{text-align:right;white-space:nowrap}
+.scroll{overflow-x:auto}
+.bar{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:12px}
+.bar .l{width:96px;color:var(--dim);flex:none}
+.bar .tr{flex:1;height:10px;background:#0d1319;position:relative}
+.bar .f{position:absolute;top:0;bottom:0}
+.bar .val{width:84px;text-align:right;flex:none}
+.stance{margin-top:10px;padding:10px 12px;border:1px dashed var(--line);font-size:13px}
+.stance b{color:var(--ac)}
+ul{margin:6px 0;padding-left:18px}
+li{margin:3px 0}
+.pill{display:inline-block;font-size:11px;padding:0 6px;border-radius:2px;border:1px solid}
+.pill.h{color:var(--dn);border-color:var(--dn)}.pill.m{color:var(--wr);border-color:var(--wr)}.pill.l{color:var(--nt);border-color:var(--nt)}
+.flag{margin:10px 0;padding:8px 12px;background:rgba(255,166,61,.07);border:1px solid rgba(255,166,61,.35);color:var(--wr);font-size:12.5px}
+footer{margin-top:50px;border-top:1px solid var(--line);padding-top:16px;font-size:12px;color:var(--dim)}
+footer h4{color:var(--tx);margin:12px 0 4px;font-size:12.5px}
+footer p{margin:3px 0}
+@media(max-width:600px){body{font-size:13px}.bar .l{width:70px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>周复盘看板 <span>// WEEKLY REVIEW</span></h1>
+  <div class="sub">周期 2026-10-26 → 2026-11-01 · 生成于 2026-11-01 · 顺序：① Crypto ② 美股 ③ CAC 40 · 量化机构视角（有立场）</div>
+</header>
+<nav><a href="#crypto">① CRYPTO</a><a href="#us">② US EQUITIES</a><a href="#cac">③ CAC 40</a><a href="#src">数据源 / 免责</a></nav>
+<div class="legend">
+  配色：<span class="up">涨 绿</span> · <span class="dn">跌 红</span> · <span class="wr">警示 橙</span> · <span class="nt">中性 灰</span>　|
+  数据诚实度：<span class="t ok">✓</span> 已确认（有明确来源数值） <span class="t es">估</span> 估算（由已确认数据推算或单一来源） <span class="t na">—</span> 未确认（未取得，不编造）
+</div>
+
+<!-- ================= CRYPTO ================= -->
+<section class="asset" id="crypto">
+  <div class="shead"><span class="no">[01]</span><h2>CRYPTO · BTC / ETH / SOL / BNB</h2><span class="tag">主源：CoinGlass（经媒体转引）/ Coinbase / Investing.com</span></div>
+  <div class="verdict"><b>一句话定调：</b>鹰派按兵不动 + Binance 被盗 + ETF 资金外流，叠加多头杠杆清洗，BTC 周跌 3.2% 回到 77K 下方——这是“去杠杆 + 信任折价”而非趋势崩溃，但反弹缺乏资金面确认。</div>
+
+  <h3><i>1/6</i>宏观快照</h3>
+  <div class="tiles">
+    <div class="tile"><div class="k">BTC · 10/31 收</div><div class="v">77,557.5<span class="t ok">✓</span></div><div class="d dn">周 −3.20%<span class="t es">估</span></div></div>
+    <div class="tile"><div class="k">ETH</div><div class="v">≈2,272.6<span class="t ok">✓</span></div><div class="d dn">10月 ≈−15.8%<span class="t es">估</span> · 周 <span class="nt">—</span></div></div>
+    <div class="tile"><div class="k">SOL</div><div class="v">95.69<span class="t ok">✓</span></div><div class="d dn">周 ≈−5.2%<span class="t es">估</span> · 失守 $100</div></div>
+    <div class="tile"><div class="k">BNB</div><div class="v">713.60<span class="t ok">✓</span></div><div class="d dn">周 ≈−4.2%<span class="t es">估</span></div></div>
+    <div class="tile"><div class="k">Fed（10/28）</div><div class="v">3.75–4.00%<span class="t ok">✓</span></div><div class="d wr">10–2 按兵不动，2 票主张加息</div></div>
+    <div class="tile"><div class="k">美 10Y</div><div class="v">≈4.94%<span class="t ok">✓</span></div><div class="d wr">盘中一度 &gt;5%</div></div>
+    <div class="tile"><div class="k">12/9 FOMC 加息概率</div><div class="v">≈76–86%<span class="t es">估</span></div><div class="d nt">单一来源，仅作方向参考</div></div>
+    <div class="tile"><div class="k">BTC 年内 ≥$100K（Polymarket）</div><div class="v">≈12%<span class="t es">估</span></div><div class="d nt">预测市场口径</div></div>
+  </div>
+  <div class="stance"><b>立场：</b>宏观对 Crypto 是净逆风——10Y 逼近 5%、Fed 偏向再加息、油价 $110+。风险资产的“流动性贴现率”在上行，BTC 的 77–81K 区间下沿是这套宏观的定价而非噪音。</div>
+
+  <h3><i>2/6</i>周内日历叙事（BTC 日收盘，UTC）</h3>
+  <div class="scroll"><table>
+    <tr><th>日期</th><th class="n">收盘</th><th class="n">日涨跌</th><th>叙事</th></tr>
+    <tr><td>10/25（基准）</td><td class="n">80,121.3<span class="t ok">✓</span></td><td class="n nt">—</td><td>周基准价</td></tr>
+    <tr><td>周一 10/26</td><td class="n">80,119.9<span class="t ok">✓</span></td><td class="n nt">≈0.00%<span class="t es">估</span></td><td>横盘，等待本周宏观与财报密集窗口</td></tr>
+    <tr><td>周二 10/27</td><td class="n">80,891.8<span class="t ok">✓</span></td><td class="n up">+0.96%<span class="t es">估</span></td><td>预期 FOMC 偏鸽的短暂抢跑</td></tr>
+    <tr><td>周三 10/28</td><td class="n">81,331.3<span class="t ok">✓</span></td><td class="n up">+0.54%<span class="t es">估</span></td><td>周内收盘高点；FOMC 按兵不动，但 2 票反对（要加息）</td></tr>
+    <tr><td>周四 10/29</td><td class="n">77,936.5<span class="t ok">✓</span></td><td class="n dn">−4.17%<span class="t ok">✓</span></td><td>鹰派解读 + 清算 $1.54B；BTC ETF 当日净流入仅 +$17.07M，ETH ETF 连续第 4 日净流出（−$105M）</td></tr>
+    <tr><td>周五 10/30</td><td class="n">77,320.1<span class="t ok">✓</span></td><td class="n dn">−0.79%<span class="t ok">✓</span></td><td>BTC ETF 单日净流出 −$643.3M；Coinbase 盘中低点 $76,141；美股科技大跌同步施压</td></tr>
+    <tr><td>周六 10/31</td><td class="n">77,557.5<span class="t ok">✓</span></td><td class="n up">+0.31%<span class="t es">估</span></td><td>月末小幅反抽；24h 清算 $427M（73% 为多头）</td></tr>
+  </table></div>
+  <div class="stance"><b>立场：</b>周四的 −4.17% 是本周唯一的“事件性”下跌；周五的 ETF 大额流出说明机构并没有在 77K 接盘。周内结构为“前三日冲高 → 后三日回吐”，典型的消息驱动而非趋势驱动。</div>
+
+  <h3><i>3/6</i>板块表现（四币周度对比）</h3>
+  <div>
+    <div class="bar"><span class="l">BTC</span><span class="tr"><span class="f" style="right:50%;width:16%;background:var(--dn)"></span></span><span class="val dn">−3.20% 估</span></div>
+    <div class="bar"><span class="l">BNB</span><span class="tr"><span class="f" style="right:50%;width:21%;background:var(--dn)"></span></span><span class="val dn">≈−4.18% 估</span></div>
+    <div class="bar"><span class="l">SOL</span><span class="tr"><span class="f" style="right:50%;width:26%;background:var(--dn)"></span></span><span class="val dn">≈−5.18% 估</span></div>
+    <div class="bar"><span class="l">ETH（周）</span><span class="tr"></span><span class="val nt">— 未确认</span></div>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>资产</th><th class="n">价格</th><th class="n">周</th><th class="n">10月</th><th>评语</th></tr>
+    <tr><td>BTC</td><td class="n">77,557.5<span class="t ok">✓</span></td><td class="n dn">−3.20%<span class="t es">估</span></td><td class="n dn">≈−7%（Coinbase）/ −8.6%（TE）<span class="t es">估</span></td><td>相对最强；月度两个来源口径差 1.6pp，已并列不取平均</td></tr>
+    <tr><td>ETH</td><td class="n">≈2,272.6<span class="t ok">✓</span></td><td class="n nt">—</td><td class="n dn">≈−15.8%<span class="t es">估</span></td><td>月度跌幅约为 BTC 的 2 倍，beta 放大，ETF 持续流出</td></tr>
+    <tr><td>SOL</td><td class="n">95.69<span class="t ok">✓</span></td><td class="n dn">≈−5.2%<span class="t es">估</span></td><td class="n nt">—</td><td>失守 $100 整数关</td></tr>
+    <tr><td>BNB</td><td class="n">713.60<span class="t ok">✓</span></td><td class="n dn">≈−4.2%<span class="t es">估</span></td><td class="n nt">—</td><td>受 Binance 事件拖累，但跌幅未超大盘平均</td></tr>
+  </table></div>
+  <div class="stance"><b>立场：</b>强弱排序 BTC &gt; BNB &gt; SOL；ETH 月度跌幅最大。风险偏好收缩阶段，高 beta 山寨继续跑输，不抄 ETH/SOL 底。</div>
+
+  <h3><i>4/6</i>资金流与清算榜</h3>
+  <div class="scroll"><table>
+    <tr><th>指标</th><th class="n">数值</th><th>解读</th></tr>
+    <tr><td>清算 · 10/29</td><td class="n dn">$1.54B<span class="t ok">✓</span></td><td>周内最大去杠杆日，对应 BTC −4.17%</td></tr>
+    <tr><td>清算 · 24h @10/31</td><td class="n wr">$427M（73% 多头）<span class="t ok">✓</span></td><td>多头仍占主导，杠杆未出清完毕</td></tr>
+    <tr><td>BTC ETF · 10/29</td><td class="n up">+$17.07M<span class="t ok">✓</span></td><td>近乎零流入</td></tr>
+    <tr><td>BTC ETF · 10/30</td><td class="n dn">−$643.3M<span class="t ok">✓</span></td><td>本周最大单日流出</td></tr>
+    <tr><td>BTC ETF · 10月累计</td><td class="n dn">≈−$515.9M<span class="t es">估</span></td><td>另一来源给出周四 −635.49M / 周五 −137.94M / 周合计 +304.73M，口径未调和，不采纳</td></tr>
+    <tr><td>ETH ETF</td><td class="n dn">连续净流出<span class="t ok">✓</span></td><td>10/29 −$105M（连续第 4 日）；10 月截至 10/21 流出已超 $1.08B</td></tr>
+    <tr><td>资金费率</td><td class="n wr">ETH 负 / BTC 正<span class="t es">估</span></td><td>未标注时点的快照，仅作结构参考</td></tr>
+  </table></div>
+  <div class="flag">注：CoinGlass 实时面板未能直接访问，上述 CoinGlass 类数据（清算、7 日涨跌 −3.94%）均通过媒体转引取得；ETF 流向两个来源互相冲突，已显式标注，未强行对齐。</div>
+
+  <h3><i>5/6</i>结构诊断</h3>
+  <ul>
+    <li><b class="dn">Binance 被盗：</b>约 $6.3–6.4B（18,270 BTC）<span class="t ok">✓</span>；储备可覆盖，$2.8–3.0B 已冻结，提款预计 11/1 恢复<span class="t ok">✓</span>。事件发生具体日期 <span class="t na">—</span>。</li>
+    <li><b class="wr">企业买盘停摆：</b>Strategy 暂停买入（Q3 净利 $19.5B，多为公允价值浮盈）<span class="t ok">✓</span>；Strive 加仓 6,182 BTC<span class="t ok">✓</span>。边际买盘分化，不构成对冲。</li>
+    <li><b>ETF 是定价权所在：</b>价格跌幅与 ETF 流出日高度同步（10/29 和 10/30）。</li>
+  </ul>
+  <div class="stance"><b>立场（中性偏空，短线）：</b>① 76K（Coinbase 低点 76,141）是本周多空分水岭，跌破则 73–74K 区域为下一测试区（技术推演，<span class="t es">估</span>）；② 重新转强需要 ETF 连续 3 日以上净流入 + 资金费率回正后不过热；③ Binance 提款恢复是“信任修复”的第一次实盘检验，先看再动。</div>
+
+  <h3><i>6/6</i>下周风险矩阵</h3>
+  <div class="scroll"><table>
+    <tr><th>日期</th><th>事件</th><th>等级</th><th>方向性假设</th></tr>
+    <tr><td>11/1–11/3</td><td>Binance 提款恢复情况</td><td><span class="pill h">高</span></td><td>顺利 → 信任溢价回补；出现延迟 → BNB 与交易所代币首当其冲</td></tr>
+    <tr><td>11/3</td><td>美国中期选举</td><td><span class="pill h">高</span></td><td>政策不确定性；加密监管叙事可能放大波动</td></tr>
+    <tr><td>11/2–11/4</td><td>AAPL/PLTR/AMD/ARM 等财报</td><td><span class="pill m">中</span></td><td>通过纳指情绪传导，BTC 与科技 beta 相关性仍高</td></tr>
+    <tr><td>11/6</td><td>非农（前值 29K，失业率 4.2%）</td><td><span class="pill h">高</span></td><td>强 → 12 月加息概率上升，对 BTC 偏空</td></tr>
+    <tr><td>持续</td><td>Coinbase 财报、ETF 日度流向</td><td><span class="pill m">中</span></td><td>流入转正为反弹前置条件</td></tr>
+    <tr><td>12/9</td><td>FOMC（加息概率 ≈76–86% 估）</td><td><span class="pill m">中</span></td><td>远期，但定价会逐步前置</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= US ================= -->
+<section class="asset" id="us">
+  <div class="shead"><span class="no">[02]</span><h2>US EQUITIES · 固定 Watchlist</h2><span class="tag">主源：Yahoo/AP、Schwab、媒体日评（MacroTrends 未能直接访问）</span></div>
+  <div class="verdict"><b>一句话定调：</b>“AI 烧钱”从被奖励转为被惩罚——现金流为负的 capex 受到抛售（GOOGL、AMZN、META、INTC），纳指周跌 2.0%、周五单日 −2.86%；标普靠医疗、材料与等权轮动守住 −0.58%，结构上是“防御/等权跑赢，AI 硬件与软件重估”。</div>
+
+  <h3><i>1/6</i>宏观快照</h3>
+  <div class="tiles">
+    <div class="tile"><div class="k">S&amp;P 500 · 10/30</div><div class="v">7,580.07<span class="t ok">✓</span></div><div class="d dn">周 −0.58% · 10月 −0.94%<span class="t ok">✓</span></div></div>
+    <div class="tile"><div class="k">Nasdaq</div><div class="v">25,437.00<span class="t ok">✓</span></div><div class="d dn">周 −2.0% · 10月 −5.3%<span class="t ok">✓</span></div></div>
+    <div class="tile"><div class="k">Dow</div><div class="v">51,770.31<span class="t ok">✓</span></div><div class="d dn">周 −0.85% · 10月 +1.7%<span class="t ok">✓</span></div></div>
+    <div class="tile"><div class="k">Russell 2000</div><div class="v">2,811.84<span class="t ok">✓</span></div><div class="d dn">周五 −1.66% · 周 <span class="nt">—</span></div></div>
+    <div class="tile"><div class="k">VIX</div><div class="v">≈19.4<span class="t ok">✓</span></div><div class="d wr">周四开盘 18.72</div></div>
+    <div class="tile"><div class="k">CNN 恐贪</div><div class="v">26<span class="t ok">✓</span></div><div class="d wr">恐惧区</div></div>
+    <div class="tile"><div class="k">10Y UST / Brent / WTI</div><div class="v">4.94% / ≈114 / ≈104<span class="t ok">✓</span></div><div class="d wr">Brent 两来源 113.9 vs 117.55</div></div>
+    <div class="tile"><div class="k">Q3 GDP · 核心 PCE</div><div class="v">3.4% · 3.1%<span class="t ok">✓</span></div><div class="d nt">PCE m/m 0.3% · CB 信心 91.7 · 首申 194K</div></div>
+  </div>
+  <div class="flag">来源冲突：Trading Economics 给出的周涨跌为 S&amp;P −0.9% / Nasdaq −2.4% / Dow −1.2%，与上方（由收盘价推算 −0.58% / −2.0% / −0.85%）不一致；本看板采用收盘价口径，差异可能来自基准日。</div>
+  <div class="stance"><b>立场：</b>Fed 10–2 按兵不动（Cook、Hammack 主张加息），12/9 加息概率 ≈76–86%<span class="t es">估</span>。盈利强劲（Q3 EPS +30%、82% 超预期<span class="t ok">✓</span>）却被抛售，说明问题不在盈利而在“估值 × 利率 × AI capex 回报”。</div>
+
+  <h3><i>2/6</i>周内日历叙事</h3>
+  <div class="scroll"><table>
+    <tr><th>日</th><th class="n">S&amp;P 500</th><th class="n">Nasdaq</th><th class="n">Dow</th><th>叙事</th></tr>
+    <tr><td>周一 10/26</td><td class="n">7,676.77<span class="t ok">✓</span></td><td class="n">26,169<span class="t ok">✓</span></td><td class="n">52,361.58<span class="t ok">✓</span></td><td>相对上周收盘小幅上行（上周收盘 S&amp;P ≈7,623.68<span class="t es">估</span>）</td></tr>
+    <tr><td>周二 10/27</td><td class="n">7,722.60<span class="t ok">✓</span></td><td class="n">26,477.81<span class="t ok">✓</span></td><td class="n">52,377.57<span class="t ok">✓</span></td><td>财报季中段，NVDA ≈$217.94</td></tr>
+    <tr><td>周三 10/28</td><td class="n">≈7,743.98<span class="t es">估</span></td><td class="n">≈26,549.84<span class="t es">估</span></td><td class="n">≈52,475.1<span class="t es">估</span></td><td>FOMC 按兵不动（10–2）；收盘值由涨跌幅反推，非直接取得</td></tr>
+    <tr><td>周四 10/29</td><td class="n dn">7,720.39<span class="t ok">✓</span></td><td class="n dn">26,184.72<span class="t ok">✓</span></td><td class="n">52,342.56<span class="t ok">✓</span></td><td>GOOGL −12.64% 至 $283.82（EPS $2.12 不及预期、capex $51.4B、FCF −$9.1B）；MSFT/META 财报消化</td></tr>
+    <tr><td>周五 10/30</td><td class="n dn">7,580.07 (−1.82%)<span class="t ok">✓</span></td><td class="n dn">25,437.00 (−2.86%)<span class="t ok">✓</span></td><td class="n dn">51,770.31 (−1.09%)<span class="t ok">✓</span></td><td>AMZN（FCF 转负）+ INTC（指引 $15–16B vs 预期 $17.29B，−28.6%）引爆“AI 现金烧”抛售，SOX −7.1%</td></tr>
+  </table></div>
+  <div class="stance"><b>立场：</b>周四–周五两天贡献了本周全部下跌：从周三约 7,744 到周五 7,580，两日回撤 ≈2.1%（估算）。这是“事件集中兑现”，不是缓慢阴跌，反弹空间取决于下周 AAPL/PLTR/AMD 能否打断“capex 惩罚”叙事。</div>
+
+  <h3><i>3/6</i>板块表现</h3>
+  <div>
+    <div class="bar"><span class="l">Health Care</span><span class="tr"><span class="f" style="left:50%;width:15%;background:var(--up)"></span></span><span class="val up">+3.1% 周 ✓</span></div>
+    <div class="bar"><span class="l">Materials</span><span class="tr"><span class="f" style="left:50%;width:14%;background:var(--up)"></span></span><span class="val up">+2.8% 周 ✓</span></div>
+    <div class="bar"><span class="l">Comm Services</span><span class="tr"><span class="f" style="right:50%;width:26%;background:var(--dn)"></span></span><span class="val dn">−5.3% 周 ✓</span></div>
+  </div>
+  <ul>
+    <li>10 月：XLC ≈−9%、XLK ≈−7.5%<span class="t ok">✓</span>；11 个板块中 9 个收涨，说明下跌高度集中于 AI 相关板块。</li>
+    <li>广度：59% 个股站上 200 日线<span class="t ok">✓</span>；等权 S&amp;P（SPXEW）10 月 ≈+5% vs 纳指 −3%<span class="t es">估</span>（口径不一致，仅作方向）。</li>
+    <li>其余 8 个板块的周度涨跌幅 <span class="t na">—</span>（未取得）。</li>
+  </ul>
+  <div class="scroll"><table>
+    <tr><th>Watchlist 组</th><th>本周状态</th><th>立场</th></tr>
+    <tr><td>宽基 ETF（SPY/QQQ/IWM…）</td><td>指数 −0.58% / −2.0%；ETF 自身周涨跌与资金流 <span class="t na">—</span></td><td class="wr">中性偏防守；QQQ 相对 SPY 劣势已确认（指数口径）</td></tr>
+    <tr><td>半导体硬件</td><td class="dn">周五 SOX −7.1%；SOX 10 月 ≈−15.2%<span class="t es">估</span></td><td class="dn">减配：capex 周期预期下修 + 指引风险</td></tr>
+    <tr><td>大型科技 / 云</td><td class="dn">GOOGL ≈−12%<span class="t es">估</span>、AMZN/META 下挫、MSFT 相对抗跌</td><td class="wr">分化：正 FCF（MSFT）&gt; 负 FCF（GOOGL/AMZN/META）</td></tr>
+    <tr><td>AI 软件 / 数据</td><td class="dn">NOW 周 ≈−33.9%<span class="t es">估</span>；PLTR 11/2 财报</td><td class="dn">回避：估值重置尚未完成，事件前不抄底</td></tr>
+  </table></div>
+
+  <h3><i>4/6</i>个股总表（本周可确认的移动）</h3>
+  <div class="scroll"><table>
+    <tr><th>组</th><th>代码</th><th class="n">涨跌</th><th>期间 / 备注</th></tr>
+    <tr><td>半导体</td><td>INTC</td><td class="n dn">−28.6%<span class="t ok">✓</span></td><td>周五；指引 $15–16B vs 预期 $17.29B</td></tr>
+    <tr><td>半导体</td><td>AMD</td><td class="n dn">−12%<span class="t ok">✓</span></td><td>周五；11/3 财报</td></tr>
+    <tr><td>半导体</td><td>QCOM</td><td class="n dn">−11%<span class="t ok">✓</span></td><td>周五；11/4 财报</td></tr>
+    <tr><td>半导体</td><td>ARM</td><td class="n dn">≈−9.6%<span class="t es">估</span></td><td>周五盘前；收盘 <span class="t na">—</span></td></tr>
+    <tr><td>半导体</td><td>SNDK / MU / AVGO</td><td class="n dn">−9% / −7% / −6.5%<span class="t ok">✓</span></td><td>周五</td></tr>
+    <tr><td>半导体</td><td>NVDA</td><td class="n dn">−4.3%<span class="t ok">✓</span></td><td>周五；周内价位 10/27 ≈$217.94，周五收盘价 <span class="t na">—</span>；市值 ≈$5.25T</td></tr>
+    <tr><td>半导体 ETF</td><td>SOX / SOXX</td><td class="n dn">−7.1% / −8%<span class="t ok">✓</span></td><td>周五</td></tr>
+    <tr><td>大型科技</td><td>GOOGL</td><td class="n dn">−12.64%<span class="t ok">✓</span></td><td>周四至 $283.82；云收入 +103%，但 FCF −$9.1B</td></tr>
+    <tr><td>大型科技</td><td>AMZN</td><td class="n dn">−2% ~ −7%<span class="t es">估</span></td><td><b class="wr">来源冲突</b>：BFM 报收盘 ≈−2%，24/7 Wall St 标题 −7%；Q3 营收 $201.94B、EPS $1.89 vs 预期 $1.96、AWS +39%、capex ≈$220B、FCF 为负</td></tr>
+    <tr><td>大型科技</td><td>META</td><td class="n dn">≈−2%<span class="t es">估</span></td><td>capex 指引 $135–145B；FCF −$2.12B</td></tr>
+    <tr><td>大型科技</td><td>MSFT</td><td class="n nt">—</td><td>Azure +48%、营收 $92.3B、FCF 为正；capex 指引来源冲突（$170B vs ≈$190B），发行 $25B 债券</td></tr>
+    <tr><td>AI 软件</td><td>NOW</td><td class="n dn">≈−33.9%<span class="t es">估</span></td><td>单一来源；期间按周处理，未能与财报日交叉验证</td></tr>
+    <tr><td>S&amp;P 榜</td><td>RDDT / F5 / FTNT</td><td class="n dn">−36.4 / −25.7 / −24.4%<span class="t es">估</span></td><td>榜单统计期间未确认 <span class="t na">—</span>，仅作“失宠方向”参考</td></tr>
+    <tr><td>S&amp;P 榜（涨）</td><td>PNR, VRT, CVNA, GEN, GPN</td><td class="n up">—</td><td>上榜名单已确认<span class="t ok">✓</span>，涨幅数值 <span class="t na">—</span></td></tr>
+    <tr><td>AI 软件</td><td>PLTR</td><td class="n nt">—</td><td>11/2 财报，周内涨跌 <span class="t na">—</span></td></tr>
+  </table></div>
+
+  <h3><i>5/6</i>核心催化剂</h3>
+  <ul>
+    <li><b>“AI capex × FCF”分水岭：</b>市场奖励现金流支撑的投入（MSFT），惩罚靠债务/负 FCF 的投入（GOOGL −$9.1B、META −$2.12B、AMZN 转负）。</li>
+    <li><b>利率：</b>10Y ≈4.94% 且 12 月加息概率高，压缩长久期成长股估值。</li>
+    <li><b>能源：</b>Brent ≈$114–118 压制盈利预期与通胀预期。</li>
+    <li><b>技术位（S&amp;P）：</b>支撑 7,525 / 7,300 / 7,230，阻力 7,640 / 7,750 / 7,850<span class="t ok">✓</span>（来源机构口径）。</li>
+  </ul>
+  <div class="stance"><b>立场：</b>① 市场进入“现金流 regime”，选股 &gt; 选 beta；② 等权/医疗/材料相对于纳指的超额可延续，但已非低拥挤；③ 半导体链条下一次下修触发点是 AMD（11/3）、ARM/QCOM（11/4），事件前不加仓；④ S&amp;P 守 7,525 前以逢高减仓为主，不以抄底为主。</div>
+
+  <h3><i>6/6</i>下周风险矩阵</h3>
+  <div class="scroll"><table>
+    <tr><th>日期</th><th>事件</th><th>等级</th><th>方向性假设</th></tr>
+    <tr><td>周一 11/2</td><td>ISM 制造业；AAPL、PLTR 财报</td><td><span class="pill m">中</span></td><td>PLTR 是 AI 软件情绪温度计；AAPL 是权重缓冲</td></tr>
+    <tr><td>周二 11/3</td><td>中期选举；AMD、SHOP、PFE、AMGN、ANET 财报</td><td><span class="pill h">高</span></td><td>AMD 对半导体链有指引外溢；政策不确定性</td></tr>
+    <tr><td>周三 11/4</td><td>ISM 服务业；ARM、QCOM、UBER、DDOG、APP 财报</td><td><span class="pill h">高</span></td><td>ARM/QCOM 周五已重挫，预期已下调，容易“利空出尽”或“二次杀”</td></tr>
+    <tr><td>周四 11/5</td><td>NET、ABNB、LITE 财报</td><td><span class="pill m">中</span></td><td>光通信/网络基础设施的 AI 需求验证</td></tr>
+    <tr><td>周五 11/6</td><td>非农（前值 29K，失业率 4.2%）</td><td><span class="pill h">高</span></td><td>强 → 加息定价上升，成长股承压</td></tr>
+    <tr><td>11 月内</td><td>NVDA 财报（具体日期 <span class="t na">—</span>）</td><td><span class="pill m">中</span></td><td>AI 链条最终裁判</td></tr>
+    <tr><td>12/9</td><td>FOMC</td><td><span class="pill m">中</span></td><td>加息概率 ≈76–86%（估）</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= CAC ================= -->
+<section class="asset" id="cac">
+  <div class="shead"><span class="no">[03]</span><h2>CAC 40 · 固定 Watchlist</h2><span class="tag">主源：Boursorama / BFM Bourse / Zonebourse / MoneyVox / ABC Bourse（法语检索）</span></div>
+  <div class="verdict"><b>一句话定调：</b>在美股科技重挫的一周里，CAC 40 逆势 +2.40% 收于 7,969.42，靠财报驱动的医疗（Sanofi）、银行与周期工业撑起；但距 8 月高点 8,753 仍有 −8.95%，OAT 利差与财政信用是压制估值的隐忧。</div>
+  <div class="flag"><b>⚠ LBPAM 晨报（本模块最高优先级来源）：</b>公开检索无法访问，本周未使用。其观点性内容（基金经理判断、资金面细节）全部缺失；本节立场基于公开媒体日评，请在可取得 LBPAM 晨报时做交叉核对。</div>
+
+  <h3><i>1/6</i>宏观快照</h3>
+  <div class="tiles">
+    <div class="tile"><div class="k">CAC 40 · 10/30 收</div><div class="v">7,969.42<span class="t ok">✓</span></div><div class="d up">周 +2.40%<span class="t ok">✓</span> · 周五 −0.01%</div></div>
+    <div class="tile"><div class="k">10月 / YTD</div><div class="v">+0.06% / −2.21%<span class="t ok">✓</span></div><div class="d nt">距 8 月高点 8,753：−8.95%<span class="t es">估</span></div></div>
+    <div class="tile"><div class="k">OAT 10 年</div><div class="v">≈4.90%<span class="t ok">✓</span></div><div class="d wr">周一数据；对 Bund 利差 ≈154bp</div></div>
+    <div class="tile"><div class="k">评级 / 增长</div><div class="v">Moody's 维持<span class="t ok">✓</span></div><div class="d wr">Q3 GDP 意外收缩（数值 <span class="nt">—</span>）</div></div>
+    <div class="tile"><div class="k">ECB 存款利率</div><div class="v">2.5%（维持）<span class="t ok">✓</span></div><div class="d nt">Lagarde 将于 2 月离任</div></div>
+    <div class="tile"><div class="k">Brent</div><div class="v">≈114–118<span class="t ok">✓</span></div><div class="d wr">BFM 113.9 / Boursorama 117.55</div></div>
+  </div>
+  <div class="stance"><b>立场：</b>法国的矛盾是“企业盈利强、国家资产负债表弱”：指数靠财报+全球资金轮动上行，但 OAT–Bund 154bp 与 GDP 收缩使估值扩张空间受限，8,750 上方需要财政路径明朗才有基础。</div>
+
+  <h3><i>2/6</i>周内日历叙事</h3>
+  <div class="scroll"><table>
+    <tr><th>日</th><th class="n">收盘</th><th class="n">日涨跌</th><th>叙事</th></tr>
+    <tr><td>上周五（基准）</td><td class="n">≈7,782.7<span class="t es">估</span></td><td class="n nt">—</td><td>由周涨幅与周一收盘反推</td></tr>
+    <tr><td>周一 10/26</td><td class="n">7,847.32<span class="t ok">✓</span></td><td class="n up">+0.83%<span class="t ok">✓</span></td><td>财报季开局，OAT10y ≈4.90%</td></tr>
+    <tr><td>周二 10/27</td><td class="n">7,887.14<span class="t ok">✓</span></td><td class="n up">+0.51%<span class="t ok">✓</span></td><td>延续；Renault +6.9%（€28.17）</td></tr>
+    <tr><td>周三 10/28</td><td class="n">7,886.96<span class="t ok">✓</span></td><td class="n nt">0.00%<span class="t ok">✓</span></td><td>FOMC 前观望；Stellantis +15.4%（注：当前是否 CAC 40 成分，Euronext 口径存疑，已排除出统计）</td></tr>
+    <tr><td>周四 10/29</td><td class="n">7,970.00<span class="t ok">✓</span></td><td class="n up">+1.05%<span class="t ok">✓</span></td><td>Safran +2.6%、Saint-Gobain +2.3%；Sanofi Q3 €14.44B 并上调指引</td></tr>
+    <tr><td>周五 10/30</td><td class="n">7,969.42<span class="t ok">✓</span></td><td class="n nt">−0.01%<span class="t ok">✓</span></td><td>美股大跌下几乎持平，防御属性体现；Capgemini +3.5%、Soitec −9.59%、STMicro −5.3%、Schneider −4.1%</td></tr>
+  </table></div>
+  <div class="stance"><b>立场：</b>欧洲在周五美股 −2.86%（纳指）的冲击下收平，说明本周 CAC 的抗跌来自“财报+权重分布”（医疗、银行、能源占比高，AI 链条占比低），而不是资金流入的新趋势；若美股修复，CAC 的相对优势可能收敛。</div>
+
+  <h3><i>3/6</i>板块表现（Watchlist 七组）</h3>
+  <div class="scroll"><table>
+    <tr><th>板块</th><th>本周可确认信号</th><th>状态</th><th>立场</th></tr>
+    <tr><td>防务航空</td><td>Safran +2.6%（周四）<span class="t ok">✓</span>；Airbus Q3 调整后 EBIT €1,768M（−9%）、交付 196 架<span class="t ok">✓</span>；Thales / Dassault Aviation 周度 <span class="t na">—</span></td><td class="wr">分化</td><td>Airbus 全年目标 870 架，Q4 需约 108 架/月，兑现风险上升；Safran 偏强</td></tr>
+    <tr><td>能源</td><td>TotalEnergies ≈+1%、≈€85.4<span class="t es">估</span>；Q3 净利 $8.26B（+124%）、调整后 $9.1B<span class="t ok">✓</span></td><td class="up">偏强</td><td>油价 $110+ 对冲组合，防御价值高</td></tr>
+    <tr><td>奢侈品</td><td>LVMH ≈€402.8<span class="t ok">✓</span>；LVMH/Hermès YTD ≈−37%、Kering −22%、Stoxx Luxury −24%<span class="t es">估</span>；周度涨跌 <span class="t na">—</span></td><td class="dn">弱势</td><td>未见右侧信号，不抢反弹</td></tr>
+    <tr><td>银行保险</td><td>BNP €86.60，Q3 €3.4B 超预期，€1.3B 回购<span class="t ok">✓</span>；Scor +4.66%<span class="t ok">✓</span>；SocGen / Crédit Agricole / AXA 10/29–30 发布财报，细节 <span class="t na">—</span></td><td class="up">偏强</td><td>回购+盈利韧性，但 OAT 利差扩张是尾部风险</td></tr>
+    <tr><td>科技 IT</td><td>Capgemini +3.5%、Dassault Systèmes +6.3%；STMicro −5.3%、Soitec −9.59%<span class="t ok">✓</span></td><td class="wr">分化</td><td>软件/服务偏强，芯片偏弱：与美股半导体抛售同向</td></tr>
+    <tr><td>工业材料</td><td>Saint-Gobain +2.3%（周四）；Schneider −4.1%（€237.5）、Legrand −2.7%<span class="t ok">✓</span></td><td class="wr">分化</td><td>“AI 数据中心电气”概念股被去估值；建材偏强。Air Liquide 等 <span class="t na">—</span></td></tr>
+    <tr><td>医疗</td><td>Sanofi +4.71% 至 €79.74，Q3 €14.44B，上调指引<span class="t ok">✓</span></td><td class="up">最强</td><td>本周 CAC 最大正贡献之一，防御+业绩上修</td></tr>
+  </table></div>
+
+  <h3><i>4/6</i>涨跌榜（已确认个股）</h3>
+  <div>
+    <div class="bar"><span class="l">Renault</span><span class="tr"><span class="f" style="left:50%;width:35%;background:var(--up)"></span></span><span class="val up">+6.9% ✓</span></div>
+    <div class="bar"><span class="l">Dassault Syst.</span><span class="tr"><span class="f" style="left:50%;width:32%;background:var(--up)"></span></span><span class="val up">+6.3% ✓</span></div>
+    <div class="bar"><span class="l">Sanofi</span><span class="tr"><span class="f" style="left:50%;width:24%;background:var(--up)"></span></span><span class="val up">+4.71% ✓</span></div>
+    <div class="bar"><span class="l">Scor</span><span class="tr"><span class="f" style="left:50%;width:23%;background:var(--up)"></span></span><span class="val up">+4.66% ✓</span></div>
+    <div class="bar"><span class="l">Capgemini</span><span class="tr"><span class="f" style="left:50%;width:18%;background:var(--up)"></span></span><span class="val up">+3.5% ✓</span></div>
+    <div class="bar"><span class="l">Schneider</span><span class="tr"><span class="f" style="right:50%;width:21%;background:var(--dn)"></span></span><span class="val dn">−4.1% ✓</span></div>
+    <div class="bar"><span class="l">STMicro</span><span class="tr"><span class="f" style="right:50%;width:27%;background:var(--dn)"></span></span><span class="val dn">−5.3% ✓</span></div>
+    <div class="bar"><span class="l">Soitec</span><span class="tr"><span class="f" style="right:50%;width:48%;background:var(--dn)"></span></span><span class="val dn">−9.59% ✓</span></div>
+  </div>
+  <div class="flag">口径说明：以上涨跌为各媒体日评中的“单日”或“个股公告日”移动，并非统一的周度涨跌幅；Renault 与 Soitec 是否属于当前 CAC 40 成分 <span class="t na">—</span>（未核对 Euronext 官方名单）。周度涨跌榜无法按统一口径编制，已如实标注。</div>
+
+  <h3><i>5/6</i>结构诊断</h3>
+  <ul>
+    <li><b>盈利 vs 信用：</b>银行、能源、医疗财报强劲，对冲 OAT 利差与 GDP 收缩<span class="t ok">✓</span>。</li>
+    <li><b>“AI 受益”概念在欧洲同步去估值：</b>Soitec、STM、Schneider、Legrand 同向回撤，映射美股半导体抛售。</li>
+    <li><b>奢侈品深度熊市：</b>YTD −22% ~ −37%<span class="t es">估</span>，暂无催化剂。</li>
+    <li><b>Airbus 交付斜率：</b>870 目标 vs Q4 约 108 架/月，是大盘权重的单点风险。</li>
+  </ul>
+  <div class="stance"><b>立场：</b>① 超配“盈利上修+防御”：医疗（Sanofi）、能源（Total）、银行（BNP）；② 低配奢侈品与数据中心电气链，等待美股 AI 情绪稳定；③ 8,753 前高是技术性目标，OAT–Bund 利差若升破 160bp（估算阈值，<span class="t es">估</span>）则需下调风险敞口。</div>
+
+  <h3><i>6/6</i>下周风险矩阵</h3>
+  <div class="scroll"><table>
+    <tr><th>日期</th><th>事件</th><th>等级</th><th>方向性假设</th></tr>
+    <tr><td>周内</td><td>OAT–Bund 利差 / 法国 2027 预算与社会抗议</td><td><span class="pill h">高</span></td><td>财政叙事恶化 → 银行与高估值股首当其冲</td></tr>
+    <tr><td>11/3</td><td>Euronaval</td><td><span class="pill l">低</span></td><td>防务订单与出口叙事</td></tr>
+    <tr><td>11/2–11/6</td><td>美股财报（AAPL、PLTR、AMD、ARM 等）</td><td><span class="pill h">高</span></td><td>对 Soitec/STM/Schneider/Legrand 情绪传导直接</td></tr>
+    <tr><td>11 月初</td><td>Airbus 10 月交付数据（发布日 <span class="t na">—</span>）</td><td><span class="pill m">中</span></td><td>月交付低于 108 架 → 年度目标担忧加剧</td></tr>
+    <tr><td>11/6</td><td>美国非农</td><td><span class="pill m">中</span></td><td>通过美债收益率与美元传导</td></tr>
+    <tr><td>持续</td><td>Brent $110+</td><td><span class="pill m">中</span></td><td>能源股受益；工业与消费受压</td></tr>
+  </table></div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer id="src">
+  <h4>数据源（按板块）</h4>
+  <p><b>① Crypto：</b>CoinGlass（清算、7 日涨跌，经媒体转引，面板未直接访问）；Investing.com（BTC 日线）；Coinbase 与 Bitcoin News Digest 周报（价格区间、Binance 事件）；Reuters / Boursorama 标题（Binance）；Trading Economics（10 月月度）；SoSoValue 类 ETF 流向（经媒体转引，来源间冲突已标注）。</p>
+  <p><b>② 美股：</b>Yahoo Finance / AP（指数与日评）、Schwab（VIX、日评）、24/7 Wall St、The Motley Fool、Closing Look（日评）、myweeklystock、Investrade、HeyGotrade（NVDA 日价）、BFM Bourse（AMZN 周五反应）。MacroTrends（历史收盘）本周未能直接访问，对应数值由其他来源或收盘价推算，已标 <span class="t es">估</span>。</p>
+  <p><b>③ CAC 40：</b>Boursorama、BFM Bourse、Zonebourse、MoneyVox、ABC Bourse、公司公告（法语检索优先）。LBPAM 晨报：<span class="wr">无法通过公开检索访问，本周缺失</span>。</p>
+  <h4>标注规则</h4>
+  <p><span class="t ok">✓</span> 有明确来源数值；<span class="t es">估</span> 由已确认数据推算、或来源单一/冲突后的保守口径；<span class="t na">—</span> 未取得，未编造。</p>
+  <h4>免责声明</h4>
+  <p>本看板仅为个人市场复盘与研究用途，不构成任何投资建议、要约或对任何证券/数字资产的买卖推荐。“立场”为基于有限公开数据的情景判断，可能出错；其中标 估 的数值存在误差，标 — 的数值未确认。市场数据可能延迟或在后续修订，使用前请回到一手来源核对。杠杆与加密资产交易风险极高，可能损失全部本金。</p>
+  <p>生成时间：2026-11-01 · 周期：2026-10-26 → 2026-11-01</p>
+</footer>
+</div>
+</body>
+</html>

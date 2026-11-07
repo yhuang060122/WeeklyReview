@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en" data-theme="blueprint" data-mode="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Answer me with HTML 0.4.6">
+<title>How the Transformer Works</title>
+<style>
+html[data-theme="blueprint"], html[data-theme="blueprint"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 0px;
+  --shadow: none;
+  --bw: 1.5px;
+  --head-font: var(--font-sans);
+  --bg: #f6f6f3;
+  --paper: #ffffff;
+  --ink: #16181d;
+  --ink-2: #4b5260;
+  --ink-3: #8b929e;
+  --line: #1d2026;
+  --line-2: #d6dae1;
+  --fill: #f3f5f8;
+  --accent: #1d5fbf;
+  --accent-bg: #e4ecf8;
+  --ok: #1d5fbf;
+  --ok-bg: #e4ecf8;
+  --err: #c62828;
+  --err-bg: #fbeaea;
+  --warn: #a8620a;
+  --warn-bg: #fdf3e2;
+  --head-bg: #16181d;
+  --head-fg: #ffffff;
+}
+html[data-theme="blueprint"][data-mode="dark"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="blueprint"][data-mode="auto"] {
+  --bg: #081322;
+  --paper: #0d1c31;
+  --ink: #e6edf7;
+  --ink-2: #a9b8cc;
+  --ink-3: #6b7f99;
+  --line: #c9d6e8;
+  --line-2: #23385a;
+  --fill: #12253f;
+  --accent: #6ea8ff;
+  --accent-bg: #16305a;
+  --ok: #6ea8ff;
+  --ok-bg: #16305a;
+  --err: #ff7070;
+  --err-bg: #3b1620;
+  --warn: #f0b14a;
+  --warn-bg: #3a2a10;
+  --head-bg: #e6edf7;
+  --head-fg: #081322;
+}
+}
+
+html[data-theme="shadcn"], html[data-theme="shadcn"][data-mode="light"] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "JetBrains Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius: 8px;
+  --shadow: 0 1px 2px 0 rgba(0,0,0,0.05);
+  --bw: 1px;
+  --head-font: var(--font-sans);
+  --bg: #fafafa;
+  --paper: #ffffff;
+  --ink: #09090b;
+  --ink-2: #71717a;
+  --ink-3: #a1a1aa;
+  --line: #e4e4e7;
+  --line-2: #f0f0f2;
+  --fill: #f4f4f5;
+  --accent: #2563eb;
+  --accent-bg: #eff6ff;
+  --ok: #16a34a;
+  --ok-bg: #f0fdf4;
+  --err: #dc2626;
+  --err-bg: #fef2f2;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --head-bg: #18181b;
+  --head-fg: #fafafa;
+}
+html[data-theme="shadcn"][data-mode="dark"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+@media (prefers-color-scheme: dark) {
+html[data-theme="shadcn"][data-mode="auto"] {
+  --bg: #09090b;
+  --paper: #121215;
+  --ink: #fafafa;
+  --ink-2: #a1a1aa;
+  --ink-3: #71717a;
+  --line: #27272a;
+  --line-2: #1c1c1f;
+  --fill: #18181b;
+  --accent: #60a5fa;
+  --accent-bg: #172554;
+  --ok: #4ade80;
+  --ok-bg: #052e16;
+  --err: #f87171;
+  --err-bg: #450a0a;
+  --warn: #fbbf24;
+  --warn-bg: #451a03;
+  --head-bg: #fafafa;
+  --head-fg: #18181b;
+}
+}
+
+html[lang="ja"][data-theme][data-mode] {
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Yu Gothic", Meiryo, "Noto Sans CJK JP", "Noto Sans JP", "PingFang SC", "Microsoft YaHei", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+html[lang="ja"][data-theme="3b1b"][data-mode] {
+  --v-title-font: "CMU Serif", "Latin Modern Roman", "Iowan Old Style", "Palatino", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif CJK JP", "Noto Serif JP", "Songti SC", serif;
+}
+
+/* Answer me with HTML base — 只引用主题变量，禁止写死颜色（主题 token 见 themes/index.js） */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-sans); font-size: 14px; line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+code, pre, kbd { font-family: var(--font-mono); }
+
+/* ── 工具栏 ─────────────────────────────── */
+.am-toolbar {
+  position: fixed; top: 12px; right: 12px; z-index: 10; display: flex; gap: 6px;
+}
+.am-btn {
+  font: 12px/1 var(--font-sans); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-2); border-radius: var(--radius); padding: 7px 10px; cursor: pointer;
+}
+.am-btn:hover { border-color: var(--ink-3); }
+.am-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ── 页头 ───────────────────────────────── */
+.am-head { margin: 0 0 20px; padding-right: 260px; }
+.am-head h1 { margin: 0; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; }
+.am-sub { margin: 4px 0 0; color: var(--ink-2); }
+.am-head-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 10px; font-size: 12px; color: var(--ink-2); }
+.am-head-meta b { font-family: var(--font-mono); font-weight: 400; color: var(--ink-3); margin-right: 6px; }
+.am-intro { margin-top: 12px; max-width: 80ch; }
+
+/* ── sheet 图纸板 ────────────────────────── */
+.am-sheet { max-width: 1680px; margin: 0 auto; padding: 32px 28px 40px; }
+.am-frame { position: relative; }
+.am-grid {
+  display: grid; grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+  gap: 20px; align-items: start;
+}
+.am-ruler { display: none; }
+html[data-theme="blueprint"] .am-frame { border: 1px solid var(--line); padding: 30px; }
+html[data-theme="blueprint"] .am-frame::before {
+  content: ""; position: absolute; inset: 18px; border: 1px solid var(--line); pointer-events: none;
+}
+html[data-theme="blueprint"] .am-ruler {
+  display: flex; position: absolute; font: 10px/1 var(--font-mono); color: var(--ink-3);
+}
+.am-ruler span { flex: 1; display: flex; align-items: center; justify-content: center; }
+.am-ruler--top, .am-ruler--bottom { left: 18px; right: 18px; height: 18px; }
+.am-ruler--top { top: 0; }
+.am-ruler--bottom { bottom: 0; }
+.am-ruler--left, .am-ruler--right { top: 18px; bottom: 18px; width: 18px; flex-direction: column; }
+.am-ruler--left { left: 0; }
+.am-ruler--right { right: 0; }
+.am-ruler--top span + span, .am-ruler--bottom span + span { border-left: 1px solid var(--line); }
+.am-ruler--left span + span, .am-ruler--right span + span { border-top: 1px solid var(--line); }
+
+/* ── 面板 ───────────────────────────────── */
+.am-panel {
+  background: var(--paper); border: var(--bw) solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); min-width: 0; overflow: hidden;
+}
+.am-panel-head {
+  display: flex; align-items: stretch; gap: 0; border-bottom: var(--bw) solid var(--line); min-height: 34px;
+}
+.am-panel-id {
+  display: flex; align-items: center; justify-content: center; min-width: 34px; padding: 0 8px;
+  background: var(--head-bg); color: var(--head-fg); font-weight: 600; font-size: 14px;
+}
+html[data-theme="shadcn"] .am-panel-id { border-radius: 6px; min-width: 24px; height: 24px; margin: 9px 0 9px 14px; font-size: 12px; }
+html[data-theme="shadcn"] .am-panel-head { border-bottom-width: 1px; }
+.am-panel-head h2 { margin: 0; padding: 7px 12px; font-size: 15px; font-weight: 600; flex: 1; display: flex; align-items: center; }
+.am-panel-meta { align-self: center; padding: 0 12px; font: 11px/1.3 var(--font-mono); color: var(--ink-2); text-align: right; }
+.am-panel-body { padding: 14px 16px 16px; }
+.am-panel-body > * + * { margin-top: 12px; }
+
+/* ── Markdown 正文 ───────────────────────── */
+.am-md > :first-child { margin-top: 0; }
+.am-md > :last-child { margin-bottom: 0; }
+.am-md p { margin: 0 0 8px; }
+.am-md ul, .am-md ol { margin: 0 0 8px; padding-left: 20px; }
+.am-md li + li { margin-top: 3px; }
+.am-md h3, .am-md h4 { margin: 14px 0 6px; font-size: 13px; }
+.am-md a { color: var(--accent); }
+.am-md blockquote { margin: 0 0 8px; padding: 2px 12px; border-left: 3px solid var(--line-2); color: var(--ink-2); }
+.am-md :not(pre) > code { font-size: 0.9em; background: var(--fill); padding: 1px 5px; border-radius: 4px; }
+.am-md hr { border: 0; border-top: 1px solid var(--line-2); margin: 12px 0; }
+.am-md table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.am-md th {
+  text-align: left; font: 11px/1.3 var(--font-mono); color: var(--ink-2); font-weight: 400;
+  padding: 6px 10px; border-bottom: 1px solid var(--line-2);
+}
+.am-md td { padding: 7px 10px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+.am-md tbody tr:nth-child(even) td { background: var(--fill); }
+.am-table-wrap { overflow-x: auto; }
+.am-code {
+  margin: 0; padding: 12px 14px; background: var(--fill); border: 1px solid var(--line-2);
+  border-radius: var(--radius); overflow-x: auto; font-size: 12.5px; line-height: 1.5;
+}
+
+/* ── 状态徽章 ok / no / warn ──────────────── */
+.am-status { white-space: nowrap; font-weight: 500; }
+.am-status--ok { color: var(--ok); }
+.am-status--no { color: var(--err); }
+.am-status--warn { color: var(--warn); }
+.am-status-icon { display: inline-block; width: 1.1em; font-weight: 700; }
+
+/* ── callout ─────────────────────────────── */
+.am-callout {
+  border: 1px solid var(--line-2); border-left: 3px solid var(--accent); background: var(--accent-bg);
+  padding: 10px 14px; border-radius: var(--radius);
+}
+.am-callout--ok { border-left-color: var(--ok); background: var(--ok-bg); }
+.am-callout--warn { border-left-color: var(--warn); background: var(--warn-bg); }
+.am-callout--err { border-left-color: var(--err); background: var(--err-bg); }
+.am-callout-title { font-weight: 600; margin-bottom: 4px; }
+
+/* ── kv 标题栏格 ─────────────────────────── */
+.am-kv {
+  display: grid; grid-template-columns: repeat(var(--kv-cols, 2), minmax(0, 1fr)); margin: 0;
+  border-top: var(--bw) solid var(--line); border-left: var(--bw) solid var(--line);
+}
+.am-kv-cell { border-right: var(--bw) solid var(--line); border-bottom: var(--bw) solid var(--line); padding: 6px 10px 8px; min-width: 0; }
+.am-kv-cell--wide { grid-column: 1 / -1; }
+.am-kv dt { font: 11px/1.4 var(--font-mono); color: var(--ink-2); }
+.am-kv dd { margin: 2px 0 0; font-size: 14px; font-weight: 500; overflow-wrap: anywhere; }
+.am-kv-cell--wide dd { font-size: 17px; font-weight: 600; }
+html[data-theme="shadcn"] .am-kv { border-color: var(--line); border-radius: var(--radius); overflow: hidden; }
+
+/* ── timeline ────────────────────────────── */
+.am-timeline { list-style: none; margin: 0; padding: 0; }
+.am-timeline--h { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); padding-top: 4px; }
+.am-timeline--h li { position: relative; text-align: center; padding: 0 6px; }
+.am-timeline--h li::before {
+  content: ""; position: absolute; top: 31px; left: 0; right: 0; border-top: var(--bw) solid var(--line);
+}
+.am-timeline--h li:first-child::before { left: 50%; }
+.am-timeline--h li:last-child::before { right: 50%; }
+.am-tl-when { display: block; font-size: 15px; font-weight: 500; height: 24px; }
+.am-tl-dot {
+  position: relative; display: block; width: 11px; height: 11px; margin: 2px auto 8px;
+  border: var(--bw) solid var(--line); border-radius: 50%; background: var(--paper);
+}
+.am-tl-item--hi .am-tl-dot { background: var(--accent); border-color: var(--accent); }
+.am-tl-title { display: block; font-size: 12.5px; font-weight: 500; }
+.am-tl-text { display: block; font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+.am-timeline--v li { position: relative; padding: 0 0 14px 22px; }
+.am-timeline--v li::before { content: ""; position: absolute; left: 5px; top: 6px; bottom: -6px; border-left: var(--bw) solid var(--line-2); }
+.am-timeline--v li:last-child::before { display: none; }
+.am-timeline--v .am-tl-dot { position: absolute; left: 0; top: 4px; margin: 0; }
+.am-timeline--v .am-tl-when { display: inline; height: auto; font: 12px var(--font-mono); color: var(--ink-2); margin-right: 8px; }
+.am-timeline--v .am-tl-title { display: inline; font-size: 14px; }
+.am-timeline--v .am-tl-text { margin-top: 2px; }
+
+/* ── annot 句子标注 ──────────────────────── */
+.am-annot + .am-annot { border-top: 1px solid var(--line-2); padding-top: 12px; }
+.am-annot-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.am-annot-meta { font: 11px var(--font-mono); font-weight: 400; color: var(--ink-2); }
+.am-annot-scroll { overflow-x: auto; }
+.am-annot-line {
+  position: relative; display: inline-block; white-space: pre; font: 14px/1.6 var(--font-mono);
+  padding-bottom: calc(var(--rows, 0) * 17px + 14px);
+}
+.am-annot-line--wrap { display: block; white-space: normal; padding-bottom: 10px; }
+.am-annot-line--wrap .am-seg { white-space: nowrap; }
+.am-seg { position: relative; }
+.am-seg::after {
+  content: ""; position: absolute; left: 1px; right: 1px; top: calc(100% + 1px); height: 5px;
+  border: 1px solid var(--accent); border-top: 0;
+}
+.am-seg-n {
+  position: absolute; left: 0; top: calc(100% + 8px + var(--row, 0) * 17px);
+  font: 11px/16px var(--font-sans); color: var(--accent); white-space: nowrap;
+}
+.am-seg--err { color: var(--err); }
+.am-seg--err::after { border-color: var(--err); }
+.am-seg--err .am-seg-n { color: var(--err); }
+.am-annot-caption { font-size: 12px; color: var(--ink-2); }
+
+/* ── limits 限值条 ───────────────────────── */
+.am-lim + .am-lim { margin-top: 14px; }
+.am-lim-head { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; margin-bottom: 4px; }
+.am-lim-val { font: 12px var(--font-mono); color: var(--accent); white-space: nowrap; }
+.am-lim-track { position: relative; height: 12px; border: 1px solid var(--line-2); background: var(--fill); border-radius: calc(var(--radius) / 2); }
+.am-lim-fill { position: absolute; left: 0; top: 0; bottom: 0; background: var(--accent-bg); border-right: 1px solid var(--accent); }
+.am-lim-mark { position: absolute; top: -4px; bottom: -4px; border-left: 2px solid var(--accent); }
+.am-lim.is-over .am-lim-fill { background: var(--err-bg); border-right-color: var(--err); }
+.am-lim.is-over .am-lim-val { color: var(--err); }
+.am-lim-ticks { position: relative; height: 16px; font: 10px/16px var(--font-mono); color: var(--ink-3); }
+.am-lim-ticks span { position: absolute; transform: translateX(-50%); }
+.am-lim-ticks span:first-child { transform: none; }
+.am-lim-note { font-size: 11px; color: var(--ink-2); margin-left: 6px; }
+
+/* ── tree 结构树 ─────────────────────────── */
+.am-tree { font-size: 13px; }
+.am-tree-root { display: flex; justify-content: center; position: relative; padding-bottom: 18px; }
+.am-tree-root::after { content: ""; position: absolute; bottom: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-root--solo { padding-bottom: 12px; }
+.am-tree-root--solo::after { display: none; }
+.am-tree-box {
+  border: var(--bw) solid var(--line); background: var(--paper); padding: 6px 14px; text-align: center;
+  border-radius: var(--radius); font-weight: 600;
+}
+.am-tree-box small { display: block; font-weight: 400; color: var(--ink-2); font-size: 12px; }
+.am-tree-box--root { background: var(--accent-bg); font-size: 15px; padding: 8px 28px; }
+.am-tree-cols { display: grid; grid-template-columns: repeat(var(--n, 1), minmax(0, 1fr)); }
+.am-tree-col { position: relative; padding: 18px 8px 0; min-width: 0; }
+.am-tree-col::before { content: ""; position: absolute; top: 0; left: 0; right: 0; border-top: var(--bw) solid var(--line); }
+.am-tree-col:first-child::before { left: 50%; }
+.am-tree-col:last-child::before { right: 50%; }
+.am-tree-col::after { content: ""; position: absolute; top: 0; left: 50%; height: 18px; border-left: var(--bw) solid var(--line); }
+.am-tree-list, .am-tree-list ul { list-style: none; margin: 0; padding: 0; }
+.am-tree-col > .am-tree-list { margin: 8px 0 0 14px; }
+.am-tree-list ul { margin-left: 16px; }
+.am-tree-list li { position: relative; padding: 3px 0 3px 18px; }
+.am-tree-list li::before { content: ""; position: absolute; left: 0; top: 0.95em; width: 12px; border-top: 1px solid var(--ink-3); }
+.am-tree-list li::after { content: ""; position: absolute; left: 0; top: 0; bottom: 0; border-left: 1px solid var(--ink-3); }
+.am-tree-list li:last-child::after { bottom: auto; height: 0.95em; }
+.am-tree-tag { font: 11px var(--font-mono); color: var(--ink-3); margin-right: 4px; }
+.am-tree code { font: 12px var(--font-mono); }
+.am-tree-sub { display: block; font-size: 11.5px; color: var(--ink-2); }
+.am-tree-hi > .am-tree-label { color: var(--accent); font-weight: 600; }
+
+/* ── 图（flow / sequence）───────────────── */
+.am-diagram { margin: 0; overflow-x: auto; text-align: center; }
+.am-diagram svg { max-width: 100%; height: auto; font-family: var(--font-sans); }
+.am-diagram text { fill: var(--ink); font-size: 13px; }
+.am-node-shape { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-node--hi .am-node-shape { fill: var(--accent-bg); stroke: var(--accent); }
+.am-node--hi text { fill: var(--accent); font-weight: 600; }
+.am-edge { fill: none; stroke: var(--ink-2); stroke-width: 1.3; }
+.am-edge--dashed { stroke-dasharray: 5 4; }
+.am-arrow { fill: var(--ink-2); }
+.am-edge-label rect { fill: var(--paper); }
+.am-diagram .am-edge-label text { fill: var(--accent); font-size: 11.5px; }
+.am-cluster { fill: var(--fill); stroke: var(--line-2); stroke-width: 1; stroke-dasharray: 4 3; }
+.am-diagram .am-cluster-label { fill: var(--ink-2); font: 11px var(--font-mono); }
+.am-lifeline { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 4 4; }
+.am-actor { fill: var(--paper); stroke: var(--line); stroke-width: var(--bw); }
+.am-note { fill: var(--warn-bg); stroke: var(--warn); stroke-width: 1; }
+.am-diagram .am-step { fill: var(--ink-3); font: 10px var(--font-mono); }
+
+/* ── doc 线性讲解 ────────────────────────── */
+.am-doc { max-width: 1120px; margin: 0 auto; padding: 40px 28px 64px; }
+.am-doc-layout { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 32px; align-items: start; }
+.am-doc-layout--notoc { grid-template-columns: minmax(0, 1fr); max-width: 860px; }
+.am-toc { position: sticky; top: 24px; font-size: 13px; }
+.am-toc a { display: block; color: var(--ink-2); text-decoration: none; padding: 4px 0 4px 10px; border-left: 2px solid var(--line-2); }
+.am-toc a:hover { color: var(--ink); border-left-color: var(--accent); }
+.am-doc-body > .am-panel + .am-panel { margin-top: 20px; }
+
+/* ── 响应式与打印 ─────────────────────────── */
+@media (max-width: 1100px) {
+  .am-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .am-grid > .am-panel { grid-column: auto !important; }
+  .am-grid > .am-panel.am-span-wide { grid-column: 1 / -1 !important; }
+}
+@media (max-width: 760px) {
+  .am-sheet, .am-doc { padding: 56px 12px 24px; }
+  .am-head { padding-right: 0; }
+  .am-grid { grid-template-columns: minmax(0, 1fr); }
+  .am-grid > .am-panel.am-span-wide { grid-column: auto !important; }
+  html[data-theme="blueprint"] .am-frame { padding: 0; border: 0; }
+  html[data-theme="blueprint"] .am-frame::before, html[data-theme="blueprint"] .am-ruler { display: none; }
+  .am-doc-layout { grid-template-columns: minmax(0, 1fr); }
+  .am-toc { position: static; }
+  .am-timeline--h { grid-template-columns: minmax(0, 1fr); }
+  .am-tree-cols { grid-template-columns: minmax(0, 1fr); }
+}
+.am-colophon { text-align: center; padding: 0 0 28px; font: 11px var(--font-mono); color: var(--ink-3); }
+
+@media print {
+  .am-toolbar { display: none; }
+  body { background: var(--paper); }
+  .am-panel { break-inside: avoid; box-shadow: none; }
+}
+.am-panel--bare { border: 0; background: transparent; box-shadow: none; }
+.am-panel--bare > .am-panel-body { padding: 0; }
+.am-panel--bare .am-kv { background: var(--paper); }
+
+</style>
+</head>
+<body>
+<div class="am-toolbar">
+<button class="am-btn" type="button" data-am="theme" data-labels="{&quot;blueprint&quot;:&quot;Theme: Blueprint&quot;,&quot;shadcn&quot;:&quot;Theme: Cards&quot;}">Theme: Blueprint</button>
+<button class="am-btn" type="button" data-am="mode" data-labels="{&quot;auto&quot;:&quot;Mode: Auto&quot;,&quot;light&quot;:&quot;Mode: Light&quot;,&quot;dark&quot;:&quot;Mode: Dark&quot;}">Mode: Light</button>
+<button class="am-btn" type="button" data-am="copy" data-done="Copied ✓">Copy source</button>
+</div>
+<main class="am-sheet">
+<header class="am-head"><h1>How the Transformer Works</h1><p class="am-sub">Decode the architecture behind every modern LLM</p><div class="am-head-meta"><span><b>source</b>Amit Shekhar · Outcome School · Apr 2026</span></div><div class="am-intro am-md"><div class="am-md"><p>The Transformer is a tokens-in, tokens-out machine. Attention lets every token see every other token directly. This page decodes the machine piece by piece.</p>
+</div></div></header>
+<div class="am-frame">
+<div class="am-ruler am-ruler--top" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--bottom" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span></div><div class="am-ruler am-ruler--left" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div><div class="am-ruler am-ruler--right" aria-hidden="true"><span>A</span><span>B</span><span>C</span><span>D</span></div>
+<div class="am-grid" style="--cols: 2">
+<section class="am-panel am-span-wide" id="panel-A" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">A</span><h2>The Big Picture</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 553 63" width="553" height="63" role="img" aria-label="流程图：Input、Transformer、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am1-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L111.7,31.5 Q145.4,31.5 179.1,31.5 L212.8,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="102" y="22.5" width="86.8" height="18" rx="3"/><text x="145.4" y="31.5" text-anchor="middle" dominant-baseline="central">I love learning</text></g></g><g data-step="1"><path class="am-edge" d="M313.9,31.5 L352.6,31.5 Q391.3,31.5 430,31.5 L468.7,31.5" marker-end="url(#am1-arrow)"/><g class="am-edge-label"><rect x="337.9" y="22.5" width="106.8" height="18" rx="3"/><text x="391.3" y="31.5" text-anchor="middle" dominant-baseline="central">J&#39;adore apprendre</text></g></g></g><g><g class="am-node am-node--rect" data-key="Input" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Input</text></g><g class="am-node am-node--rect" data-key="Transformer" data-step="0"><rect class="am-node-shape" x="212.8" y="14" width="101.1" height="35" rx="3"/><text x="263.4" y="31.5" text-anchor="middle" dominant-baseline="central">Transformer</text></g><g class="am-node am-node--rect" data-key="Output" data-step="1"><rect class="am-node-shape" x="468.7" y="14" width="69.3" height="35" rx="3"/><text x="503.4" y="31.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>A Transformer takes a sequence of tokens as input. It returns a sequence of tokens as output. Since tokens come from text, we can call it a text-in, text-out machine.</p>
+</div>
+<div class="am-callout am-callout--warn" role="note"><div class="am-callout-title">Why older models failed</div><div class="am-callout-body am-md"><p>Recurrent models read one word at a time. They forgot early words in long sentences. They also ran slowly, because each word waited for the one before it.</p>
+</div></div>
+<div class="am-md"><p>The Transformer processes all tokens at once. Every token looks directly at every other token. Long-range links stop being a problem. Parallel training became much faster.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-B">
+<header class="am-panel-head"><span class="am-panel-id">B</span><h2>From Words to Numbers</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 826 63" width="826" height="63" role="img" aria-label="流程图：Text、Tokens、Embeddings、Context Vectors" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am2-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L113.5,31.5 Q149,31.5 184.5,31.5 L220,31.5" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="102" y="22.5" width="94" height="18" rx="3"/><text x="149" y="31.5" text-anchor="middle" dominant-baseline="central">split into words</text></g></g><g data-step="1"><path class="am-edge" d="M293.2,31.5 L334.9,31.5 Q376.6,31.5 418.3,31.5 L460,31.5" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="317.2" y="22.5" width="118.8" height="18" rx="3"/><text x="376.6" y="31.5" text-anchor="middle" dominant-baseline="central">one vector per token</text></g></g><g data-step="2"><path class="am-edge" d="M563.1,31.5 L594.1,31.5 Q625.1,31.5 656.1,31.5 L687.1,31.5" marker-end="url(#am2-arrow)"/><g class="am-edge-label"><rect x="587.1" y="22.5" width="76" height="18" rx="3"/><text x="625.1" y="31.5" text-anchor="middle" dominant-baseline="central">add position</text></g></g></g><g><g class="am-node am-node--rect" data-key="Text" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Text</text></g><g class="am-node am-node--rect" data-key="Tokens" data-step="0"><rect class="am-node-shape" x="220" y="14" width="73.2" height="35" rx="3"/><text x="256.6" y="31.5" text-anchor="middle" dominant-baseline="central">Tokens</text></g><g class="am-node am-node--rect" data-key="Embeddings" data-step="1"><rect class="am-node-shape" x="460" y="14" width="103.1" height="35" rx="3"/><text x="511.6" y="31.5" text-anchor="middle" dominant-baseline="central">Embeddings</text></g><g class="am-node am-node--rect" data-key="Context Vectors" data-step="2"><rect class="am-node-shape" x="687.1" y="14" width="124.5" height="35" rx="3"/><text x="749.4" y="31.5" text-anchor="middle" dominant-baseline="central">Context Vectors</text></g></g></svg></figure>
+<div class="am-md"><p>The model only understands numbers. The first step converts words into numbers.</p>
+<ol>
+<li>Tokenization splits text into small pieces. Each word becomes one token.</li>
+<li>Embedding maps each token to a vector. Similar words get similar vectors.</li>
+<li>Positional encoding adds word order. &quot;I love AI&quot; must differ from &quot;AI love I&quot;.</li>
+</ol>
+<p>Positional encoding is like a seat number. All tokens arrive at once, but each one knows its place.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-C">
+<header class="am-panel-head"><span class="am-panel-id">C</span><h2>Attention: The Heart</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 881 170" width="881" height="170" role="img" aria-label="流程图：Query、Keys、Scores、Scaled、Weights、Values、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am3-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M79.2,102.5 L108.6,102.5 Q138,102.5 167.4,91.4 L196.8,80.3" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="103.2" y="93.5" width="69.6" height="18" rx="3"/><text x="138" y="102.5" text-anchor="middle" dominant-baseline="central">dot product</text></g></g><g data-step="0"><path class="am-edge" d="M78.6,31.5 L108.3,31.5 Q138,31.5 167.4,42.6 L196.8,53.7" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="103.2" y="22.5" width="69.6" height="18" rx="3"/><text x="138" y="31.5" text-anchor="middle" dominant-baseline="central">dot product</text></g></g><g data-step="1"><path class="am-edge" d="M266.9,67 L304.7,67 Q342.6,67 380.4,67 L418.3,67" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="290.9" y="58" width="103.4" height="18" rx="3"/><text x="342.6" y="67" text-anchor="middle" dominant-baseline="central">divide by sqrt(dk)</text></g></g><g data-step="2"><path class="am-edge" d="M488.4,67 L513.6,67 Q538.9,67 564.1,67 L589.4,67" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="512.4" y="58" width="53" height="18" rx="3"/><text x="538.9" y="67" text-anchor="middle" dominant-baseline="central">softmax</text></g></g><g data-step="3"><path class="am-edge" d="M666,67 L698.7,67 Q731.5,67 764.2,78.6 L796.9,90.2" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="690" y="58" width="82.9" height="18" rx="3"/><text x="731.5" y="67" text-anchor="middle" dominant-baseline="central">weighted mix</text></g></g><g data-step="3"><path class="am-edge" d="M662.8,138 L697.1,138 Q731.5,138 764.2,126.4 L796.9,114.8" marker-end="url(#am3-arrow)"/><g class="am-edge-label"><rect x="690" y="129" width="82.9" height="18" rx="3"/><text x="731.5" y="138" text-anchor="middle" dominant-baseline="central">weighted mix</text></g></g></g><g><g class="am-node am-node--rect" data-key="Query" data-step="0"><rect class="am-node-shape" x="14" y="85" width="65.2" height="35" rx="3"/><text x="46.6" y="102.5" text-anchor="middle" dominant-baseline="central">Query</text></g><g class="am-node am-node--rect" data-key="Keys" data-step="0"><rect class="am-node-shape" x="14.6" y="14" width="64" height="35" rx="3"/><text x="46.6" y="31.5" text-anchor="middle" dominant-baseline="central">Keys</text></g><g class="am-node am-node--rect" data-key="Scores" data-step="0"><rect class="am-node-shape" x="196.8" y="49.5" width="70.1" height="35" rx="3"/><text x="231.8" y="67" text-anchor="middle" dominant-baseline="central">Scores</text></g><g class="am-node am-node--rect" data-key="Scaled" data-step="1"><rect class="am-node-shape" x="418.3" y="49.5" width="70.1" height="35" rx="3"/><text x="453.3" y="67" text-anchor="middle" dominant-baseline="central">Scaled</text></g><g class="am-node am-node--rect" data-key="Weights" data-step="2"><rect class="am-node-shape" x="589.4" y="49.5" width="76.6" height="35" rx="3"/><text x="627.7" y="67" text-anchor="middle" dominant-baseline="central">Weights</text></g><g class="am-node am-node--rect" data-key="Values" data-step="3"><rect class="am-node-shape" x="592.6" y="120.5" width="70.1" height="35" rx="3"/><text x="627.7" y="138" text-anchor="middle" dominant-baseline="central">Values</text></g><g class="am-node am-node--rect" data-key="Output" data-step="3"><rect class="am-node-shape" x="796.9" y="85" width="69.3" height="35" rx="3"/><text x="831.6" y="102.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>Attention is the single idea that makes everything work. Each word becomes three vectors.</p>
+<ol>
+<li>Query: what this word looks for</li>
+<li>Key: what this word can offer</li>
+<li>Value: the information this word carries</li>
+</ol>
+<p>Each Query compares with every Key. The scores become probabilities that add up to 1. The word then collects a weighted mix of Values. &quot;it&quot; ends up carrying a strong signal from &quot;cat&quot;.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-D">
+<header class="am-panel-head"><span class="am-panel-id">D</span><h2>Multi-Head Attention</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 417 306" width="417" height="306" role="img" aria-label="流程图：Input、Head 1、Head 2、Head 3、Head N、Combined、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am4-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M241.3,39.7 L304.7,55.8 Q368.1,72 368.1,83.5 L368.1,95" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M232.2,49 L247.2,60.5 Q262.2,72 262.2,83.5 L262.2,95" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M186.4,49 L171.4,60.5 Q156.4,72 156.4,83.5 L156.4,95" marker-end="url(#am4-arrow)"/></g><g data-step="0"><path class="am-edge" d="M177.3,39.6 L113.5,55.8 Q49.7,72 49.7,83.5 L49.7,95" marker-end="url(#am4-arrow)"/></g><g data-step="1"><path class="am-edge" d="M368.1,130 L368.1,141.5 Q368.1,153 310.8,167.6 L253.6,182.2" marker-end="url(#am4-arrow)"/></g><g data-step="1"><path class="am-edge" d="M262.2,130 L262.2,141.5 Q262.2,153 247.2,164.5 L232.2,176" marker-end="url(#am4-arrow)"/></g><g data-step="1"><path class="am-edge" d="M156.4,130 L156.4,141.5 Q156.4,153 171.4,164.5 L186.4,176" marker-end="url(#am4-arrow)"/></g><g data-step="1"><path class="am-edge" d="M49.7,130 L49.7,141.5 Q49.7,153 107.4,167.6 L165,182.3" marker-end="url(#am4-arrow)"/></g><g data-step="2"><path class="am-edge" d="M209.3,211 L209.3,222.5 Q209.3,234 209.3,245.5 L209.3,257" marker-end="url(#am4-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="Input" data-step="0"><rect class="am-node-shape" x="177.3" y="14" width="64" height="35" rx="3"/><text x="209.3" y="31.5" text-anchor="middle" dominant-baseline="central">Input</text></g><g class="am-node am-node--rect" data-key="Head 1" data-step="0"><rect class="am-node-shape" x="333.1" y="95" width="69.9" height="35" rx="3"/><text x="368.1" y="112.5" text-anchor="middle" dominant-baseline="central">Head 1</text></g><g class="am-node am-node--rect" data-key="Head 2" data-step="0"><rect class="am-node-shape" x="227.3" y="95" width="69.9" height="35" rx="3"/><text x="262.2" y="112.5" text-anchor="middle" dominant-baseline="central">Head 2</text></g><g class="am-node am-node--rect" data-key="Head 3" data-step="0"><rect class="am-node-shape" x="121.4" y="95" width="69.9" height="35" rx="3"/><text x="156.4" y="112.5" text-anchor="middle" dominant-baseline="central">Head 3</text></g><g class="am-node am-node--rect" data-key="Head N" data-step="0"><rect class="am-node-shape" x="14" y="95" width="71.4" height="35" rx="3"/><text x="49.7" y="112.5" text-anchor="middle" dominant-baseline="central">Head N</text></g><g class="am-node am-node--rect" data-key="Combined" data-step="1"><rect class="am-node-shape" x="165" y="176" width="88.6" height="35" rx="3"/><text x="209.3" y="193.5" text-anchor="middle" dominant-baseline="central">Combined</text></g><g class="am-node am-node--rect" data-key="Output" data-step="2"><rect class="am-node-shape" x="174.6" y="257" width="69.3" height="35" rx="3"/><text x="209.3" y="274.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>The model runs attention many times in parallel. Each head studies a different relationship. One head finds subject-verb links. Another head links adjectives to nouns. All outputs combine into one rich representation.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-E">
+<header class="am-panel-head"><span class="am-panel-id">E</span><h2>One Block, Then Many</h2></header>
+<div class="am-panel-body"><figure class="am-diagram am-flow"><svg viewBox="0 0 1147 63" width="1147" height="63" role="img" aria-label="流程图：Input、Self-Attention、Add、Layer Norm、Feed-Forward、Add 2、Layer Norm 2、Output" xmlns="http://www.w3.org/2000/svg"><defs><marker id="am5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="am-arrow" d="M0,0 L10,5 L0,10 z"/></marker></defs><g></g><g><g data-step="0"><path class="am-edge" d="M78,31.5 L89.5,31.5 Q101,31.5 112.5,31.5 L124,31.5" marker-end="url(#am5-arrow)"/></g><g data-step="0"><path class="am-edge" d="M238.3,31.5 L262,31.5 Q285.6,31.5 309.2,31.5 L332.9,31.5" marker-end="url(#am5-arrow)"/><g class="am-edge-label"><rect x="262.3" y="22.5" width="46.6" height="18" rx="3"/><text x="285.6" y="31.5" text-anchor="middle" dominant-baseline="central">+ input</text></g></g><g data-step="1"><path class="am-edge" d="M396.9,31.5 L408.4,31.5 Q419.9,31.5 431.4,31.5 L442.9,31.5" marker-end="url(#am5-arrow)"/></g><g data-step="2"><path class="am-edge" d="M541.1,31.5 L552.6,31.5 Q564.1,31.5 575.6,31.5 L587.1,31.5" marker-end="url(#am5-arrow)"/></g><g data-step="2"><path class="am-edge" d="M703.2,31.5 L726.9,31.5 Q750.5,31.5 774.2,31.5 L797.8,31.5" marker-end="url(#am5-arrow)"/><g class="am-edge-label"><rect x="727.2" y="22.5" width="46.6" height="18" rx="3"/><text x="750.5" y="31.5" text-anchor="middle" dominant-baseline="central">+ input</text></g></g><g data-step="3"><path class="am-edge" d="M861.8,31.5 L873.3,31.5 Q884.8,31.5 896.3,31.5 L907.8,31.5" marker-end="url(#am5-arrow)"/></g><g data-step="3"><path class="am-edge" d="M1017.2,31.5 L1028.7,31.5 Q1040.2,31.5 1051.7,31.5 L1063.2,31.5" marker-end="url(#am5-arrow)"/></g></g><g><g class="am-node am-node--rect" data-key="Input" data-step="0"><rect class="am-node-shape" x="14" y="14" width="64" height="35" rx="3"/><text x="46" y="31.5" text-anchor="middle" dominant-baseline="central">Input</text></g><g class="am-node am-node--rect" data-key="Self-Attention" data-step="0"><rect class="am-node-shape" x="124" y="14" width="114.3" height="35" rx="3"/><text x="181.2" y="31.5" text-anchor="middle" dominant-baseline="central">Self-Attention</text></g><g class="am-node am-node--rect" data-key="Add" data-step="0"><rect class="am-node-shape" x="332.9" y="14" width="64" height="35" rx="3"/><text x="364.9" y="31.5" text-anchor="middle" dominant-baseline="central">Add</text></g><g class="am-node am-node--rect" data-key="Layer Norm" data-step="1"><rect class="am-node-shape" x="442.9" y="14" width="98.2" height="35" rx="3"/><text x="492" y="31.5" text-anchor="middle" dominant-baseline="central">Layer Norm</text></g><g class="am-node am-node--rect" data-key="Feed-Forward" data-step="2"><rect class="am-node-shape" x="587.1" y="14" width="116.1" height="35" rx="3"/><text x="645.2" y="31.5" text-anchor="middle" dominant-baseline="central">Feed-Forward</text></g><g class="am-node am-node--rect" data-key="Add 2" data-step="2"><rect class="am-node-shape" x="797.8" y="14" width="64" height="35" rx="3"/><text x="829.8" y="31.5" text-anchor="middle" dominant-baseline="central">Add 2</text></g><g class="am-node am-node--rect" data-key="Layer Norm 2" data-step="3"><rect class="am-node-shape" x="907.8" y="14" width="109.4" height="35" rx="3"/><text x="962.5" y="31.5" text-anchor="middle" dominant-baseline="central">Layer Norm 2</text></g><g class="am-node am-node--rect" data-key="Output" data-step="3"><rect class="am-node-shape" x="1063.2" y="14" width="69.3" height="35" rx="3"/><text x="1097.9" y="31.5" text-anchor="middle" dominant-baseline="central">Output</text></g></g></svg></figure>
+<div class="am-md"><p>One block holds two sub-layers. The attention sub-layer finds relationships. The feed-forward sub-layer refines each word alone.</p>
+<p>Every sub-layer keeps a residual connection and a layer norm. The residual adds the sub-layer input back to its output. Layer norm keeps the numbers in a stable range.</p>
+<p>The model stacks many blocks. Each block feeds the next one. The original model uses 6 blocks per half. GPT-3 (175B) uses 96 blocks.</p>
+<p>Multi-head attention is not the same as stacking. Multi-head runs heads in parallel inside one block. Stacking places full blocks one after another.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-F">
+<header class="am-panel-head"><span class="am-panel-id">F</span><h2>Encoder vs Decoder</h2></header>
+<div class="am-panel-body"><div class="am-tree"><div class="am-tree-cols am-tree-cols--free" style="--n: 2"><div class="am-tree-col"><div class="am-tree-box" data-key="Encoder" data-step="0">Encoder<small>reads the input</small></div><ul class="am-tree-list"><li data-key="Self-attention" data-step="1"><span class="am-tree-label">Self-attention</span><span class="am-tree-sub">every token sees every token</span></li><li data-key="Feed-forward" data-step="2"><span class="am-tree-label">Feed-forward</span><span class="am-tree-sub">refines each token</span></li><li data-key="Residual + Layer Norm" data-step="3"><span class="am-tree-label">Residual + Layer Norm</span><span class="am-tree-sub">after each sub-layer</span></li></ul></div><div class="am-tree-col"><div class="am-tree-box" data-key="Decoder" data-step="4">Decoder<small>generates the output</small></div><ul class="am-tree-list"><li data-key="Masked self-attention" data-step="5"><span class="am-tree-label">Masked self-attention</span><span class="am-tree-sub">past tokens only</span></li><li data-key="Cross-attention" data-step="6"><span class="am-tree-label">Cross-attention</span><span class="am-tree-sub">pulls info from the encoder</span></li><li data-key="Feed-forward" data-step="7"><span class="am-tree-label">Feed-forward</span><span class="am-tree-sub">refines each token</span></li><li data-key="Residual + Layer Norm" data-step="8"><span class="am-tree-label">Residual + Layer Norm</span><span class="am-tree-sub">after each sub-layer</span></li></ul></div></div></div>
+<div class="am-md"><p>The encoder reads and understands the input. The decoder writes the output, one token at a time.</p>
+<p>The decoder cannot see future words. Future words do not exist yet. We call this restriction causal masking.</p>
+<p>Cross-attention is the bridge. The Query comes from the decoder. The Key and Value come from the encoder&#39;s output.</p>
+</div></div>
+</section>
+<section class="am-panel" id="panel-G">
+<header class="am-panel-head"><span class="am-panel-id">G</span><h2>Full Flow: Translation Example</h2></header>
+<div class="am-panel-body"><div class="am-md"><p>Encoder phase, for &quot;I love learning&quot;:</p>
+<ol>
+<li>Tokenize into &quot;I&quot;, &quot;love&quot;, &quot;learning&quot;</li>
+<li>Embed each token</li>
+<li>Add positional encoding</li>
+<li>Pass through 6 encoder layers</li>
+</ol>
+<p>Decoder phase, one token at a time:</p>
+<ol>
+<li>Start token, cross-attention, pick &quot;J&#39;&quot;</li>
+<li>Look back at &quot;J&#39;&quot;, pick &quot;adore&quot;</li>
+<li>Look back at both, pick &quot;apprendre&quot;</li>
+<li>Emit the &quot;end&quot; token</li>
+</ol>
+<p>Final output: &quot;J&#39;adore apprendre&quot;. The decoder picks each word from probabilities over the whole vocabulary.</p>
+</div></div>
+</section>
+<section class="am-panel am-span-wide" id="panel-H" style="grid-column: span 2">
+<header class="am-panel-head"><span class="am-panel-id">H</span><h2>Three Variants</h2></header>
+<div class="am-panel-body"><div class="am-md"><div class="am-table-wrap"><table>
+<thead>
+<tr>
+<th>Variant</th>
+<th>Example</th>
+<th>Best for</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Encoder-only</td>
+<td>BERT</td>
+<td>classify, understand text</td>
+</tr>
+<tr>
+<td>Decoder-only</td>
+<td>GPT</td>
+<td>generate text, chat</td>
+</tr>
+<tr>
+<td>Encoder-Decoder</td>
+<td>T5</td>
+<td>translate, summarize</td>
+</tr>
+</tbody></table></div>
+</div>
+<div class="am-callout am-callout--ok" role="note"><div class="am-callout-title">Why it won</div><div class="am-callout-body am-md"><p>Parallel training. Direct long-range links. Scales with layers, heads, and data. One architecture powers almost every modern LLM.</p>
+</div></div></div>
+</section>
+</div>
+</div>
+</main>
+<footer class="am-colophon">Generated by Answer me with HTML 0.4.6 · 2026-10-16 00:48</footer>
+<textarea id="am-source" hidden readonly aria-hidden="true">---
+title: How the Transformer Works
+subtitle: Decode the architecture behind every modern LLM
+template: sheet
+theme: blueprint
+cols: 2
+source: Amit Shekhar · Outcome School · Apr 2026
+---
+The Transformer is a tokens-in, tokens-out machine. Attention lets every token see every other token directly. This page decodes the machine piece by piece.
+
+## A The Big Picture {span=2}
+```flow LR
+Input -&gt; Transformer: I love learning
+Transformer -&gt; Output: J&#39;adore apprendre
+```
+
+A Transformer takes a sequence of tokens as input. It returns a sequence of tokens as output. Since tokens come from text, we can call it a text-in, text-out machine.
+
+```callout warn Why older models failed
+Recurrent models read one word at a time. They forgot early words in long sentences. They also ran slowly, because each word waited for the one before it.
+```
+
+The Transformer processes all tokens at once. Every token looks directly at every other token. Long-range links stop being a problem. Parallel training became much faster.
+
+## B From Words to Numbers
+```flow LR
+Text -&gt; Tokens: split into words
+Tokens -&gt; Embeddings: one vector per token
+Embeddings -&gt; Context Vectors: add position
+```
+
+The model only understands numbers. The first step converts words into numbers.
+
+1. Tokenization splits text into small pieces. Each word becomes one token.
+2. Embedding maps each token to a vector. Similar words get similar vectors.
+3. Positional encoding adds word order. &quot;I love AI&quot; must differ from &quot;AI love I&quot;.
+
+Positional encoding is like a seat number. All tokens arrive at once, but each one knows its place.
+
+## C Attention: The Heart
+```flow LR
+Query &amp; Keys -&gt; Scores: dot product
+Scores -&gt; Scaled: divide by sqrt(dk)
+Scaled -&gt; Weights: softmax
+Weights &amp; Values -&gt; Output: weighted mix
+```
+
+Attention is the single idea that makes everything work. Each word becomes three vectors.
+
+1. Query: what this word looks for
+2. Key: what this word can offer
+3. Value: the information this word carries
+
+Each Query compares with every Key. The scores become probabilities that add up to 1. The word then collects a weighted mix of Values. &quot;it&quot; ends up carrying a strong signal from &quot;cat&quot;.
+
+## D Multi-Head Attention
+```flow
+Input -&gt; Head 1 &amp; Head 2 &amp; Head 3 &amp; Head N
+Head 1 &amp; Head 2 &amp; Head 3 &amp; Head N -&gt; Combined
+Combined -&gt; Output
+```
+
+The model runs attention many times in parallel. Each head studies a different relationship. One head finds subject-verb links. Another head links adjectives to nouns. All outputs combine into one rich representation.
+
+## E One Block, Then Many
+```flow LR
+Input -&gt; Self-Attention -&gt; Add: + input
+Add -&gt; Layer Norm
+Layer Norm -&gt; Feed-Forward -&gt; Add 2: + input
+Add 2 -&gt; Layer Norm 2 -&gt; Output
+```
+
+One block holds two sub-layers. The attention sub-layer finds relationships. The feed-forward sub-layer refines each word alone.
+
+Every sub-layer keeps a residual connection and a layer norm. The residual adds the sub-layer input back to its output. Layer norm keeps the numbers in a stable range.
+
+The model stacks many blocks. Each block feeds the next one. The original model uses 6 blocks per half. GPT-3 (175B) uses 96 blocks.
+
+Multi-head attention is not the same as stacking. Multi-head runs heads in parallel inside one block. Stacking places full blocks one after another.
+
+## F Encoder vs Decoder
+```tree
+Encoder | reads the input
+  Self-attention | every token sees every token
+  Feed-forward | refines each token
+  Residual + Layer Norm | after each sub-layer
+Decoder | generates the output
+  Masked self-attention | past tokens only
+  Cross-attention | pulls info from the encoder
+  Feed-forward | refines each token
+  Residual + Layer Norm | after each sub-layer
+```
+
+The encoder reads and understands the input. The decoder writes the output, one token at a time.
+
+The decoder cannot see future words. Future words do not exist yet. We call this restriction causal masking.
+
+Cross-attention is the bridge. The Query comes from the decoder. The Key and Value come from the encoder&#39;s output.
+## G Full Flow: Translation Example
+Encoder phase, for &quot;I love learning&quot;:
+1. Tokenize into &quot;I&quot;, &quot;love&quot;, &quot;learning&quot;
+2. Embed each token
+3. Add positional encoding
+4. Pass through 6 encoder layers
+
+Decoder phase, one token at a time:
+1. Start token, cross-attention, pick &quot;J&#39;&quot;
+2. Look back at &quot;J&#39;&quot;, pick &quot;adore&quot;
+3. Look back at both, pick &quot;apprendre&quot;
+4. Emit the &quot;end&quot; token
+
+Final output: &quot;J&#39;adore apprendre&quot;. The decoder picks each word from probabilities over the whole vocabulary.
+
+## H Three Variants
+| Variant | Example | Best for |
+|---|---|---|
+| Encoder-only | BERT | classify, understand text |
+| Decoder-only | GPT | generate text, chat |
+| Encoder-Decoder | T5 | translate, summarize |
+
+```callout ok Why it won
+Parallel training. Direct long-range links. Scales with layers, heads, and data. One architecture powers almost every modern LLM.
+```
+</textarea>
+<script>
+(() => {
+  const root = document.documentElement;
+  const cycle = (list, cur) => list[(list.indexOf(cur) + 1) % list.length];
+  const label = (btn, value) => {
+    const map = JSON.parse(btn.dataset.labels || '{}');
+    btn.textContent = map[value] || value;
+  };
+  const bind = (name, attr, values) => {
+    const btn = document.querySelector(`[data-am="${name}"]`);
+    if (!btn) return;
+    label(btn, root.getAttribute(attr));
+    btn.addEventListener('click', () => {
+      const next = cycle(values, root.getAttribute(attr));
+      root.setAttribute(attr, next);
+      label(btn, next);
+    });
+  };
+  bind('theme', 'data-theme', ['blueprint', 'shadcn']);
+  bind('mode', 'data-mode', ['auto', 'light', 'dark']);
+
+  const copyBtn = document.querySelector('[data-am="copy"]');
+  copyBtn?.addEventListener('click', async () => {
+    const nodes = document.querySelectorAll('#am-source');
+    const text = nodes[nodes.length - 1]?.value ?? '';
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      const ta = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    const original = copyBtn.textContent;
+    copyBtn.textContent = copyBtn.dataset.done;
+    setTimeout(() => { copyBtn.textContent = original; }, 1400);
+  });
+})();
+</script>
+</body>
+</html>
+<!-- （注：内容由AI生成） -->

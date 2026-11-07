@@ -2,3 +2,10 @@
 .idea/
 .vscode/
 *.local
+
+# 构建输出与本地预览产物
+public/
+manifest.json
+
+# 工具本地状态
+.workbuddy/

@@ -29,11 +29,20 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      # 只把站点文件（HTML + .nojekyll + favicon）放进 public/，避免把 .git 一起上传
+      # 只把站点内容（各分类目录 + 根目录 index.html/favicon/.nojekyll）放进 public/，
+      # 排除版本控制与构建脚本等非站点文件
       - name: Stage static site
         run: |
           mkdir -p public
-          cp ./*.html ./.nojekyll ./favicon.* public/
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            --exclude='.idea/' \
+            --exclude='.workbuddy/' \
+            --exclude='scripts/' \
+            --exclude='README.md' \
+            --exclude='*.py' \
+            ./ public/
 
       # 从 HTML 提取 <title> 生成目录元数据，index.html 靠它动态渲染
       - name: Generate manifest.json
