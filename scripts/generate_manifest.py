@@ -21,18 +21,16 @@ CAT_GUIDE = "guide"
 CAT_WEEKLY = "weekly"
 CAT_NOTE = "note"
 
-# notes/ 下的主题目录 -> 展示标签
+# notes/ 下的四个子类目录 -> 展示标签
 TOPIC_TAGS = {
     "ai": "AI",
     "frontend": "前端",
-    "csharp": "C#",
-    "math": "数学",
-    "observability": "可观测性",
-    "engineering": "开发",
+    "backend": "后端",
+    "other": "其他",
 }
 
-# 笔记分组展示顺序（未列出的排最后）
-TOPIC_ORDER = ["ai", "frontend", "csharp", "math", "observability", "engineering"]
+# 笔记分组展示顺序
+TOPIC_ORDER = ["ai", "frontend", "backend", "other"]
 
 DATE_RE = re.compile(r"(\d{4})-(\d{2})-(\d{2})")
 
@@ -71,7 +69,7 @@ def classify(rel: str):
         return CAT_WEEKLY, ("周复盘" if label else "常驻模块"), label
     if top == "notes":
         topic = parts[1] if len(parts) > 2 else ""
-        return CAT_NOTE, TOPIC_TAGS.get(topic, "笔记"), ""
+        return CAT_NOTE, TOPIC_TAGS.get(topic, "其他"), ""
     return CAT_NOTE, "笔记", ""
 
 

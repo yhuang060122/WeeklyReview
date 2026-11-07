@@ -59,6 +59,19 @@
   .sec-head h2 { font-size: 19px; font-weight: 600; }
   .sec-head .count { font-size: 13px; color: var(--text-dim); }
 
+  /* 学习笔记内部的子类小节标题 */
+  .subhead {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 26px 0 12px;
+    padding-left: 10px;
+    border-left: 3px solid var(--accent-soft);
+  }
+  .sec-head + .subhead { margin-top: 2px; }
+  .subhead h3 { font-size: 15px; font-weight: 600; letter-spacing: 0.02em; }
+  .subhead .count { font-size: 12px; color: var(--text-dim); }
+
   .grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -150,11 +163,14 @@
 
 <script>
 // 动态目录：读取构建时生成的 manifest.json，按分类渲染卡片
+// 学习笔记在分类内部再按子类（AI / 前端 / 后端 / 其他）分组
 const SECTIONS = {
   guide:  { title: "📖 使用指南" },
   weekly: { title: "📊 周复盘系列" },
   note:   { title: "🧠 学习笔记" },
 };
+
+const NOTE_ORDER = ["AI", "前端", "后端", "其他"];
 
 function tagClass(tag) {
   return (tag === "周复盘" || tag === "常驻模块") ? "tag" : "tag amber";
@@ -163,6 +179,46 @@ function tagClass(tag) {
 function ctaFor(tag) {
   if (tag === "周复盘" || tag === "常驻模块") return "打开看板";
   return tag === "使用指南" ? "查看指南" : "阅读笔记";
+}
+
+function makeCard(it, showTag) {
+  const card = document.createElement("a");
+  card.className = "card";
+  card.href = encodeURI(it.path); // 相对路径，如 weekly/2026-11-02_2026-11-08.html
+
+  const tagHtml = showTag
+    ? '<span class="' + tagClass(it.tag) + '">' + it.tag + "</span>"
+    : "";
+  const dateHtml = it.label ? '<span class="date">' + it.label + "</span>" : "";
+  // 子类分组里标签已由小标题承担，避免同一信息重复两次
+  const metaHtml = (tagHtml || dateHtml)
+    ? '<div class="meta">' + tagHtml + dateHtml + "</div>"
+    : "";
+
+  card.innerHTML =
+    metaHtml +
+    "<h3></h3>" +
+    '<span class="go">' + ctaFor(it.tag) + "</span>";
+  card.querySelector("h3").textContent = it.title; // 标题一律走 textContent，避免注入
+  return card;
+}
+
+function makeGrid(items, showTag) {
+  const grid = document.createElement("div");
+  grid.className = "grid";
+  for (const it of items) grid.appendChild(makeCard(it, showTag));
+  return grid;
+}
+
+// 学习笔记按子类切分；未登记的标签统一落到「其他」
+function noteGroups(items) {
+  const buckets = new Map(NOTE_ORDER.map((t) => [t, []]));
+  for (const it of items) {
+    const key = buckets.has(it.tag) ? it.tag : "其他";
+    buckets.get(key).push(it);
+  }
+  return NOTE_ORDER.filter((t) => buckets.get(t).length)
+    .map((t) => ({ title: t, items: buckets.get(t) }));
 }
 
 function render(manifest) {
@@ -175,33 +231,27 @@ function render(manifest) {
     if (!items.length) continue;
 
     const sec = document.createElement("section");
-    sec.innerHTML =
-      '<div class="sec-head">' +
-        "<h2>" + SECTIONS[cat].title + "</h2>" +
-        '<span class="count">' + items.length + " 份</span>" +
-      "</div>" +
-      '<div class="grid"></div>';
-    const grid = sec.querySelector(".grid");
+    const head = document.createElement("div");
+    head.className = "sec-head";
+    head.innerHTML =
+      "<h2>" + SECTIONS[cat].title + "</h2>" +
+      '<span class="count">' + items.length + " 份</span>";
+    sec.appendChild(head);
 
-    for (const it of items) {
-      const card = document.createElement("a");
-      card.className = "card";
-      card.href = encodeURI(it.path); // 相对路径，如 weekly/2026-11-02_2026-11-08.html
-
-      const dateHtml = it.label
-        ? '<span class="date">' + it.label + "</span>"
-        : "";
-
-      card.innerHTML =
-        '<div class="meta">' +
-          '<span class="' + tagClass(it.tag) + '">' + it.tag + "</span>" +
-          dateHtml +
-        "</div>" +
-        "<h3></h3>" +
-        '<span class="go">' + ctaFor(it.tag) + "</span>";
-      card.querySelector("h3").textContent = it.title; // 标题一律走 textContent，避免注入
-      grid.appendChild(card);
+    if (cat === "note") {
+      for (const g of noteGroups(items)) {
+        const sub = document.createElement("div");
+        sub.className = "subhead";
+        sub.innerHTML = "<h3></h3><span class=\"count\"></span>";
+        sub.querySelector("h3").textContent = g.title;
+        sub.querySelector(".count").textContent = g.items.length + " 篇";
+        sec.appendChild(sub);
+        sec.appendChild(makeGrid(g.items, false));
+      }
+    } else {
+      sec.appendChild(makeGrid(items, true));
     }
+
     content.appendChild(sec);
   }
 }

@@ -185,7 +185,7 @@
   </header>
 
   <h2><span class="num">01</span> 这是什么</h2>
-  <p>WeeklyReview 是一个静态站点：仓库里每个 <code>*.html</code> 都是一份独立文档（周复盘看板或学习笔记），按主题放在 <code>weekly/</code>、<code>notes/&lt;主题&gt;/</code>、<code>guide/</code> 目录下。推送 <code>main</code> 分支后，GitHub Actions 自动打包部署到 GitHub Pages，目录页 <code>index.html</code> 通过 JavaScript 读取构建时生成的 <code>manifest.json</code> 动态渲染导航，因此<b>新增文档只需放进对应目录，无需手工改目录页</b>。</p>
+  <p>WeeklyReview 是一个静态站点：仓库里每个 <code>*.html</code> 都是一份独立文档（周复盘看板或学习笔记），按分类放在 <code>weekly/</code>、<code>notes/&lt;子类&gt;/</code>、<code>guide/</code> 目录下。推送 <code>main</code> 分支后，GitHub Actions 自动打包部署到 GitHub Pages，目录页 <code>index.html</code> 通过 JavaScript 读取构建时生成的 <code>manifest.json</code> 动态渲染导航，因此<b>新增文档只需放进对应目录，无需手工改目录页</b>。</p>
   <ul>
     <li>站点地址：<code>https://yhuang060122.github.io/WeeklyReview/</code></li>
     <li>仓库地址：<code>git@github.com:yhuang060122/WeeklyReview.git</code></li>
@@ -197,7 +197,7 @@
     <tr><th>文件 / 目录</th><th>作用</th><th>需要维护？</th></tr>
     <tr><td><code>index.html</code></td><td>目录导航页（站点唯一入口，留在根目录）</td><td>否（自动）</td></tr>
     <tr><td><code>weekly/</code></td><td>周复盘看板与常驻模块</td><td>是（新增/改名时）</td></tr>
-    <tr><td><code>notes/ai/ · frontend/ · csharp/ · math/ · observability/ · engineering/</code></td><td>学习笔记，按主题分目录</td><td>是（新增/改名时）</td></tr>
+    <tr><td><code>notes/ai/ · frontend/ · backend/ · other/</code></td><td>学习笔记，固定四个子类目录</td><td>是（新增/改名时）</td></tr>
     <tr><td><code>guide/handoff.html</code></td><td>本文档</td><td>是（结构变更时）</td></tr>
     <tr><td><code>favicon.png / favicon.ico</code></td><td>站点图标（秋日枫叶，随站部署）</td><td>想换图标时替换这两个文件即可</td></tr>
     <tr><td><code>manifest.json</code></td><td>目录元数据，CI 构建时生成</td><td>否（自动，勿手改）</td></tr>
@@ -214,7 +214,7 @@
     <tr><td>周复盘变体</td><td>在日期后加语义后缀</td><td><code>weekly/2026-10-05_2026-10-11-multi-asset.html</code></td><td>📊 周复盘系列</td></tr>
     <tr><td>单日周报</td><td><code>weekly/YYYY-MM-DD-&lt;主题&gt;.html</code></td><td><code>weekly/2026-11-06-mag7.html</code></td><td>📊 周复盘系列</td></tr>
     <tr><td>常驻模块</td><td><code>weekly/module-&lt;主题&gt;.html</code></td><td><code>weekly/module-ai-financial-verification.html</code></td><td>📊 周复盘系列（排最后）</td></tr>
-    <tr><td>学习笔记</td><td><code>notes/&lt;主题&gt;/&lt;kebab-case&gt;.html</code></td><td><code>notes/frontend/angular-http-resource.html</code></td><td>🧠 学习笔记（标签取主题目录）</td></tr>
+    <tr><td>学习笔记</td><td><code>notes/&lt;子类&gt;/&lt;kebab-case&gt;.html</code></td><td><code>notes/frontend/angular-http-resource.html</code></td><td>🧠 学习笔记（标签取子类目录）</td></tr>
     <tr><td>站点指南</td><td><code>guide/handoff.html</code></td><td>本文档</td><td>📖 使用指南（置顶）</td></tr>
   </table>
   <div class="callout">
@@ -226,7 +226,7 @@
 
   <p><b>① 新增一篇文档（最常用）</b></p>
   <ol class="steps">
-    <li>把 HTML 放进对应目录（<code>weekly/</code> 或 <code>notes/&lt;主题&gt;/</code>），按上方约定命名。</li>
+    <li>把 HTML 放进对应目录（<code>weekly/</code> 或 <code>notes/&lt;子类&gt;/</code>），按上方约定命名。</li>
     <li>提交并推送：<br>
       <pre><code>git add -A
 git commit -m "add: &lt;文档名&gt;"
@@ -241,17 +241,15 @@ git push origin main</code></pre>
   <p class="dim">改名后旧链接会 404，如已在别处引用需同步更新。</p>
 
   <p><b>③ 调整分类 / 标签</b></p>
-  <p>编辑 <code>scripts/generate_manifest.py</code>：新增主题目录时在 <code>TOPIC_TAGS</code> 登记标签、在 <code>TOPIC_ORDER</code> 登记展示顺序，推送后自动生效。当前目录与标签对应关系：</p>
+  <p>编辑 <code>scripts/generate_manifest.py</code>：调整子类时同步改 <code>TOPIC_TAGS</code> 与 <code>TOPIC_ORDER</code>，推送后自动生效。当前目录与标签对应关系：</p>
   <table>
     <tr><th>所在目录</th><th>目录页分类 / 标签</th></tr>
     <tr><td><code>guide/</code></td><td>📖 使用指南（置顶）</td></tr>
     <tr><td><code>weekly/</code></td><td>📊 周复盘（有日期 → 周复盘，无日期 → 常驻模块）</td></tr>
     <tr><td><code>notes/ai/</code></td><td>🧠 学习笔记 · AI</td></tr>
     <tr><td><code>notes/frontend/</code></td><td>🧠 学习笔记 · 前端</td></tr>
-    <tr><td><code>notes/csharp/</code></td><td>🧠 学习笔记 · C#</td></tr>
-    <tr><td><code>notes/math/</code></td><td>🧠 学习笔记 · 数学</td></tr>
-    <tr><td><code>notes/observability/</code></td><td>🧠 学习笔记 · 可观测性</td></tr>
-    <tr><td><code>notes/engineering/</code></td><td>🧠 学习笔记 · 开发</td></tr>
+    <tr><td><code>notes/backend/</code></td><td>🧠 学习笔记 · 后端</td></tr>
+    <tr><td><code>notes/other/</code></td><td>🧠 学习笔记 · 其他</td></tr>
     <tr><td>其他未登记目录</td><td>🧠 学习笔记 · 笔记</td></tr>
   </table>
 
@@ -271,7 +269,7 @@ git push origin main</code></pre>
     <tr><td>目录页显示「目录加载失败」</td><td>用 <code>file://</code> 直接双击打开时浏览器会拦截 fetch。请通过 GitHub Pages 地址访问，或本地起服务：<code>python -m http.server</code></td></tr>
     <tr><td>推送后目录没更新</td><td>先看 Actions 是否成功；若成功则是 CDN 缓存，强制刷新（Ctrl/Cmd + F5）</td></tr>
     <tr><td>部署在 Configure Pages 步骤失败</td><td>仓库 Settings → Pages → Source 选择 <b>GitHub Actions</b>（只需一次）</td></tr>
-    <tr><td>卡片分类不对</td><td>文件没放进对应目录（分类由目录决定），或该主题尚未在 <code>TOPIC_TAGS</code> 登记</td></tr>
+    <tr><td>卡片分类不对</td><td>文件没放进对应目录（分类由目录决定），或该子类不在 <code>TOPIC_TAGS</code> 四个子类之内</td></tr>
     <tr><td>标题显示为文件名</td><td>HTML 里没有 <code>&lt;title&gt;</code> 标签，脚本会退回用文件名</td></tr>
   </table>
 
